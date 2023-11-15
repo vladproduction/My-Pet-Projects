@@ -1,0 +1,66 @@
+The main part of application is Calculator.
+It can calculate expressions.
+There are two implementations of calculator.
+1)SimpleCalculator;
+Calculates expressions without brackets.
+For example: 3+7*x, in case of x=2 result is 18.
+2)AdvancedCalculator;
+Calculates expressions that might include braskets.
+For example: 3+(7*x), in case of x=2 result is 18.
+
+EquationResolver has a calculator.
+The aim of resolver is to solve equations.
+It has four steps:
+1)take equation and split it by "=";
+2)check where variable is located; swap left and right parts if needed;
+3)use calculator to evaluate expression;
+4)compare actual and expected results;
+For example 3+7*x=10
+1)left=3+7*x ; right=10
+2)no actions
+3)calculator.calculate(3+7*x); x=1
+4)compare expected = right=10 and result of 3);
+10=10 so x=1 is correct solution
+For example 10=3+7*x
+1)right=3+7*x  left=10 ;
+2)make left=3+7*x ; right=10
+3)calculator.calculate(3+7*x); x=1
+4)compare expected = right=10 and result of 3);
+10=10 so x=1 is correct solution
+
+Validator
+Check correctness of equation.
+I have multiply validators.
+Each for single purpose.
+
+Dao
+Encapsulates logic for interaction with database (jdbc api)
+MySQL database is used.
+Backup file is available in GitHub.
+To setup connection to your database you need to set next system variables
+//        System.setProperty("db.url","jdbc:mysql://localhost:3306/equations");
+//        System.setProperty("db.user","root");
+//        System.setProperty("db.password","11111111"); or
+java -Ddburl=jdbc:mysql://localhost:3306/equations -Ddbuser=root -Ddbpassword=11111111 -jar the-app-equation-1.0-SNAPSHOT.jar
+
+Processor
+Provides api for the end user.
+Encapsulates logic of interaction with validator, calculator, equationResolver, dao.
+Provides option to choose type of calculator by ProcessorType enum.
+For example:
+  Processor processor = new EquationProcessor(ProcessorType.SIMPLE);
+  Processor processor = new EquationProcessor(ProcessorType.ADVANCED);
+createEquation-validates equation, in case it`s valid put equation to the database
+solveEquation-firstly checks result in db. If not presented tries to calculate and after might save result in db.
+findAllEquationsByX-returns a collection of equations whose solution is a x. uses db.
+
+Important!
+I suppose that equations are linear.
+So, there is only one solution for each equation.
+Based on this I used one-to-many relation into to my db.
+For example:
+		boolean isCorrect = processor.solveEquation("6/x+5=3", -3);
+        System.out.println("isCorrect= " + isCorrect);
+
+        isCorrect = processor.solveEquation("x+3=0", -3);
+        System.out.println("isCorrect= " + isCorrect);
