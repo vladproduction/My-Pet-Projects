@@ -1,0 +1,700 @@
+{
+	"info": {
+		"_postman_id": "46c3b3f5-a74f-4c47-bf01-aff9facbd7ed",
+		"name": "hotelApp-room",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27710072"
+	},
+	"item": [
+		{
+			"name": "deleteAllRooms",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/room",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"room"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createRoom",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify response body\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    var id = json.id;\r",
+							"    pm.globals.set(\"createRoomId\", id)\r",
+							"    //pm.expect(json.id).to.not(null);\r",
+							"    pm.expect(json.roomType).to.eql(\"LUX\");\r",
+							"    pm.expect(json.capacity).to.eql(4);\r",
+							"    pm.expect(json.roomNumber).to.eql(1);\r",
+							"    pm.expect(json.price).to.eql(0);\r",
+							"\r",
+							"\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roomType\":\"LUX\",\r\n    \"capacity\":\"4\",\r\n    \"roomNumber\":\"1\"\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/room",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"room"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createRoom1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify response body\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    //pm.expect(json.id).to.not(null);\r",
+							"    pm.expect(json.roomType).to.eql(\"ORDINARY\");\r",
+							"    pm.expect(json.capacity).to.eql(2);\r",
+							"    pm.expect(json.roomNumber).to.eql(501);\r",
+							"    pm.expect(json.price).to.eql(0);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roomType\":\"ORDINARY\",\r\n    \"capacity\":\"2\",\r\n    \"roomNumber\":\"501\"\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/room",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"room"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createRoom2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify response body\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    //pm.expect(json.id).to.not(null);\r",
+							"    pm.expect(json.roomType).to.eql(\"ORDINARY\");\r",
+							"    pm.expect(json.capacity).to.eql(3);\r",
+							"    pm.expect(json.roomNumber).to.eql(5);\r",
+							"    pm.expect(json.price).to.eql(0);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roomType\":\"ORDINARY\",\r\n    \"capacity\":\"3\",\r\n    \"roomNumber\":\"5\"\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/room",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"room"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createRoom3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify response body\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    //pm.expect(json.id).to.not(null);\r",
+							"    pm.expect(json.roomType).to.eql(\"LUX\");\r",
+							"    pm.expect(json.capacity).to.eql(6);\r",
+							"    pm.expect(json.roomNumber).to.eql(44);\r",
+							"    pm.expect(json.price).to.eql(0);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roomType\":\"LUX\",\r\n    \"capacity\":\"6\",\r\n    \"roomNumber\":\"44\"\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/room",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"room"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createRoom4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify response body\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    //pm.expect(json.id).to.not(null);\r",
+							"    pm.expect(json.roomType).to.eql(\"ORDINARY\");\r",
+							"    pm.expect(json.capacity).to.eql(7);\r",
+							"    pm.expect(json.roomNumber).to.eql(50);\r",
+							"    pm.expect(json.price).to.eql(0);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roomType\":\"ORDINARY\",\r\n    \"capacity\":\"7\",\r\n    \"roomNumber\":\"50\"\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/room",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"room"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findAllRooms",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify response body\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    //pm.expect(json.id).to.not(null);\r",
+							"    pm.expect(json.length).to.eql(5);\r",
+							"    \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roomType\":\"ORDINARY\",\r\n    \"capacity\":\"2\",\r\n    \"roomNumber\":\"201\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/room",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"room"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findAllRoomByType",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify response body\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json.length).to.eql(3);\r",
+							"    \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roomType\":\"ORDINARY\",\r\n    \"capacity\":\"2\",\r\n    \"roomNumber\":\"201\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/room/roomtype/ORDINARY",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"room",
+						"roomtype",
+						"ORDINARY"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findAllRoomByCapacity",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify response body\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json.length).to.eql(1);\r",
+							"    \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roomType\":\"ORDINARY\",\r\n    \"capacity\":\"2\",\r\n    \"roomNumber\":\"201\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/room/capacity/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"room",
+						"capacity",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findAllRoomByCapacityAndRoomType",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify response body\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json.length).to.eql(1);\r",
+							"    \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roomType\":\"ORDINARY\",\r\n    \"capacity\":\"2\",\r\n    \"roomNumber\":\"201\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/room/capacity/2/roomtype/ORDINARY",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"room",
+						"capacity",
+						"2",
+						"roomtype",
+						"ORDINARY"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findByIdRoom",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify response body\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json.roomType).to.eql(\"LUX\");\r",
+							"    pm.expect(json.capacity).to.eql(4);\r",
+							"    pm.expect(json.roomNumber).to.eql(1);\r",
+							"    pm.expect(json.price).to.eql(0);\r",
+							"\r",
+							"\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roomType\":\"ORDINARY\",\r\n    \"capacity\":\"2\",\r\n    \"roomNumber\":\"201\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/room/{{createRoomId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"room",
+						"{{createRoomId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateByIdRoom",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify response body\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json.roomType).to.eql(\"ORDINARY\");\r",
+							"    pm.expect(json.capacity).to.eql(3);\r",
+							"    pm.expect(json.roomNumber).to.eql(201);\r",
+							"    pm.expect(json.price).to.eql(200);\r",
+							"\r",
+							"\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roomType\":\"ORDINARY\",\r\n    \"capacity\":\"3\",\r\n    \"roomNumber\":\"201\",\r\n    \"price\":200\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/room/{{createRoomId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"room",
+						"{{createRoomId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteByIdRoom",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roomType\":\"ORDINARY\",\r\n    \"capacity\":\"2\",\r\n    \"roomNumber\":\"201\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/room/{{createRoomId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"room",
+						"{{createRoomId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findAllRooms-after-Remove",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify response body\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json.length).to.eql(4);\r",
+							"    \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roomType\":\"ORDINARY\",\r\n    \"capacity\":\"2\",\r\n    \"roomNumber\":\"201\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/room",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"room"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

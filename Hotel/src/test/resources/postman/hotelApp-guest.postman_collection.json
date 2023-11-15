@@ -1,0 +1,342 @@
+{
+	"info": {
+		"_postman_id": "a088421c-3f3a-4a9f-853d-f2127cbf550b",
+		"name": "hotelApp-guest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27710072"
+	},
+	"item": [
+		{
+			"name": "deleteAllGuests",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/guest",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"guest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createGuest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify response body\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    var id = json.id;\r",
+							"    pm.globals.set(\"createGuestId\", id)\r",
+							"    pm.expect(json.documentType).to.eql(\"PASSPORT\");\r",
+							"    pm.expect(json.paymentType).to.eql(\"CASH\");\r",
+							"    pm.expect(json.documentData).to.eql(\"a123\");\r",
+							"    pm.expect(json.firstName).to.eql( \"John\");\r",
+							"    pm.expect(json.secondName).to.eql( \"Do\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"documentType\":\"PASSPORT\",\r\n    \"paymentType\":\"CASH\",\r\n    \"documentData\":\"a123\",\r\n    \"firstName\":\"John\",\r\n    \"secondName\":\"Do\"\r\n}\r\n\r\n\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/guest",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"guest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findAllGuests",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify response body\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json.length).to.eql(1);\r",
+							"    \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roomType\":\"ORDINARY\",\r\n    \"capacity\":\"2\",\r\n    \"roomNumber\":\"201\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/guest",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"guest"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findByIdGuest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify response body\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    var id = json.id;\r",
+							"    pm.globals.set(\"createGuestId\", id)\r",
+							"    pm.expect(json.documentType).to.eql(\"PASSPORT\");\r",
+							"    pm.expect(json.paymentType).to.eql(\"CASH\");\r",
+							"    pm.expect(json.documentData).to.eql(\"a123\");\r",
+							"    pm.expect(json.firstName).to.eql( \"John\");\r",
+							"    pm.expect(json.secondName).to.eql( \"Do\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/guest/{{createGuestId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"guest",
+						"{{createGuestId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateByIdGuest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify response body\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    var id = json.id;\r",
+							"    pm.globals.set(\"createGuestId\", id)\r",
+							"    pm.expect(json.documentType).to.eql(\"PASSPORT\");\r",
+							"    pm.expect(json.paymentType).to.eql(\"CASH\");\r",
+							"    pm.expect(json.documentData).to.eql(\"AA-123\");\r",
+							"    pm.expect(json.firstName).to.eql( \"John\");\r",
+							"    pm.expect(json.secondName).to.eql( \"Dow\");\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"documentType\":\"PASSPORT\",\r\n    \"paymentType\":\"CASH\",\r\n    \"documentData\":\"AA-123\",\r\n    \"firstName\":\"John\",\r\n    \"secondName\":\"Dow\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/guest/{{createGuestId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"guest",
+						"{{createGuestId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "departure",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"pm.test(\"verify response body\", function(){\r",
+							"    var json = pm.response.json();\r",
+							"    pm.expect(json.length).to.eql(0);\r",
+							"    \r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/guest/departure",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"guest",
+						"departure"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteByIdGuest",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"status code is 200\", function(){\r",
+							"    pm.response.to.have.status(200);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"roomType\":\"ORDINARY\",\r\n    \"capacity\":\"2\",\r\n    \"roomNumber\":\"201\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/guest/{{createGuestId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"guest",
+						"{{createGuestId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
