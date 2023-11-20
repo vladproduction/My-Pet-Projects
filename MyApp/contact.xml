@@ -1,0 +1,14 @@
+<phoneBook>
+    <informationList>
+        <name>asd</name>
+        <phone>123</phone>
+    </informationList>
+    <informationList>
+        <name>zxc</name>
+        <phone>456</phone>
+    </informationList>
+    <informationList>
+        <name>qwe</name>
+        <phone>789</phone>
+    </informationList>
+</phoneBook>

@@ -1,0 +1,10 @@
+<phoneBook>
+    <informationList>
+        <name>qqq</name>
+        <phone>111</phone>
+    </informationList>
+    <informationList>
+        <name>sss</name>
+        <phone>222</phone>
+    </informationList>
+</phoneBook>

@@ -1,0 +1,17 @@
+JavaFX;
+Project simulate of PhoneBook actions (create, read, delete, update);
+
+-interface DataProcess has two methods save and load;
+-class DataProcessFactory depending of type DataProcess produce new processes, such as:
+     new DataStreamDataProcess();
+     new ObjectStreamDataProcess();
+     new PropertiesDataProcess();
+     new JSONDataProcess();
+     new XMLSAXDataProcess();
+
+-all processes implements DataProcess, but by it`s oun logic;
+-class HelloController:
+    *injected stack of ui_elements;
+    *logic implemented for each element(buttons, textFields, listView);
+-class InformationList implements Serializable - kind of model;
+-class InformValidator is response to validate data of InformationList;

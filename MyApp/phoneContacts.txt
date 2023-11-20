@@ -1,0 +1,7 @@
+#contacts from phone book
+#Tue Feb 07 00:13:53 EET 2023
+length=2
+name0=qqq
+name1=ddd
+phone0=111
+phone1=222
