@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="690.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.gridpaneslidedbackground.Controller">
+   <children>
+      <AnchorPane layoutX="41.0" layoutY="23.0" prefHeight="41.0" prefWidth="690.0" style="-fx-background-color: #34b9f2;" AnchorPane.bottomAnchor="409.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fx:id="drawerImage" fitHeight="30.0" fitWidth="33.0" layoutX="13.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@baseline_menu_black_24dp.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="pane1" layoutX="22.0" layoutY="41.0" prefHeight="150.0" prefWidth="690.0" AnchorPane.bottomAnchor="259.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="41.0" />
+      <AnchorPane fx:id="pane2" layoutX="10.0" layoutY="51.0" prefHeight="150.0" prefWidth="690.0" AnchorPane.bottomAnchor="259.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="41.0" />
+      <AnchorPane fx:id="pane3" layoutX="10.0" layoutY="51.0" prefHeight="150.0" prefWidth="690.0" AnchorPane.bottomAnchor="259.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="41.0" />
+      <AnchorPane fx:id="pane4" layoutX="10.0" layoutY="51.0" prefHeight="150.0" prefWidth="690.0" AnchorPane.bottomAnchor="259.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="41.0" />
+      <GridPane layoutX="152.0" layoutY="191.0" prefHeight="259.0" prefWidth="538.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="152.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="191.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <JFXButton prefHeight="108.0" prefWidth="230.0" style="-fx-background-color: #4bb4ff;" text="Context 1">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="cont2" prefHeight="108.0" prefWidth="230.0" style="-fx-background-color: #4bb4ff;" text="Context 2" GridPane.rowIndex="1">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="cont3" prefHeight="108.0" prefWidth="230.0" style="-fx-background-color: #4bb4ff;" text="Context 3" GridPane.rowIndex="2">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="cont7" layoutX="10.0" layoutY="110.0" prefHeight="108.0" prefWidth="230.0" style="-fx-background-color: #4bb4ff;" text="Context 7" GridPane.columnIndex="2">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="cont1" layoutX="470.0" layoutY="10.0" prefHeight="108.0" prefWidth="230.0" style="-fx-background-color: #4bb4ff;" text="Context 1">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="cont9" layoutX="470.0" layoutY="10.0" prefHeight="108.0" prefWidth="230.0" style="-fx-background-color: #4bb4ff;" text="Context 9" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="cont8" layoutX="470.0" layoutY="110.0" prefHeight="108.0" prefWidth="230.0" style="-fx-background-color: #4bb4ff;" text="Context 8" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="cont4" layoutX="470.0" layoutY="110.0" prefHeight="109.0" prefWidth="179.0" style="-fx-background-color: green;" text="Context 4" GridPane.columnIndex="1">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="cont5" layoutX="10.0" layoutY="10.0" prefHeight="108.0" prefWidth="230.0" style="-fx-background-color: green;" text="Context 5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="cont6" layoutX="10.0" layoutY="10.0" prefHeight="108.0" prefWidth="230.0" style="-fx-background-color: green;" text="Context 6" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </GridPane>
+      <AnchorPane fx:id="opacityPane" layoutX="-25.0" layoutY="206.0" opacity="0.54" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #000;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <AnchorPane fx:id="drawerPane" layoutY="190.0" prefHeight="259.0" prefWidth="152.0" style="-fx-background-color: #ffff;">
+               <children>
+                  <GridPane layoutX="12.0" prefHeight="259.0" prefWidth="152.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0">
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <JFXButton alignment="CENTER" prefHeight="29.0" prefWidth="152.0" text="Button 1" textFill="#210fc5">
+                           <font>
+                              <Font name="System Bold Italic" size="13.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="29.0" prefWidth="152.0" text="Button 2" textFill="#210fc5" GridPane.rowIndex="1">
+                           <font>
+                              <Font name="System Bold Italic" size="13.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="29.0" prefWidth="152.0" text="Button 3" textFill="#210fc5" GridPane.rowIndex="2">
+                           <font>
+                              <Font name="System Bold Italic" size="13.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton alignment="CENTER" layoutX="10.0" layoutY="68.0" prefHeight="29.0" prefWidth="152.0" text="Button 4" textFill="#210fc5" GridPane.rowIndex="3">
+                           <font>
+                              <Font name="System Bold Italic" size="13.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton alignment="CENTER" layoutX="10.0" layoutY="97.0" prefHeight="29.0" prefWidth="152.0" text="Button 5" textFill="#210fc5" GridPane.rowIndex="4">
+                           <font>
+                              <Font name="System Bold Italic" size="13.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton alignment="CENTER" layoutX="10.0" layoutY="126.0" prefHeight="29.0" prefWidth="152.0" text="Button 6" textFill="#210fc5" GridPane.rowIndex="5">
+                           <font>
+                              <Font name="System Bold Italic" size="13.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton alignment="CENTER" layoutX="10.0" layoutY="155.0" prefHeight="29.0" prefWidth="152.0" text="Button 7" textFill="#210fc5" GridPane.rowIndex="6">
+                           <font>
+                              <Font name="System Bold Italic" size="13.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton alignment="CENTER" layoutX="10.0" layoutY="184.0" prefHeight="29.0" prefWidth="152.0" text="Button 8" textFill="#210fc5" GridPane.rowIndex="7">
+                           <font>
+                              <Font name="System Bold Italic" size="13.0" />
+                           </font>
+                        </JFXButton>
+                        <JFXButton alignment="CENTER" layoutX="10.0" layoutY="213.0" prefHeight="29.0" prefWidth="152.0" text="Button 9" textFill="#210fc5" GridPane.rowIndex="8">
+                           <font>
+                              <Font name="System Bold Italic" size="13.0" />
+                           </font>
+                        </JFXButton>
+                     </children>
+                  </GridPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
