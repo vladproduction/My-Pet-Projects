@@ -1,0 +1,2 @@
+JavaFX calculator;
+simple example (+, -, *, /);
