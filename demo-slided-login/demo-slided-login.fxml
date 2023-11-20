@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demoslidedlogin.HelloController">
+   <children>
+      <Pane fx:id="pane1" layoutX="38.0" layoutY="58.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Pane fx:id="pane2" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Pane fx:id="pane3" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Pane fx:id="pane4" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      <Pane fx:id="pane5" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Pane layoutX="567.0" layoutY="68.0" prefHeight="293.0" prefWidth="285.0" style="-fx-background-color: white; -fx-background-radius: 50px;">
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color red="0.34117648005485535" green="0.32549020648002625" blue="0.729411780834198" />
+                     </color>
+                  </DropShadow>
+               </effect>
+               <children>
+                  <TextField layoutX="70.0" layoutY="97.0" prefHeight="25.0" prefWidth="145.0" promptText="UERNAME" style="-fx-background-radius: 50px;">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <font>
+                        <Font name="Book Antiqua Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <PasswordField layoutX="70.0" layoutY="171.0" prefHeight="25.0" prefWidth="145.0" promptText="PASSWORD" style="-fx-background-radius: 50px;">
+                     <font>
+                        <Font name="Book Antiqua Bold" size="12.0" />
+                     </font>
+                  </PasswordField>
+                  <TextField layoutX="70.0" layoutY="134.0" prefHeight="25.0" prefWidth="145.0" promptText="EMAIL" style="-fx-background-radius: 50px;">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                     <font>
+                        <Font name="Book Antiqua Bold" size="12.0" />
+                     </font>
+                  </TextField>
+                  <Button layoutX="18.0" layoutY="208.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="119.0" style="-fx-background-radius: 30px;" text="Sign in" textFill="#5753ba">
+                     <font>
+                        <Font name="Book Antiqua Bold" size="14.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="156.0" layoutY="208.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="119.0" style="-fx-background-radius: 30px;" text="Register" textFill="#5753ba">
+                     <font>
+                        <Font name="Book Antiqua Bold" size="14.0" />
+                     </font>
+                  </Button>
+                  <Separator layoutX="27.0" layoutY="236.0" prefHeight="13.0" prefWidth="245.0" />
+                  <JFXButton layoutX="77.0" layoutY="257.0" onAction="#onOkeyBtnAction" prefHeight="13.0" prefWidth="145.0" style="-fx-background-color: #5753ba; -fx-background-radius: 50px;" text="Forgot password" textFill="WHITE" underline="true">
+                     <font>
+                        <Font name="Book Antiqua Bold" size="11.0" />
+                     </font>
+                  </JFXButton>
+               </children>
+            </Pane>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
