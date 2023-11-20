@@ -1,0 +1,19 @@
+Calculator example;
+JavaFX;
+
+The root of the scene graph is a BorderPane, which lays out nodes in 5 zones: top, bottom,
+left, right, center (similar to a Swing's JPanel in BorderLayout). The top zone contains a
+display TextField. The center zone contains a GridPane (similar to a Swing's JPanel in GridLayout)
+of 4x4 Buttons.
+In the GridPane, we arrange the Button to fill the full width by setting column constraints
+and Button's max-size:
+
+for (int i = 0; i < numCols; ++i) {
+   columns[i] = new ColumnConstraints();
+   columns[i].setHgrow(Priority.ALWAYS) ;  // Allow column to grow
+   columns[i].setFillWidth(true);  // Ask nodes to fill space for column
+   ......
+}
+......
+btns[i].setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);  // full-width
+Alternatively, can use an intermediate HBox Layout to arrange the Buttons; or use CSS styles.
