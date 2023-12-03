@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #67d7e9;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.moviecatalogapp.RegistrationEnterController">
+   <children>
+      <Label layoutX="127.0" layoutY="14.0" text="Movie Catalog" textFill="#aeaeae">
+         <font>
+            <Font name="System Bold Italic" size="51.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Label>
+      <Label layoutX="56.0" layoutY="131.0" text="Login" textFill="#484848">
+         <font>
+            <Font name="System Italic" size="31.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Label>
+      <Label layoutX="56.0" layoutY="177.0" text="Password" textFill="#484848">
+         <font>
+            <Font name="System Italic" size="31.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Label>
+      <TextField fx:id="LoginTF" layoutX="206.0" layoutY="141.0" prefHeight="25.0" prefWidth="183.0" />
+      <JFXButton fx:id="RegistrationBtn" layoutX="127.0" layoutY="262.0" onAction="#onRegistrationAction" text="Registration">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </JFXButton>
+      <JFXButton fx:id="EnterBtn" layoutX="358.0" layoutY="262.0" onAction="#onEnterAction" text="Enter">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+      </JFXButton>
+      <JFXToggleButton fx:id="AsAdminTogBtn" layoutX="433.0" layoutY="125.0" onAction="#onAsAdminAction" text="As Admin" />
+      <PasswordField fx:id="PassPF" layoutX="206.0" layoutY="187.0" prefHeight="25.0" prefWidth="183.0" />
+   </children>
+</AnchorPane>

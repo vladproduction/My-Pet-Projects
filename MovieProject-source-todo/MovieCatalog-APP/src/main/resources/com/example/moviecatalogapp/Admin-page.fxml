@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTreeTableView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="750.0" style="-fx-background-color: #67d7e9;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.moviecatalogapp.AdminPageController">
+   <children>
+      <Label layoutX="294.0" layoutY="2.0" prefHeight="46.0" prefWidth="198.0" text="Movie Catalog" textFill="#aeaeae">
+         <font>
+            <Font name="System Bold Italic" size="29.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Label>
+      <Label layoutX="14.0" layoutY="14.0" text="Administrator:" textFill="#484848" underline="true">
+         <font>
+            <Font name="System Italic" size="14.0" />
+         </font>
+         <effect>
+            <DropShadow />
+         </effect>
+      </Label>
+      <Label fx:id="AdminLabel" layoutX="113.0" layoutY="16.0" prefHeight="17.0" prefWidth="129.0" underline="true" />
+      <JFXTreeTableView fx:id="movieCatalogTTV" layoutX="248.0" layoutY="47.0" prefHeight="491.0" prefWidth="487.0">
+         <columns>
+            <TreeTableColumn prefWidth="120.00001525878906" text="TITLE" />
+            <TreeTableColumn prefWidth="76.0" text="COUNTRY" />
+            <TreeTableColumn prefWidth="38.66668701171875" text="YEAR" />
+            <TreeTableColumn prefWidth="115.33328247070312" text="GENRE" />
+            <TreeTableColumn prefWidth="81.3333740234375" text="CATEGORY" />
+            <TreeTableColumn prefWidth="57.33331298828125" text="PRICE" />
+         </columns>
+      </JFXTreeTableView>
+      <HBox layoutX="14.0" layoutY="47.0" prefHeight="50.0" prefWidth="217.0">
+         <children>
+            <JFXButton fx:id="addButton" onAction="#addAction" prefHeight="50.0" prefWidth="57.0" style="-fx-background-color: #29c555;" text="ADD" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="10.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="deleteButton" layoutX="10.0" layoutY="10.0" onAction="#deleteAction" prefHeight="50.0" prefWidth="57.0" style="-fx-background-color: #d21616;" text="DELETE" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="10.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="updateButton" layoutX="67.0" layoutY="10.0" onAction="#updateAction" prefHeight="50.0" prefWidth="57.0" style="-fx-background-color: #579add;" text="UPDATE" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="10.0" />
+               </font>
+            </JFXButton>
+            <JFXButton fx:id="clearButton" layoutX="125.0" layoutY="10.0" onAction="#clearAction" prefHeight="50.0" prefWidth="57.0" style="-fx-background-color: #a438d2;" text="CLEAR" textFill="WHITE">
+               <font>
+                  <Font name="System Bold" size="10.0" />
+               </font>
+            </JFXButton>
+         </children>
+      </HBox>
+      <AnchorPane layoutX="14.0" layoutY="114.0" prefHeight="194.0" prefWidth="217.0" style="-fx-border-color: #a1a1a1;">
+         <children>
+            <Label alignment="CENTER" layoutX="54.0" layoutY="4.0" prefHeight="20.0" prefWidth="109.0" text="MANAGEMANT" textFill="#aeaeaecc">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Label>
+            <GridPane layoutX="12.0" layoutY="57.0" prefHeight="186.0" prefWidth="195.0" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="32.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <TextField fx:id="countryTF" promptText="COUNTRY" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="System Italic" size="11.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="yearTF" layoutX="10.0" layoutY="21.0" promptText="YEAR" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="System Italic" size="11.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="genreTF" layoutX="10.0" layoutY="68.0" promptText="GENRE" GridPane.rowIndex="3">
+                     <font>
+                        <Font name="System Italic" size="11.0" />
+                     </font>
+                  </TextField>
+                  <JFXComboBox fx:id="categoryCombo" prefHeight="25.0" prefWidth="198.0" promptText="CATEGORY" GridPane.rowIndex="4" />
+                  <TextField fx:id="titleTF" promptText="TITLE">
+                     <font>
+                        <Font name="System Italic" size="11.0" />
+                     </font>
+                  </TextField>
+                  <TextField fx:id="priceTF" promptText="PRICE" GridPane.rowIndex="5">
+                     <font>
+                        <Font name="System Italic" size="11.0" />
+                     </font>
+                  </TextField>
+               </children>
+            </GridPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="14.0" layoutY="342.0" prefHeight="194.0" prefWidth="217.0" style="-fx-border-color: #a1a1a1;">
+         <children>
+            <GridPane layoutX="9.0" layoutY="60.0" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="11.0" AnchorPane.topAnchor="32.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="92.3333740234375" minWidth="10.0" prefWidth="57.6666259765625" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="142.33331298828125" minWidth="10.0" prefWidth="135.00004069010416" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <Label alignment="CENTER" prefHeight="17.0" prefWidth="57.0" text="YEAR" textFill="#8b8b8b" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="System Italic" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="10.0" layoutY="21.0" prefHeight="17.0" prefWidth="57.0" text="GENRE" textFill="#8b8b8b" GridPane.rowIndex="3">
+                     <font>
+                        <Font name="System Italic" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="10.0" layoutY="67.0" prefHeight="17.0" prefWidth="57.0" text="CATEGORY" textFill="#8b8b8b" GridPane.rowIndex="4">
+                     <font>
+                        <Font name="System Italic" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="10.0" layoutY="113.0" prefHeight="17.0" prefWidth="57.0" text="PRICE" textFill="#8b8b8b" GridPane.rowIndex="5">
+                     <font>
+                        <Font name="System Italic" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="yearLB" alignment="CENTER" prefHeight="17.0" prefWidth="135.0" text="Label" textFill="#606060" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="genreLB" alignment="CENTER" layoutX="68.0" layoutY="23.0" prefHeight="17.0" prefWidth="135.0" text="Label" textFill="#606060" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="categoryLB" alignment="CENTER" layoutX="68.0" layoutY="70.0" prefHeight="17.0" prefWidth="135.0" text="Label" textFill="#606060" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="priceLB" alignment="CENTER" layoutX="68.0" layoutY="116.0" prefHeight="17.0" prefWidth="135.0" text="Label" textFill="#606060" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="10.0" layoutY="61.0" prefHeight="17.0" prefWidth="57.0" text="TITLE" textFill="#8b8b8b">
+                     <font>
+                        <Font name="System Italic" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label alignment="CENTER" layoutX="10.0" layoutY="61.0" prefHeight="17.0" prefWidth="57.0" text="COUNTRY" textFill="#8b8b8b" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="System Italic" size="11.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="countryLB" alignment="CENTER" layoutX="68.0" layoutY="61.0" prefHeight="17.0" prefWidth="135.0" text="Label" textFill="#606060" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="titleLB" alignment="CENTER" layoutX="68.0" layoutY="61.0" prefHeight="17.0" prefWidth="135.0" text="Label" textFill="#606060" GridPane.columnIndex="1">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </GridPane>
+            <Label alignment="CENTER" layoutX="54.0" layoutY="4.0" prefHeight="20.0" prefWidth="109.0" text="VIEW" textFill="#aeaeaecc">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+               <effect>
+                  <DropShadow />
+               </effect>
+            </Label>
+         </children>
+      </AnchorPane>
+      <TextField fx:id="searchTF" layoutX="518.0" layoutY="12.0" prefHeight="25.0" prefWidth="217.0" promptText="Search" />
+   </children>
+</AnchorPane>
