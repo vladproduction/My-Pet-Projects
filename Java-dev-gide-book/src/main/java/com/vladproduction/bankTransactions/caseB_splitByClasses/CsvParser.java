@@ -1,4 +1,4 @@
-package com.vladproduction.bankTransactions.BsplitByClasses;
+package com.vladproduction.bankTransactions.caseB_splitByClasses;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 public class CsvParser {
     private static final DateTimeFormatter DATE_PATTERN = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 
+    //using stream:
     public List<BankTransaction> loadFromFile(File file) {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             return reader.lines()

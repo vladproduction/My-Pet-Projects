@@ -1,12 +1,20 @@
-package com.vladproduction.bankTransactions.BsplitByClasses;
+package com.vladproduction.bankTransactions.caseD_usingInterface;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public class BankTransaction {
-    private final LocalDate date;
-    private final double amount;
-    private final String description;
+public class BankTransaction{
+
+    private LocalDate date;
+    private double amount;
+    private String description;
+
+    public BankTransaction() {
+
+    }
 
     public BankTransaction(LocalDate date, double amount, String description) {
         this.date = date;

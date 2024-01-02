@@ -1,4 +1,4 @@
-package com.vladproduction.bankTransactions.BsplitByClasses;
+package com.vladproduction.bankTransactions.caseB_splitByClasses;
 
 import java.io.File;
 import java.time.Month;
@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-
 
     public static void main(String[] args) throws Exception {
 

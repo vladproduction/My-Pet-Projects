@@ -1,4 +1,4 @@
-package com.vladproduction.bankTransactions.DusingInterface;
+package com.vladproduction.bankTransactions.caseD_usingInterface;
 
 
 
@@ -10,9 +10,11 @@ import static java.time.Month.JANUARY;
 
 public class BaseBankAnalyzer {
 
-    File file = new File("src/main/resources/transactions.csv");
-    Parser parser = new CsvParserImpl();
-    List<BankTransaction> bankTransactions = parser.loadFromFile(file);
+    File fileCsv = new File("src/main/resources/transactions.csv");
+    File fileJson = new File("src/main/resources/transactions.json");
+    Parser parserCsv = new CsvParserImpl();
+    Parser parserJson = new JsonParserImpl();
+    List<BankTransaction> bankTransactions = parserJson.loadFromFile(fileJson);
     BankProcessor processor = new BankProcessor(bankTransactions);
 
 

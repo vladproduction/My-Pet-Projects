@@ -1,6 +1,4 @@
-package com.vladproduction.bankTransactions.DusingInterface;
-
-
+package com.vladproduction.bankTransactions.caseC_withProcessorClass;
 
 import java.time.Month;
 import java.util.ArrayList;
@@ -21,6 +19,7 @@ public class BankProcessor {
         }
         return total;
     }
+
     public List<BankTransaction> transactionsByMonth(Month month){
         List<BankTransaction> transactionsByMonth = new ArrayList<>();
         for (BankTransaction transaction: transactions) {
@@ -30,6 +29,7 @@ public class BankProcessor {
         }
         return transactionsByMonth;
     }
+
     public double calculateTransactionsAmountByMonth(Month month){
                 double total = 0d;
         for (BankTransaction item: transactions) {

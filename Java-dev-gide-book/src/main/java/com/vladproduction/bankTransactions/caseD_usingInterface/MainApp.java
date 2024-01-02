@@ -1,4 +1,4 @@
-package com.vladproduction.bankTransactions.DusingInterface;
+package com.vladproduction.bankTransactions.caseD_usingInterface;
 
 public class MainApp {
     public static void main(String[] args) {

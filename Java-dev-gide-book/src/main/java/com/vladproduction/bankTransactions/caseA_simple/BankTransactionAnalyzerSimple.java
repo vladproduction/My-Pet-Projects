@@ -1,4 +1,4 @@
-package com.vladproduction.bankTransactions.Asimple;
+package com.vladproduction.bankTransactions.caseA_simple;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

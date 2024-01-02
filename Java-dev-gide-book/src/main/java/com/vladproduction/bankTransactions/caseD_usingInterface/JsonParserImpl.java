@@ -1,16 +1,20 @@
-package com.vladproduction.bankTransactions.DusingInterface;
+package com.vladproduction.bankTransactions.caseD_usingInterface;
 
-import java.io.BufferedReader;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class CsvParserImpl implements Parser {
 
+
+public class JsonParserImpl implements Parser {
+
+    private ObjectMapper mapper = new ObjectMapper();
     private static final DateTimeFormatter DATE_PATTERN = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     @Override
     public BankTransaction lineFromFile(String line) {
@@ -25,10 +29,11 @@ public class CsvParserImpl implements Parser {
 
     @Override
     public List<BankTransaction> loadFromFile(File file) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
-            return reader.lines()
-                    .map(this::lineFromFile)
-                    .collect(Collectors.toList());
+        try {
+
+            List<BankTransaction> bankTransactions =
+                    Collections.singletonList(mapper.readValue(file, BankTransaction.class));
+            return bankTransactions;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

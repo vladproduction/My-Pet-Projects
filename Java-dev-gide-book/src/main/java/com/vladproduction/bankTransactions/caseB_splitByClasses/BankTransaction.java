@@ -1,4 +1,4 @@
-package com.vladproduction.bankTransactions.DusingInterface;
+package com.vladproduction.bankTransactions.caseB_splitByClasses;
 
 import java.time.LocalDate;
 import java.util.Objects;

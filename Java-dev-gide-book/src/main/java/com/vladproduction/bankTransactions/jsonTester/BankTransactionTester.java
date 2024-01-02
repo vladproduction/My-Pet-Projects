@@ -1,20 +1,24 @@
-package com.vladproduction.bankTransactions.CwithProcessor;
+package com.vladproduction.bankTransactions.jsonTester;
 
-import java.time.LocalDate;
 import java.util.Objects;
 
-public class BankTransaction {
-    private final LocalDate date;
-    private final double amount;
-    private final String description;
+public class BankTransactionTester {
 
-    public BankTransaction(LocalDate date, double amount, String description) {
+    private String date;
+    private double amount;
+    private String description;
+
+    public BankTransactionTester() {
+
+    }
+
+    public BankTransactionTester(String date, double amount, String description) {
         this.date = date;
         this.amount = amount;
         this.description = description;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
@@ -41,9 +45,9 @@ public class BankTransaction {
         if(object == null || object.getClass() != object.getClass()){
             return false;
         }
-        BankTransaction that = (BankTransaction) object;
+        BankTransactionTester that = (BankTransactionTester) object;
         return Double.compare(that.amount, amount) == 0 &&
-                date.isEqual(that.date) &&
+                date.equals(that.date) &&
                 description.equals(that.description);
 
     }
