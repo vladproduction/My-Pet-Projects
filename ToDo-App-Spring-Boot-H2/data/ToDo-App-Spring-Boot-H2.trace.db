@@ -1,0 +1,9 @@
+2024-03-11 18:28:00.216387+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "TODO_PLANNER" not found (this database is empty); SQL statement:
+select count(*) from todo_planner itd1_0 [42104-224]
+2024-03-11 18:31:43.226194+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "TODO_PLANNER" not found (this database is empty); SQL statement:
+select count(*) from todo_planner itd1_0 [42104-224]
+2024-03-11 18:32:48.840807+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "TODO_PLANNER" not found (this database is empty); SQL statement:
+select count(*) from todo_planner itd1_0 [42104-224]
