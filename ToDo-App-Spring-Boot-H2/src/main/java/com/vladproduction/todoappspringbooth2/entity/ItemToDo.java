@@ -15,7 +15,7 @@ import java.time.Instant;
 @Table(name = "todo_planner")
 @Getter
 @Setter
-public class ItemToDo {
+public class ItemToDo implements ItemToDoMBean{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
