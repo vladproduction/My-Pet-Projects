@@ -2,7 +2,6 @@ package com.vladproduction.transactionsapp.service;
 
 import com.vladproduction.transactionsapp.dao.AccountDao;
 import com.vladproduction.transactionsapp.model.Account;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;

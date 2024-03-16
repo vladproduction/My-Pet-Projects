@@ -27,18 +27,31 @@ public class RestApiController {
     @Qualifier("platformTransactionManagerBean")
     private AccountService platformTMAccountService;
 
+    @Autowired
+    @Qualifier("transactionTemplateBean")
+    private AccountService templateAccountService;
 
+    ////////////// declarative //////////////
     @PostMapping("/declarative/transfer")
     public ResponseEntity<Void> decTransfer(@RequestBody TransferModel transferModel){
         declarativeAccountService.transfer(transferModel.getFrom(), transferModel.getTo(), transferModel.getAmount());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+
+    ////////////// platform transaction manager //////////////
     @PostMapping("/platform/transfer")
     public ResponseEntity<Void> platTransfer(@RequestBody TransferModel transferModel){
         platformTMAccountService.transfer(transferModel.getFrom(), transferModel.getTo(), transferModel.getAmount());
         return new ResponseEntity<>(HttpStatus.OK);
+    }
 
+
+    ////////////// spring template transaction management //////////////
+    @PostMapping("/template/transfer")
+    public ResponseEntity<Void> tempTransfer(@RequestBody TransferModel transferModel){
+        templateAccountService.transfer(transferModel.getFrom(), transferModel.getTo(), transferModel.getAmount());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

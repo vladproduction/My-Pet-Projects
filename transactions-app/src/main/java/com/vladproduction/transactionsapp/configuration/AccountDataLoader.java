@@ -25,8 +25,10 @@ public class AccountDataLoader implements CommandLineRunner {
         if(accountDao.count() == 0){
             Account account1 = new Account(111, 2000, "John Dow");
             Account account2 = new Account(222, 1000, "Jane Dow");
+            Account account3 = new Account(333, 700, "Jack Dow");
             accountDao.save(account1);
             accountDao.save(account2);
+            accountDao.save(account3);
         }
     }
 }
