@@ -3,11 +3,14 @@
 # Money transferring Spring Boot App (how transaction management work) 
 
 ### Base components:
-* controller
-* service
-* dao
-* model
-* h2
+* controller (restApi, propagation)
+* service (accountService, implementations)
+* dao (accountDao --> JpaRepo)
+* model (account)
+* transfer (transferModel; for transaction)
+* transactional_services (splitting transfer for deposit and withdraw as services)
+* h2 (embedded db to vision transactions action)
+* application.properties (settings for application and h2)
 
 ### Intro:
 * TRANSACTION - number of actions that fail as group, or complete entirely as a group;
@@ -41,4 +44,28 @@ in case of fail (rollback), if all actions is success (commit); single unit of w
   private PlatformTransactionManager transactionManager;)
 * Transaction template (Similar to Spring templates like JdbcTemplate and other available templates)
 
+## ----------------------------actions----------------------------
+#### 1) declarative: public class AccountServiceDecImpl
+- @Transactional annotation for class defines as one unit for transfer method;
+- here we split logic by deposit and withdraw as private methods for transaction;
+
+#### 2) programmatic: public class AccountServicePlatformTMImpl
+- We're injecting PlatformTransactionManager for TransactionStatus;
+- TransactionStatus tracks the state of the transaction and allows methods like commit and rollback;
+- If both withdraw and deposit succeed, this line commits the transaction, making the changes to both accounts permanent;
+- Depending on the complexity of the transaction logic, need to consider advanced transaction management features
+  like isolation levels and propagation behavior;
+- A new instance of TransactionDefinition, which specifies the properties of the transaction 
+  (isolation level, propagation behavior, etc.); DefaultTransactionDefinition is used, which provides the default settings;
+
+#### 3) programmatic: public class AccountServiceTransTemplateImpl
+- We're injecting TransactionTemplate for specific settings in our transaction;
+- transactionTemplate.execute to execute the transfer logic, withdraw and deposit actions in a try-catch block;
+- @Transactional annotation we set for method transfer; allow to set for all class(AccountServiceTransTemplateImpl) as well;
+
+#### 4) programmatic: public class AccountServiceImplPropagation
+- approach is based on splitting our transfer logic on two different services (DepositService and WithdrawService)
+- implemented classes has it`s oun personal propagation behaviours;
+- We`re injecting this services into AccountServiceImplPropagation and set for the class @Transactional
+- so it`s possible now to adjust each part of transaction independently in consider propagation behaviour;
 

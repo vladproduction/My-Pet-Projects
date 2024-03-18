@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
@@ -23,6 +24,7 @@ import java.util.Optional;
  * */
 
 @Service
+//@Transactional
 @Qualifier("transactionTemplateBean")
 public class AccountServiceTransTemplateImpl implements AccountService {
 
@@ -33,8 +35,11 @@ public class AccountServiceTransTemplateImpl implements AccountService {
 
     public AccountServiceTransTemplateImpl(PlatformTransactionManager transactionManager) {
         this.transactionTemplate = new TransactionTemplate(transactionManager);
+        //PROPAGATION_REQUIRES_NEW: Each method call starts a new transaction, even if existing transactions are active.
         this.transactionTemplate.setPropagationBehaviorName("PROPAGATION_REQUIRES_NEW");
-        this.transactionTemplate.setReadOnly(true);
+        //Allow data modification for the transfer operations;
+        // otherwise set true (potentially preventing changes to account balances)
+        this.transactionTemplate.setReadOnly(false);
     }
 
     @Override
@@ -48,23 +53,23 @@ public class AccountServiceTransTemplateImpl implements AccountService {
     }
 
     @Override
+    @Transactional
     public void transfer(Account from, Account to, double amount) {
         //need to have tw steps: 1-withdraw, 2-deposit
         //they are in transactionTemplate.execute
 
         transactionTemplate.execute(new TransactionCallbackWithoutResult() {
             @Override
-            public void doInTransactionWithoutResult(TransactionStatus status) { //todo public???
+            public void doInTransactionWithoutResult(TransactionStatus status) {
                 try{
                     withdraw(from, amount);
                     deposit(to, amount);
-                }catch (NoSuchElementException e){
+                }catch (Exception e){
                     e.printStackTrace();
                     status.setRollbackOnly();
                 }
             }
         });
-
     }
 
     @Override
