@@ -1,0 +1,213 @@
+Context of transaction scenario, Spring will:
+-----------------------
+@BeanA (nested) --> @BeanB (required):
+@BeanA (nested):
+Requires a surrounding transaction to create its own nested transaction.
+@BeanB (required):
+Requires a surrounding transaction to participate in. If no transaction exists, it throws an exception.
+Outcomes (depend on existing transaction):
+Existing Transaction:
+@BeanA Creates Nested Transaction: Within the context of the existing transaction, @BeanA can create its own nested transaction.
+These nested transactions allow for finer-grained control over commit/rollback behavior within the larger transaction.
+@BeanB Participates: Since a surrounding transaction exists (either the original or the one created by @BeanA),
+@BeanB can participate in it.
+No Existing Transaction:
+Exception in @BeanA (likely): Because @BeanA (nested) requires a surrounding transaction to create its nested transaction,
+it will likely throw an exception due to the absence of one (as @BeanA is called first).
+@BeanB Not Reached (due to exception in @BeanA): Since @BeanA likely throws an exception, control won't flow to @BeanB.
+Important Points:
+This scenario can be exception-prone if no existing transaction exists.
+The order of execution matters: @BeanA is called first and needs a surrounding transaction for its nested transaction.
+@BeanB (required) strictly requires a transaction, which might not be available if @BeanA throws an exception.
+Alternatives:
+Consider required on both: If both methods require transactional behavior and you intend for @BeanA to create a nested
+transaction, use required on both @BeanA and @BeanB. This ensures a new transaction is started if none exists.
+Re-evaluate propagation levels:
+If @BeanA doesn't necessarily need a nested transaction, consider supports on @BeanA (participates in existing or runs
+non-transactionally).
+If @BeanA must use nested but @BeanB can handle non-transactional execution in some cases, consider supports on @BeanB
+instead. However, be mindful of data consistency concerns.
+Explicit Transaction Management: If you need more control over transactions, consider managing the transaction explicitly
+using a transaction manager. This allows you to define the transaction boundaries more precisely and start a transaction
+before calling @BeanA to ensure it's available for its nested transaction.
+
+-----------------------
+@BeanA (nested) --> @BeanB (required_new):
+@BeanA (nested):
+Requires a surrounding transaction to create its own nested transaction.
+@BeanB (required_new):
+Forces a new, independent transaction named "Transaction Y" (or a newly generated name) even if a surrounding transaction
+exists (including one potentially created by another method).
+Outcomes:
+Existing Transaction:
+@BeanA Creates Nested Transaction: Within the context of the existing transaction, @BeanA can create its own nested transaction.
+@BeanB Creates Its Own Independent Transaction ("Transaction Y"): Regardless of @BeanA's nested transaction, @BeanB forces
+its own isolated transaction "Transaction Y".
+No Existing Transaction:
+@BeanA Creates New Top-Level Transaction (likely): Due to the absence of a surrounding transaction and @BeanA requiring
+one for its nested transaction, @BeanA likely starts a new top-level transaction.
+@BeanB Creates Its Own Independent Transaction ("Transaction Y"): Within the newly created top-level transaction (or even
+if none exists), @BeanB still creates its own independent transaction "Transaction Y".
+Important Points:
+This scenario prioritizes @BeanB's isolation by creating its own independent transaction "Transaction Y" regardless of
+@BeanA's nesting behavior or the presence of an existing transaction.
+Alternatives:
+Consider if @BeanA actually needs a nested transaction:
+If @BeanA doesn't require a nested transaction and just needs to participate in a transaction, consider required on @BeanA.
+If @BeanA's logic can be refactored to not rely on a nested transaction, this could simplify the scenario.
+Explicit Transaction Management: If managing complex transactional behavior is crucial, consider explicitly managing
+the transaction using a transaction manager. This allows you to define transaction boundaries more precisely and
+potentially start a transaction before calling @BeanA (if needed for its nested transaction).
+
+-----------------------
+@BeanA (nested) --> @BeanB (mandatory):
+@BeanA (nested):
+Requires a surrounding transaction to create its own nested transaction.
+@BeanB (mandatory):
+Requires a surrounding transaction to participate in. If no transaction exists, it throws an exception.
+Outcome (Exception Likely):
+This scenario is prone to exceptions because @BeanA requires a surrounding transaction for its nested transaction,
+while @BeanB also requires a surrounding transaction to participate in (but doesn't necessarily create its own nested one).
+Reasons for Exception:
+Order of Execution: @BeanA is called first and needs a surrounding transaction for its nested transaction.
+Conflicting Requirements: If no existing transaction exists:
+@BeanA might throw an exception due to the lack of a surrounding transaction.
+Even if @BeanA manages to create a nested transaction (potentially starting a new top-level transaction), @BeanB
+wouldn't be able to participate in it because mandatory requires a surrounding transaction at its own level, which might
+not be available (depending on @BeanA's handling of the missing transaction).
+Important Points:
+This scenario can be exception-prone due to the mismatch between @BeanA's need for a surrounding transaction for nesting
+and @BeanB's strict requirement for a surrounding transaction to participate in.
+Alternatives:
+Re-evaluate Propagation Levels:
+If @BeanA doesn't necessarily require a nested transaction, consider required on @BeanA (participates in existing or
+starts a new one).
+If @BeanA must use nested but @BeanB can handle non-transactional execution in some cases, consider supports on @BeanB
+instead (participates in existing or runs non-transactionally). However, be cautious of data consistency concerns.
+Explicit Transaction Management: If managing complex transactional behavior is crucial, consider explicitly managing the
+transaction using a transaction manager. This allows you to define transaction boundaries more precisely and start a
+transaction before calling @BeanA to ensure it's available for its nested transaction.
+
+-----------------------
+@BeanA (nested) --> @BeanB (never):
+@BeanA (nested):
+Requires a surrounding transaction to create its own nested transaction.
+@BeanB (never):
+Never participates in a transaction, regardless of any existing transaction (including a potential nested transaction
+from @BeanA). It executes outside of any transactional context.
+Outcome:
+@BeanA Behavior Depends on Existing Transaction:
+Existing Transaction: If a surrounding transaction exists, @BeanA might create its own nested transaction within that larger
+transaction (depending on how it handles the presence of an existing transaction).
+No Existing Transaction: @BeanA's behavior depends on its implementation. It might throw an exception due to the missing
+surrounding transaction or attempt to create a new top-level transaction (if allowed).
+@BeanB Always Executes Non-Transactionally: Regardless of @BeanA's attempt at nesting or the presence of any transaction,
+@BeanB will always execute outside of any transactional context.
+Important Points:
+There's a fundamental mismatch between @BeanA's attempt at nesting and @BeanB's avoidance of transactions entirely.
+@BeanA's behavior might differ depending on how it handles the absence of a surrounding transaction.
+Alternatives:
+Re-evaluate @BeanA or @BeanB:
+If @BeanA doesn't necessarily require a nested transaction, consider required on @BeanA (participates in existing or
+starts a new one). This allows for simpler transaction management.
+If @BeanB truly doesn't need to be transactional and its logic doesn't modify data accessed by transactional methods,
+never might be suitable.
+Explicit Transaction Management: If managing complex transactional behavior is crucial, consider explicitly managing
+the transaction using a transaction manager. This allows you to define transaction boundaries more precisely and
+potentially start a transaction before calling @BeanA (if needed for its nested transaction).
+
+-----------------------
+@BeanA (nested) --> @BeanB (supported):
+@BeanA (nested):
+Requires a surrounding transaction to create its own nested transaction.
+@BeanB (supported):
+If a surrounding transaction exists, it can participate in that existing transaction (depends on its logic).
+If no surrounding transaction exists, @BeanB runs non-transactionally.
+Outcomes (depend on existing transaction):
+Existing Transaction:
+@BeanA Creates Nested Transaction (likely): Within the context of the existing transaction, @BeanA can create its own
+nested transaction. These nested transactions allow for finer-grained control over commit/rollback behavior within the larger
+transaction.
+@BeanB Participates (potentially): Since a surrounding transaction exists (either the original or the one created by @BeanA),
+@BeanB can potentially participate in it depending on its logic.
+No Existing Transaction:
+@BeanA Behavior Depends on Implementation:
+It might throw an exception due to the missing surrounding transaction needed for its nested transaction.
+It might attempt to create a new top-level transaction (if allowed) to fulfill its nesting requirement.
+@BeanB Executes Non-Transactionally: If @BeanA doesn't create a surrounding transaction (due to an exception or not being
+allowed to start a new one), @BeanB will simply run non-transactionally.
+Important Points:
+The outcome hinges on whether an existing transaction exists.
+@BeanA might throw an exception or attempt to create a new top-level transaction if no surrounding transaction exists.
+@BeanB can potentially participate in a nested transaction created by @BeanA or run non-transactionally if no transaction
+is available.
+Alternatives:
+Consider Consistency Needs: Ensure @BeanA's logic doesn't unintentionally affect data also accessed by transactional
+methods if @BeanA throws an exception due to missing transactions.
+Re-evaluate Propagation Levels:
+If @BeanA doesn't necessarily require a nested transaction, consider required on @BeanA (participates in existing or starts
+a new one) for simpler transaction management.
+If @BeanA must have a nested transaction and @BeanB can handle non-transactional execution, consider supports on @BeanB.
+However, be mindful of potential data consistency issues.
+Explicit Transaction Management: If managing complex transactional behavior is crucial, consider explicitly managing the
+transaction using a transaction manager. This allows you to define transaction boundaries more precisely and potentially
+start a transaction before calling @BeanA to ensure it's available for its nested transaction.
+
+-----------------------
+@BeanA (nested) --> @BeanB (not_supported):
+@BeanA (nested):
+Requires a surrounding transaction to create its own nested transaction.
+@BeanB (not_supported):
+Never participates in a transaction, regardless of any existing transaction (including a potential nested transaction
+from @BeanA). It executes outside of any transactional context.
+Outcome (Exception Likely):
+This scenario is prone to exceptions because @BeanA requires a surrounding transaction, while @BeanB specifically
+avoids transactions entirely.
+Reasons for Exception:
+Order of Execution: @BeanA is called first and needs a surrounding transaction for its nested transaction.
+Conflicting Requirements:
+If no existing transaction exists: @BeanA likely throws an exception due to the lack of a surrounding transaction.
+Even if @BeanA manages to create a nested transaction (potentially starting a new top-level transaction), @BeanB
+wouldn't be able to participate in it because not_supported ensures it avoids any transactional context.
+Important Points:
+There's a fundamental mismatch between @BeanA's need for a surrounding transaction for nesting and @BeanB's avoidance
+of transactions entirely.
+@BeanA's behavior might differ depending on its implementation (throw exception or attempt to create a new top-level transaction).
+Alternatives:
+Re-evaluate @BeanA or @BeanB:
+If @BeanA doesn't necessarily require a nested transaction, consider required on @BeanA (participates in existing or
+starts a new one). This simplifies transaction management.
+If @BeanB's logic truly doesn't require a transaction and its changes are isolated, not_supported might be suitable.
+Explicit Transaction Management: If managing complex transactional behavior is crucial, consider explicitly managing
+the transaction using a transaction manager. This allows you to define transaction boundaries more precisely and
+potentially start a transaction before calling @BeanA (if needed for its nested transaction).
+
+-----------------------
+@BeanA (nested) --> @BeanB (nested):
+@BeanA (nested):
+Requires a surrounding transaction to create its own nested transaction.
+@BeanB (nested):
+Requires a surrounding transaction to create its own nested transaction.
+Outcomes (depend on existing transaction):
+Existing Transaction:
+@BeanA Creates Nested Transaction: Within the context of the existing transaction, @BeanA can create its own nested transaction.
+@BeanB Can Create Its Own Nested Transaction (potentially): Depending on @BeanA's implementation, it might create
+its nested transaction before calling @BeanB. In this case, @BeanB can then potentially create its own nested
+transaction within @BeanA's nested transaction, achieving deeper nesting levels.
+No Existing Transaction:
+Exception Likely: Both @BeanA and @BeanB likely throw exceptions due to the missing surrounding transaction required
+for their nested transactions.
+Important Points:
+Nesting Levels: This scenario allows for potentially deeper nesting of transactions if an existing transaction exists.
+Exception Prone without Existing Transaction: Without a surrounding transaction, both methods will likely fail due to
+their nesting requirements.
+Alternatives:
+Consider Consistency Needs: Ensure both methods' logic doesn't unintentionally affect data also accessed by transactional
+methods if exceptions occur due to missing transactions.
+Re-evaluate Propagation Levels:
+If @BeanA or @BeanB doesn't necessarily require a nested transaction, consider required on them (participates in existing
+or starts a new one).
+If specific nesting behavior is desired, consider explicit transaction management.
+Explicit Transaction Management: If managing complex transactional behavior with precise nesting is crucial, consider
+explicitly managing the transaction using a transaction manager. This allows you to define transaction boundaries more
+precisely and potentially start a transaction before calling @BeanA to ensure it's available for its nested transaction.

@@ -24,7 +24,7 @@ import java.util.Optional;
  * */
 
 @Service
-//@Transactional
+//@Transactional //possible to annotate as transaction for all class
 @Qualifier("transactionTemplateBean")
 public class AccountServiceTransTemplateImpl implements AccountService {
 
@@ -53,7 +53,7 @@ public class AccountServiceTransTemplateImpl implements AccountService {
     }
 
     @Override
-    @Transactional
+    @Transactional //annotated as transaction only for this method (in context of all application)
     public void transfer(Account from, Account to, double amount) {
         //need to have tw steps: 1-withdraw, 2-deposit
         //they are in transactionTemplate.execute

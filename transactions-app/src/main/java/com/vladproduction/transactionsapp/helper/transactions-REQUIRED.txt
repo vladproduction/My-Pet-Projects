@@ -1,0 +1,141 @@
+Context of transaction scenario, Spring will:
+-----------------------
+@BeanA (required) --> @BeanB (required):
+1)Start Transaction X in @BeanA: Since @BeanA is annotated with @Transactional(propagation = Propagation.REQUIRED),
+Spring will initiate a new transaction named "Transaction X" (or whatever name you might have assigned) if there's no ongoing
+transaction.
+2)Propagate Transaction X to @BeanB: Because @BeanB is also annotated with @Transactional(propagation = Propagation.REQUIRED),
+it will participate in the existing transaction started by @BeanA. This means all database operations performed within both
+@BeanA and @BeanB will be part of the same transaction ("Transaction X").
+3)Commit or Rollback Transaction X: The overall fate of "Transaction X" depends on whether both @BeanA and @BeanB execute
+successfully:
+*If both @BeanA and @BeanB complete without exceptions, "Transaction X" will be committed, and all changes made to the
+database will be permanent.
+*If either @BeanA or @BeanB throws an exception, "Transaction X" will be rolled back. This means any database changes made
+by both methods will be undone, ensuring data consistency.
+------------------------
+@BeanA (required) --> @BeanB (required_new):
+@BeanA (required):
+Starts a new transaction named "Transaction X" (or the name you might have assigned) if there's no ongoing transaction.
+Crucially: If a transaction already exists, @BeanA will participate in that existing transaction.
+@BeanB (required_new):
+Regardless of any existing transaction (including "Transaction X" from @BeanA):
+Suspends the current transaction (if any).
+Starts a new, independent transaction named "Transaction Y" (or a newly generated name).
+Essentially, this scenario creates two separate transactions:
+Transaction X: Started by @BeanA (either a new one or participating in an existing one).
+Transaction Y: Started by @BeanB using required_new, independent of "Transaction X".
+Outcomes:
+Changes made by @BeanA:
+If "Transaction X" was newly started by @BeanA, those changes will be committed or rolled back based on the success of @BeanA
+and other methods participating in "Transaction X".
+If "Transaction X" was an existing transaction, the outcome depends on the overall success of that transaction (not just @BeanA).
+Changes made by @BeanB:
+These changes are isolated within the newly started "Transaction Y".
+If @BeanB succeeds, "Transaction Y" will be committed, making its changes permanent.
+If @BeanB throws an exception, "Transaction Y" will be rolled back, undoing its changes.
+Important points:
+required_new is generally used with caution as it can lead to complex transaction management scenarios.
+Changes made by @BeanA and @BeanB won't be rolled back together because they operate in separate transactions.
+Consider using requires_new only when you specifically need to isolate @BeanB's logic from the transaction context of @BeanA.
+Alternative approaches:
+If you want both @BeanA and @BeanB to be part of the same transaction, use @Transactional(propagation = Propagation.REQUIRED)
+on both methods.
+If @BeanA doesn't require a transaction but you want to isolate @BeanB within its own transaction, consider using
+@Transactional(propagation = Propagation.REQUIRES_NEW) on @BeanB only, assuming @BeanA is not already transactional.
+----------------------------
+@BeanA (required) --> @BeanB (mandatory):
+@BeanA (required):
+Starts a new transaction named "Transaction X" (or the name you might have assigned) if there's no ongoing transaction.
+Crucially: If a transaction already exists, @BeanA will participate in that existing transaction.
+@BeanB (mandatory):
+Requires a surrounding transaction.
+If a transaction exists (either "Transaction X" from @BeanA or another one), @BeanB will participate in it.
+However, if there's no existing transaction:
+Unlike required, mandatory throws an exception because @BeanB cannot execute without a transaction.
+Essentially, this scenario enforces mandatory participation in a transaction for @BeanB.
+Outcomes:
+Changes made by @BeanA: Similar to required-required, these changes are part of the overall transaction
+("Transaction X" or an existing one) and will be committed or rolled back based on the success of @BeanA and other
+methods involved.
+@BeanB execution:
+If a transaction exists (from @BeanA or elsewhere), @BeanB will participate and its changes become part of the
+overall transaction outcome.
+If there's no transaction, @BeanA will still potentially start "Transaction X" or participate in an existing one,
+but @BeanB will throw an exception due to the missing transaction context.
+Key points:
+mandatory is stricter than required. It ensures @BeanB can only execute within a transaction.
+Use mandatory cautiously to avoid unexpected exceptions if @BeanA might not always initiate a transaction.
+Consider alternatives like required on both methods if you want them to participate in the same transaction (if one exists).
+----------------------------
+@BeanA (required) --> @BeanB (never):
+@BeanA (required):
+Starts a new transaction named "Transaction X" (or the name you might have assigned) if there's no ongoing transaction.
+Crucially: If a transaction already exists, @BeanA will participate in that existing transaction.
+@BeanB (never):
+Throws an exception if a surrounding transaction exists (including "Transaction X" from @BeanA).
+If there's no transaction, @BeanB can execute non-transactionally.
+Essentially, this scenario prevents @BeanB from ever running within a transaction, even if @BeanA starts one.
+Outcomes:
+Changes made by @BeanA:
+These changes are part of the transaction ("Transaction X" or an existing one) and will be committed or rolled back based
+on the success of @BeanA and other methods involved.
+@BeanB execution:
+If a transaction exists (from @BeanA), @BeanB will throw an exception due to the never propagation level.
+If there's no transaction, @BeanB can be called and execute its logic non-transactionally. Any changes made by @BeanB in
+this case won't be part of any transaction and won't be rolled back even if @BeanA fails.
+Important points:
+never is used very rarely and typically to isolate specific logic that should never be part of a transaction.
+Be cautious with never as it can lead to data consistency issues if @BeanB modifies data that might also be involved in the
+transaction started by @BeanA.
+Consider alternatives like no_supported on @BeanB if you want it to execute non-transactionally but still allow it to
+participate in an existing transaction if one happens to be present.
+----------------------------
+@BeanA (required) --> @BeanB (supported):
+@BeanA (required):
+Requires a surrounding transaction. If none exists, throws an exception.
+This means @BeanA will either start a new transaction or participate in an existing one.
+@BeanB (supported):
+Participates in an existing transaction if one exists.
+Executes non-transactionally otherwise.
+Here's what happens based on the existence of a transaction:
+Transaction exists:
+If a transaction is already ongoing when @BeanA is called, both @BeanA and @BeanB will participate in that existing transaction.
+No transaction exists:
+@BeanA will start a new transaction (fulfilling the "required" part).
+@BeanB will execute non-transactionally (fulfilling the "supported" part). This means any changes made by @BeanB won't be
+rolled back even if @BeanA throws an exception.
+Important points:
+This approach might not be ideal for scenarios where you need strict atomicity (all or nothing) across both methods.
+If @BeanB modifies data also involved in the transaction started by @BeanA, the lack of transaction for @BeanB could lead
+to data consistency issues.
+Alternative approaches for atomicity:
+Use required on both methods (@BeanA and @BeanB) if you want them to participate in the same transaction (either a newly
+started one or an existing one).
+Consider requires_new on @BeanB if you need to isolate @BeanB's logic within a completely new transaction,
+independent of @BeanA.
+----------------------------
+@BeanA (required) --> @BeanB (not_supported):
+@BeanA (required):
+Starts a new transaction named "Transaction X" (or the name you might have assigned) if there's no ongoing transaction.
+Crucially: If a transaction already exists, @BeanA will participate in that existing transaction.
+@BeanB (not_supported):
+Suspends any existing transaction (including "Transaction X" from @BeanA).
+Executes @BeanB non-transactional, meaning any changes it makes to the database won't be part of the transaction.
+Essentially, this scenario creates a separation between the transactional behavior of @BeanA and the non-transactional
+behavior of @BeanB.
+Outcomes:
+Changes made by @BeanA:
+If "Transaction X" was newly started by @BeanA, those changes will be committed or rolled back based on the success
+of @BeanA and other methods participating in "Transaction X".
+If "Transaction X" was an existing transaction, the outcome depends on the overall success of that transaction (not just @BeanA).
+Changes made by @BeanB:
+These changes are entirely independent of any transaction.
+If @BeanB succeeds, its changes are committed to the database.
+If @BeanB throws an exception, its changes aren't rolled back. They might still be reflected in the database,
+potentially leading to data consistency issues.
+Important points:
+Use not_supported cautiously, especially if @BeanB modifies data also involved in the transaction started by @BeanA.
+This separation can cause inconsistencies if @BeanA fails and @BeanB's changes remain unrolled back.
+Consider alternatives like requires_new on @BeanB if you need to isolate its logic within a new transaction but still
+want @BeanA to participate in its own transaction (if any).

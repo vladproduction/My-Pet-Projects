@@ -1,0 +1,171 @@
+Context of transaction scenario, Spring will:
+-----------------------
+@BeanA (not_supported) --> @BeanB (required):
+@BeanA (not_supported):
+Never participates in a transaction, regardless of any existing transaction. It executes outside of any transactional context.
+@BeanB (required):
+Requires a surrounding transaction to participate in. If no transaction exists, it throws an exception.
+Outcome (Exception Likely):
+@BeanA always executes non-transactionally: Any changes it makes are not part of any transaction.
+Exception in @BeanB (likely): Since @BeanB (required) strictly requires a transaction, it will likely throw an exception
+because @BeanA (not_supported) avoids transactions entirely.
+Important Points:
+This scenario is prone to exceptions because @BeanB requires a transaction that @BeanA specifically avoids.
+There's a fundamental mismatch between @BeanA's isolation and @BeanB's dependency on a transaction.
+Alternatives:
+Re-evaluate @BeanA or @BeanB:
+If @BeanA might benefit from a transaction, consider required on @BeanA (participates in existing or starts a new one).
+This allows @BeanB to potentially participate in a transaction.
+If @BeanA must remain non-transactional and @BeanB absolutely requires a transaction, consider removing the transaction
+annotation from @BeanB. However, be cautious of potential data consistency issues if @BeanB modifies data also accessed
+by transactional methods.
+Explicit Transaction Management:
+If you need more control over transactions, consider managing the transaction explicitly using a transaction manager.
+This allows you to define the transaction boundaries more precisely and start a transaction before calling @BeanB.
+
+-----------------------
+@BeanA (not_supported) --> @BeanB (required_new):
+@BeanA (not_supported):
+Never participates in a transaction, regardless of any existing transaction. It executes outside of any transactional context.
+@BeanB (required_new):
+Forces a new, independent transaction named "Transaction Y" (or a newly generated name) even if a surrounding transaction
+exists (including one potentially started by another method).
+Outcome:
+@BeanA always executes non-transactionally: Any changes it makes are not part of any transaction.
+@BeanB always creates its own independent transaction ("Transaction Y") regardless of @BeanA's behavior.
+Important Points:
+This scenario ensures @BeanB operates in its own isolated transaction ("Transaction Y") irrespective of @BeanA's avoidance
+of transactions.
+@BeanA's logic might modify data also accessed by transactional methods, potentially leading to data consistency issues.
+Alternatives:
+Consider data consistency: If @BeanA might modify data accessed by transactional methods, this scenario could lead to
+inconsistencies. Ensure @BeanA's logic doesn't unintentionally affect transactional data.
+Re-evaluate propagation levels:
+If @BeanA should participate in a transaction (to avoid data consistency issues), consider required on @BeanA (participates
+in existing or starts a new one).
+If @BeanA must remain non-transactional but @BeanB doesn't strictly require isolation, consider supports on @BeanB
+(participates in an existing transaction if available).
+Explicit Transaction Management:
+If managing data consistency is crucial, consider explicitly managing the transaction using a transaction manager.
+This allows you to define transaction boundaries precisely and potentially start a transaction before calling @BeanA.
+
+-----------------------
+@BeanA (not_supported) --> @BeanB (mandatory):
+@BeanA (not_supported):
+Never participates in a transaction, regardless of any existing transaction. It executes outside of any transactional context.
+@BeanB (mandatory):
+Requires a surrounding transaction to participate in. If no transaction exists, it throws an exception.
+Outcome (Exception Likely):
+@BeanA always executes non-transactionally: Any changes it makes are not part of any transaction.
+Exception in @BeanB (likely): Since @BeanB (mandatory) strictly requires a transaction, it will likely throw an
+exception because @BeanA (not_supported) avoids transactions entirely.
+Important Points:
+This scenario is exception-prone due to the mismatch between @BeanA's isolation and @BeanB's dependency on a transaction.
+@BeanA specifically avoids transactions, while @BeanB requires one.
+Alternatives:
+Re-evaluate propagation levels:
+If @BeanA might benefit from a transaction, consider required on @BeanA (participates in existing or starts a new one).
+If @BeanA must remain non-transactional, consider alternative approaches for @BeanB:
+Explicit Transaction Management: Manage the transaction explicitly using a transaction manager before calling @BeanB.
+This allows you to start a transaction even though @BeanA avoids it.
+Rethink @BeanB's requirement: If possible, consider modifying @BeanB's logic to not strictly require a transaction.
+However, be cautious of potential data consistency issues if @BeanB modifies data also accessed by transactional methods.
+
+-----------------------
+@BeanA (not_supported) --> @BeanB (never):
+@BeanA (not_supported):
+Never participates in a transaction, regardless of any existing transaction. It executes outside of any transactional context.
+@BeanB (never):
+Never participates in a transaction, regardless of any existing transaction or the outcome of @BeanA. It executes
+outside of any transactional context.
+Outcome:
+Both @BeanA and @BeanB execute non-transactionally: Their actions won't be part of any transaction and won't be subject
+to commit/rollback behavior.
+Important Points:
+This scenario ensures both methods avoid any transactional behavior.
+Alternatives:
+Consider if either method actually requires transactional behavior:
+If @BeanA or @BeanB might benefit from a transaction, re-evaluate their propagation levels. Options include:
+required on @BeanA or @BeanB (participates in existing or starts a new one)
+requires_new on @BeanB (forces its own independent transaction even if @BeanA avoids one)
+Comparison to @BeanA (required) --> @BeanB (never):
+Both scenarios result in non-transactional execution for both methods.
+The difference lies in what happens if a transaction already exists:
+required on @BeanA would attempt to start a new transaction (potentially leading to an exception if not allowed).
+not_supported on @BeanA simply avoids participating in the existing transaction.
+
+-----------------------
+@BeanA (not_supported) --> @BeanB (supported):
+@BeanA (not_supported):
+Never participates in a transaction, regardless of any existing transaction. It executes outside of any transactional context.
+@BeanB (supported):
+If another transaction exists:
+It can participate in that existing transaction (depends on its logic).
+If there's no other transaction:
+@BeanB also executes non-transactionally.
+Outcome:
+@BeanA always executes non-transactionally: Any changes it makes are not part of any transaction.
+@BeanB behavior depends on existing transaction:
+Existing Transaction: If a transaction exists, @BeanB can potentially participate in it (depending on its logic).
+No Existing Transaction: Both @BeanA and @BeanB run non-transactionally.
+Important Points:
+@BeanA avoids transactions entirely, while @BeanB allows participation but doesn't guarantee it.
+@BeanB might or might not participate in a transaction depending on the context.
+Alternatives:
+Consider data consistency: If @BeanA modifies data also accessed by transactional methods, this scenario could lead to
+inconsistencies. Ensure @BeanA's logic doesn't unintentionally affect transactional data.
+Re-evaluate propagation levels:
+If @BeanA might benefit from a transaction (to avoid data consistency issues), consider required on @BeanA (participates
+in existing or starts a new one).
+If @BeanA must remain non-transactional but @BeanB should participate in an existing transaction if available, consider
+supports on @BeanB instead.
+Explicit Transaction Management:
+If managing data consistency is crucial, consider explicitly managing the transaction using a transaction manager.
+This allows you to define transaction boundaries precisely and potentially start a transaction before calling @BeanA.
+
+-----------------------
+@BeanA (not_supported) --> @BeanB (not_supported):
+@BeanA (not_supported):
+Never participates in a transaction, regardless of any existing transaction. It executes outside of any transactional context.
+@BeanB (not_supported):
+Suspends any existing transaction (including one potentially started by another method). It also executes outside of
+any transactional context.
+Outcome:
+Both @BeanA and @BeanB execute non-transactionally: Their actions won't be part of any transaction and won't be subject
+to commit/rollback behavior.
+Important Points:
+This scenario ensures both methods avoid any transactional behavior, even if a surrounding transaction exists.
+Alternatives:
+Consider if either method actually requires transactional behavior:
+If @BeanA or @BeanB might benefit from a transaction:
+Use required on @BeanA or @BeanB (participates in existing or starts a new one).
+Use requires_new on @BeanB (forces its own independent transaction even if @BeanA avoids one).
+Comparison to Other Scenarios:
+This scenario is similar to @BeanA (required) --> @BeanB (never) and @BeanA (supported) --> @BeanB (never) in terms
+of the final outcome (non-transactional execution for both methods).
+The key difference lies in how they handle existing transactions:
+required on @BeanA would attempt to start a new transaction (potentially leading to an exception if not allowed).
+supported on @BeanA or not_supported on @BeanA simply avoid participating in the existing transaction.
+
+-----------------------
+@BeanA (not_supported) --> @BeanB (nested):
+@BeanA (not_supported):
+Never participates in a transaction, regardless of any existing transaction. It executes outside of any transactional context.
+@BeanB (nested):
+Requires a surrounding transaction to create its nested transaction.
+Outcome (Exception Likely):
+@BeanA always executes non-transactionally: Any changes it makes are not part of any transaction.
+Exception in @BeanB (likely): Since @BeanB (nested) requires a surrounding transaction to create its nested transaction,
+it will likely throw an exception because @BeanA (not_supported) avoids transactions entirely.
+Important Points:
+This scenario is prone to exceptions because @BeanB requires a transaction that @BeanA specifically avoids.
+There's a fundamental mismatch between @BeanA's isolation and @BeanB's dependency on a surrounding transaction for nesting.
+Alternatives:
+Re-evaluate @BeanA or @BeanB:
+If @BeanA might benefit from a transaction, consider required on @BeanA (participates in existing or starts a new one).
+This allows @BeanB to potentially participate in a transaction and create its nested transaction within it.
+If @BeanA must remain non-transactional, consider removing the transaction annotation from @BeanB. However, be cautious
+of potential data consistency issues if @BeanB modifies data also accessed by transactional methods.
+Explicit Transaction Management:
+If you need more control over transactions, consider managing the transaction explicitly using a transaction manager.
+This allows you to define the transaction boundaries more precisely and start a transaction before calling @BeanB. You would need to start a transaction before calling @BeanA to ensure it's available for @BeanB.
