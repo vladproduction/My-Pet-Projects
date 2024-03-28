@@ -1,4 +1,4 @@
-package com.vladproduction.transactionsapp.transactional_services;
+package com.vladproduction.transactionsapp.services.propagation_example01;
 
 import com.vladproduction.transactionsapp.dao.AccountDao;
 import com.vladproduction.transactionsapp.model.Account;
@@ -7,17 +7,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.ByteBuffer;
 import java.util.Optional;
 
 /**
  * Created by vladproduction on 17-Mar-24
  */
 @Service
-//@Transactional(propagation = Propagation.REQUIRES_NEW)
-//@Transactional(propagation = Propagation.NEVER) // does not work in transactions scope
-@Transactional(propagation = Propagation.MANDATORY) // always work in transactions scope
-
+@Transactional(propagation = Propagation.REQUIRES_NEW)
+////@Transactional(propagation = Propagation.NEVER) // does not work in transactions scope
+//@Transactional(propagation = Propagation.MANDATORY) // always work in transactions scope
 public class DepositServiceImpl implements DepositService {
 
     @Autowired
@@ -32,7 +30,8 @@ public class DepositServiceImpl implements DepositService {
                     "Error: Deposit amount is invalid." + accountCredit.getAccountNumber() + " " + amount);
         } else {
             accountCredit.setBalance(accountCredit.getBalance() + amount);
-            accountCredit.setLast_operation("Credited".toUpperCase());
+            accountCredit.setLast_operation("Deposit success!\n Balance is: " + accountCredit.getBalance() +
+                    "\n(received amount: " + amount + ")");
         }
     }
 

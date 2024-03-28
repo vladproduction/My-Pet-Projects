@@ -1,4 +1,4 @@
-package com.vladproduction.transactionsapp.transfer;
+package com.vladproduction.transactionsapp.dto;
 
 import com.vladproduction.transactionsapp.model.Account;
 
@@ -13,7 +13,7 @@ public class TransferModel {
     private Account from;
     private Account to;
     private double amount;
-    private int currency_code;
+
 
     public TransferModel(Account from, Account to, double amount) {
         super();
@@ -46,25 +46,22 @@ public class TransferModel {
         this.amount = amount;
     }
 
-    public int getCurrency_code() {
-        return currency_code;
-    }
 
-    public void setCurrency_code(int currency_code) {
-        this.currency_code = currency_code;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TransferModel that = (TransferModel) o;
-        return Double.compare(amount, that.amount) == 0 && currency_code == that.currency_code && Objects.equals(from, that.from) && Objects.equals(to, that.to);
+        return Double.compare(amount, that.amount) == 0 &&
+
+                Objects.equals(from, that.from) &&
+                Objects.equals(to, that.to);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(from, to, amount, currency_code);
+        return Objects.hash(from, to, amount);
     }
 
     @Override
@@ -73,7 +70,6 @@ public class TransferModel {
                 "from=" + from +
                 ", to=" + to +
                 ", amount=" + amount +
-                ", currency_code=" + currency_code +
                 '}';
     }
 }

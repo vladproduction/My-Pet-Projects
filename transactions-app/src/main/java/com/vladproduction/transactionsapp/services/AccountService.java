@@ -1,4 +1,4 @@
-package com.vladproduction.transactionsapp.service;
+package com.vladproduction.transactionsapp.services;
 
 import com.vladproduction.transactionsapp.model.Account;
 

@@ -1,4 +1,4 @@
-package com.vladproduction.transactionsapp.transactional_services;
+package com.vladproduction.transactionsapp.services.propagation_example01;
 
 import com.vladproduction.transactionsapp.dao.AccountDao;
 import com.vladproduction.transactionsapp.model.Account;
@@ -14,8 +14,8 @@ import java.util.Optional;
  */
 
 @Service
-//@Transactional(propagation = Propagation.REQUIRED) //default value is using
-@Transactional(propagation = Propagation.REQUIRES_NEW) //
+@Transactional(propagation = Propagation.REQUIRED)
+//@Transactional(propagation = Propagation.REQUIRES_NEW)
 public class WithdrawServiceImpl implements WithdrawService {
 
     @Autowired
@@ -33,10 +33,9 @@ public class WithdrawServiceImpl implements WithdrawService {
                             + amount + "Available: " + "\n" + accountDebit.getBalance());
         } else {
             accountDebit.setBalance(accountDebit.getBalance() - amount);
-            accountDebit.setLast_operation("Debited".toUpperCase());
+            accountDebit.setLast_operation("Withdrawal success!\n Balance is: " + accountDebit.getBalance() +
+                    "\n(sent amount: " + amount + ")");
         }
-
-
     }
 
     private Optional<Account> getAccount(int id) {

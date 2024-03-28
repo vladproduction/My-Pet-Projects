@@ -1,4 +1,4 @@
-package com.vladproduction.transactionsapp.configuration;
+package com.vladproduction.transactionsapp.dataconfig;
 
 import com.vladproduction.transactionsapp.dao.AccountDao;
 import com.vladproduction.transactionsapp.model.Account;

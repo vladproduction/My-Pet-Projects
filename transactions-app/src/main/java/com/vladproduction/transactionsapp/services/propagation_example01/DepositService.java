@@ -1,4 +1,4 @@
-package com.vladproduction.transactionsapp.transactional_services;
+package com.vladproduction.transactionsapp.services.propagation_example01;
 
 import com.vladproduction.transactionsapp.model.Account;
 

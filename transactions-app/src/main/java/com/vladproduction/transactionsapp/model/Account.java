@@ -79,7 +79,11 @@ public class Account {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Account account = (Account) o;
-        return accountNumber == account.accountNumber && Double.compare(balance, account.balance) == 0 && Objects.equals(id, account.id) && Objects.equals(owner, account.owner) && Objects.equals(last_operation, account.last_operation);
+        return accountNumber == account.accountNumber &&
+                Double.compare(balance, account.balance) == 0 &&
+                Objects.equals(id, account.id) &&
+                Objects.equals(owner, account.owner) &&
+                Objects.equals(last_operation, account.last_operation);
     }
 
     @Override

@@ -1,7 +1,8 @@
-package com.vladproduction.transactionsapp.service;
+package com.vladproduction.transactionsapp.services.programatic.platformtransactionmanager;
 
 import com.vladproduction.transactionsapp.dao.AccountDao;
 import com.vladproduction.transactionsapp.model.Account;
+import com.vladproduction.transactionsapp.services.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -16,14 +17,17 @@ import java.util.Optional;
 /**
  * Created by vladproduction on 15-Mar-24
  */
+
 /**
- * Platform transaction manager approach:
- * programmatic transaction management using directly the transactionManager
+ * PlatformTransactionManager approach:
+ * need to inject PlatformTransactionManager and
+ * programmatically for transactional method 'transfer' using platformTransactionManager;
+ * in try/catch bloc which consist withdraw and deposit invoke commit if consistency otherwise - rollback;
+ *
  * */
 @Service
-//@Transactional
 @Qualifier("platformTransactionManagerBean")
-public class AccountServicePlatformTMImpl implements AccountService {
+public class AccountServicePlatformTransactionManager implements AccountService {
 
     @Autowired
     private AccountDao accountDao;
@@ -42,10 +46,15 @@ public class AccountServicePlatformTMImpl implements AccountService {
     }
 
     @Override
+    public Optional<Account> getAccount(int id) {
+        return accountDao.findById((long)id);
+    }
+
+    @Override
     public void transfer(Account from, Account to, double amount) {
-        //need to have 2 steps as well (withdraw and deposit)
-        //and we commit if all goes fine, otherwise rollback
-        //transaction manager responsible for those operations
+        /**need to have 2 steps (withdraw and deposit)
+        and we commit if all goes fine, otherwise rollback
+        transaction manager responsible for those operations*/
 
         TransactionDefinition transactionDefinition = new DefaultTransactionDefinition();
         TransactionStatus transactionStatus = platformTransactionManager.getTransaction(transactionDefinition);
@@ -73,9 +82,9 @@ public class AccountServicePlatformTMImpl implements AccountService {
                             + amount + "Available: " + "\n" + accountDebit.getBalance());
         }else {
             accountDebit.setBalance(accountDebit.getBalance() - amount);
-            accountDebit.setLast_operation("debited".toUpperCase());
+            accountDebit.setLast_operation("Withdrawal success!\n Balance is: " + accountDebit.getBalance() +
+                    "\n(sent amount: " + amount + ")");
         }
-
     }
 
     private void deposit(Account to, double amount) {
@@ -84,12 +93,9 @@ public class AccountServicePlatformTMImpl implements AccountService {
         if(amount < 0) throw new RuntimeException("Error: Deposit amount is invalid." + accountCredit.getAccountNumber() + " " + amount);
         else {
             accountCredit.setBalance(accountCredit.getBalance() + amount);
-            accountCredit.setLast_operation("credited".toUpperCase());
+            accountCredit.setLast_operation("Deposit success!\n Balance is: " + accountCredit.getBalance() +
+                    "\n(received amount: " + amount + ")");
         }
     }
 
-    @Override
-    public Optional<Account> getAccount(int id) {
-        return accountDao.findById((long)id);
-    }
 }

@@ -1,0 +1,2 @@
+Isolation Levels link:
+https://www.cockroachlabs.com/blog/sql-isolation-levels-explained/

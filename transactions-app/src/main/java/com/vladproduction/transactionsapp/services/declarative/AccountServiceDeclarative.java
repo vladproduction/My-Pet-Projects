@@ -1,7 +1,8 @@
-package com.vladproduction.transactionsapp.service;
+package com.vladproduction.transactionsapp.services.declarative;
 
 import com.vladproduction.transactionsapp.dao.AccountDao;
 import com.vladproduction.transactionsapp.model.Account;
+import com.vladproduction.transactionsapp.services.AccountService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,6 +14,7 @@ import java.util.Optional;
 /**
  * Created by vladproduction on 15-Mar-24
  */
+
 /**
  * Declarative approach:
  * separate transaction logic from business logic
@@ -21,7 +23,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @Qualifier("declarativeBean")
-public class AccountServiceDecImpl implements AccountService {
+public class AccountServiceDeclarative implements AccountService {
 
     @Autowired
     private AccountDao accountDao;
@@ -37,30 +39,31 @@ public class AccountServiceDecImpl implements AccountService {
     }
 
     @Override
-    public void transfer(Account from, Account to, double amount) {
-        //have to create two methods (2 steps for transaction: 1-withdraw; 2-deposit)
-        withdraw(from, amount);
-        deposit(to, amount);
+    public Optional<Account> getAccount(int id) {
+        return accountDao.findById((long) id);
     }
 
     @Override
-    public Optional<Account> getAccount(int id) {
-        return accountDao.findById((long) id);
+    public void transfer(Account from, Account to, double amount) {
+        //have to create two private methods (2 steps for transaction: 1-withdraw; 2-deposit)
+        withdraw(from, amount);
+        deposit(to, amount);
     }
 
     @SuppressWarnings("from account: withdraw")
     private void withdraw(Account from, double amount) {
         Account accountDebit = getAccount(from.getId().intValue()).get();
-        if(amount < 0){
+        if(amount < 0){ // error in case amount for sending is negative
             throw new RuntimeException("Error! Withdraw invalid for account: " + accountDebit.getAccountNumber()
                     + ". Owner name: " + accountDebit.getOwner());
-        } else if (amount > accountDebit.getBalance()) {
+        } else if (amount > accountDebit.getBalance()) { // error in case amount for sending is more than available balance
             throw new RuntimeException("Error! Insufficient funds.\n Account:  " + accountDebit.getAccountNumber()
                     + ". Requested: " + amount + "Balance is: " + accountDebit.getBalance());
         } else {
 
             accountDebit.setBalance(accountDebit.getBalance() - amount);
-            accountDebit.setLast_operation("Withdrawal success!\n Balance is: " + accountDebit.getBalance());
+            accountDebit.setLast_operation("Withdrawal success!\n Balance is: " + accountDebit.getBalance() +
+                    "\n(sent amount: " + amount + ")");
         }
     }
 
@@ -72,7 +75,8 @@ public class AccountServiceDecImpl implements AccountService {
             + amount);
         } else {
             accountCredit.setBalance(accountCredit.getBalance() + amount);
-            accountCredit.setLast_operation("Deposit success!\n Balance is: " + accountCredit.getBalance());
+            accountCredit.setLast_operation("Deposit success!\n Balance is: " + accountCredit.getBalance() +
+                    "\n(received amount: " + amount + ")");
         }
     }
 }
