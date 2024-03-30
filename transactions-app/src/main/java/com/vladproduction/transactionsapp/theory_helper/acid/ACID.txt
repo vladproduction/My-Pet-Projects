@@ -1,0 +1,39 @@
+-#- ACID is a concept typically associated with database management systems (DBMS) to ensure data
+    integrity during transactions.
+
+ACID Properties:
+
+-Atomicity:
+An entire transaction is treated as a single unit. Either all operations succeed (commit), or none do (rollback).
+
+-Consistency:
+Ensures the data transitions from one valid state to another, adhering to pre-defined business rules.
+
+-Isolation:
+Transactions from different users or processes are isolated from each other, preventing conflicts or seeing
+partially completed changes.
+
+-Durability:
+Once a transaction commits, the changes are persisted permanently, even in case of system failures.
+-----------------------------------------------------------------------
+
+ACID in Java Applications interact with databases to perform CRUD (Create, Read, Update, Delete) operations.
+
+To achieve ACID guarantees, developers rely on the underlying DBMS features:
+
+-1-JDBC (Java Database Connectivity) API:
+Provides methods for interacting with databases but doesn't enforce ACID itself.
+
+-2-Transactions in DBMS: Developers initiate transactions using the specific database's mechanisms
+(e.g., SQL statements like BEGIN TRANSACTION, COMMIT, and ROLLBACK). The DBMS manages the ACID properties.
+
+Some Frameworks and techniques:
+
+- Object-Relational Mapping (ORM) frameworks like Hibernate or JPA can simplify transaction management by
+    abstracting the underlying database interactions.
+
+- Java Transaction API (JTA): Provides a standardized way to manage transactions across multiple resources,
+    including databases.
+-----------------------------------------------------------------------
+
+https://www.progress.com/tutorials/jdbc/understanding-jta
