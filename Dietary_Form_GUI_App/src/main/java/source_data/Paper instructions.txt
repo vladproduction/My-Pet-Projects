@@ -1,0 +1,17 @@
+Task size: 
+Small
+
+Type of service: 
+Programming
+
+Discipline: 
+GUI
+
+Programming language: 
+Java
+
+Paper instructions: 
+Instruction for the project are on the pdf, there is a commenting and programming guide .Survey result ang GUI example are expected output files .Please use javaproject and not packages.
+
+Comments from Customer
+This task should be completed with well-commented code. Please comment all methods and functions.

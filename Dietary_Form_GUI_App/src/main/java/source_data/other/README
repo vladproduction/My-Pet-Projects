@@ -1,0 +1,19 @@
+1) Submission Requirements (zip file):
+    -for submitting (zip file should be named Project4_N#.zip);
+    For Example: Project3_N00123456.zip;
+    -zip file containing your 3 class files: Project4, FileHandler, CustomJFrame;
+
+2) Design Specification Requirements:
+    -create 3 java files (As outlined in the UML diagram); Project4, FileHandler, CustomJFrame;
+
+    * Project4 --> contain the main method:
+        -were the CustomJFrame will be initialized and displayed;
+
+    * FileHandler --> contain 2 methods:
+        -constructor FileHandler(); //create csv file and create header for csv file;
+        -writeResults(String surveyData); //append surveyData to csv file;
+
+    * CustomJFrame --> contain:
+        -constructor method CustomJFrame(); //initialize all the class variable components, config them, and then
+         add them to the frame using a layout manager;
+        -inner class InnerActionListener; //contain 2 methods: actionPerformed() and clearForm();
