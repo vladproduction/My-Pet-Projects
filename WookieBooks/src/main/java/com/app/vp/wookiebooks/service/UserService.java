@@ -20,28 +20,38 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    //typical CRUD operations for this resource
     //create user
     public User createUser(User user){
-        return userRepository.save(user);
+
+        return userRepository.saveAndFlush(user);
     }
 
     //get user by id
     public Optional<User> getUserById(Long userId){
+
         return userRepository.findById(userId);
     }
 
     //get user by authorPseudonym
-    Optional<User> findByAuthorPseudonym(String authorPseudonym){
-        return userRepository.findByAuthorPseudonym(authorPseudonym);
+    public Optional<User> findUserByAuthorPseudonym(String authorPseudonym){
+        return userRepository.findUserByAuthorPseudonym(authorPseudonym);
     }
 
     //update user
+    public Optional<User> updateAuthorPseudonym(String authorPseudonym, String newPseudonym){
+        Optional<User> optionalUser = userRepository.findUserByAuthorPseudonym(authorPseudonym);
+        if (optionalUser.isPresent()){
+            User user = optionalUser.get();
+            user.setAuthorPseudonym(newPseudonym);
+            return Optional.of(userRepository.saveAndFlush(user));
+        }
+        return Optional.empty();
+    }
     //todo
     //delete user
-    //todo
+
     //un-publish a book (DELETE) - owner of the book could delete it
-    //todo
+
 
 
 }

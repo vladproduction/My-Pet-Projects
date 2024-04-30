@@ -16,8 +16,7 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 
-    //todo
-    //custom methods and queries here...
-    Optional<User> findByAuthorPseudonym(String authorPseudonym);
+    Optional<User> findUserByAuthorPseudonym(String authorPseudonym);
+
 
 }
