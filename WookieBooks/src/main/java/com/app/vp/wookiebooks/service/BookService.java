@@ -8,27 +8,26 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class BookService implements BookServiceInterface{
+public class BookService {
 
     @Autowired
     private BookRepository bookRepository;
 
-    //create book
+    //createBook
     public Book createBook(Book book){
         return bookRepository
                 .saveAndFlush(book);
     }
 
-    //find book by bookId
+    //findBookById
     public Optional<Book> findBookById(Long bookId){
         return bookRepository
                 .findById(bookId);
     }
 
-    //find book by title
+    //findBookByTitle
     public Optional<Book> findBookByTitle(String title){
         return bookRepository
                 .findBookByTitle(title);
     }
-
 }

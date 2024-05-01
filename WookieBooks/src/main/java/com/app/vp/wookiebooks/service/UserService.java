@@ -1,6 +1,5 @@
 package com.app.vp.wookiebooks.service;
 
-import com.app.vp.wookiebooks.exceptions.UserNotFoundException;
 import com.app.vp.wookiebooks.model.User;
 import com.app.vp.wookiebooks.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,30 +15,30 @@ import java.util.Optional;
  *  -Additional business logic specific to User management.
  */
 @Service
-public class UserService implements UserServiceInterface{
+public class UserService {
 
     @Autowired
     private UserRepository userRepository;
 
-    //create user
+    //createUser
     public User createUser(User user){
         return userRepository
                 .saveAndFlush(user);
     }
 
-    //get user by id
+    //getUserById
     public Optional<User> getUserById(Long userId){
         return userRepository
                 .findById(userId);
     }
 
-    //get user by authorPseudonym
+    //findUserByAuthorPseudonym
     public Optional<User> findUserByAuthorPseudonym(String authorPseudonym){
         return userRepository
                 .findUserByAuthorPseudonym(authorPseudonym);
     }
 
-    //update user pseudonym
+    //updateAuthorPseudonym
     public Optional<User> updateAuthorPseudonym(String authorPseudonym, String newPseudonym){
         Optional<User> optionalUser = userRepository.findUserByAuthorPseudonym(authorPseudonym);
         if (optionalUser.isPresent()){
@@ -51,19 +50,6 @@ public class UserService implements UserServiceInterface{
         return Optional.empty();
     }
 
-    //delete user by userId
-    @Override
-    public void deleteUserByUserId(Long userId) throws UserNotFoundException {
-        Optional<User> byId = userRepository.findById(userId);
-        if (byId.isPresent()){
-            User user = byId.get();
-            userRepository
-                    .deleteById(user.getUserId());
-        }
-    }
-
-
-    //todo un-publish a book (DELETE) - owner of the book could delete it
 
 
 }
