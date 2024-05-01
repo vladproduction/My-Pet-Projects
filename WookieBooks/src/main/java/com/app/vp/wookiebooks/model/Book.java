@@ -30,7 +30,7 @@ import java.util.Objects;
                 )
         })
 public class Book {
-    //define variables
+
     @Id
     @SequenceGenerator(
             name = "book_sequence",

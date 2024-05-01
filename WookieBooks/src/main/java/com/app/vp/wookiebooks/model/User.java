@@ -27,7 +27,7 @@ import java.util.Objects;
                 )
         })
 public class User {
-    //define variables
+
     @Id
     @SequenceGenerator(
             name = "user_sequence",
