@@ -3,6 +3,6 @@ package com.app.vp.wookiebooks.exceptions;
 public class UserNotFoundException extends Exception {
 
     public UserNotFoundException() {
-        System.out.println("UserNotFound  by current Id");
+        System.out.println("User Not Found  by current Id");
     }
 }

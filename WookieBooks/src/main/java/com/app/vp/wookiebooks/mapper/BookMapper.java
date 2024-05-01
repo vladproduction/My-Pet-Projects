@@ -1,9 +1,7 @@
 package com.app.vp.wookiebooks.mapper;
 
 import com.app.vp.wookiebooks.dto.BookDto;
-import com.app.vp.wookiebooks.dto.UserDto;
 import com.app.vp.wookiebooks.model.Book;
-import com.app.vp.wookiebooks.model.User;
 
 /**
  * Class presenting conversion model object of Book class to Dto

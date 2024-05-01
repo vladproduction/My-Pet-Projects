@@ -17,18 +17,23 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
+import static org.springframework.http.ResponseEntity.badRequest;
 import static org.springframework.http.ResponseEntity.ok;
 
 /**
  * Spring REST controller handles incoming HTTP requests to RestApiController.
  * It provides endpoints for (postman):
- * -[POST] createUser
- * -[GET] getUserById
- * -[GET] findUserByAuthorPseudonym
- * -[PUT] updateAuthorPseudonym
- * -[DELETE]: deleteByUserId
+ * -[POST] createUser;
+ * -[GET] getUserById;
+ * -[GET] findUserByAuthorPseudonym;
+ * -[PUT] updateAuthorPseudonym;
+ * -[DELETE]: deleteByUserId;
+ * -[POST]: create book;
+ * -[GET]: findBookById;
+ * -[GET]: findBookByTitle;
  * Interacts with the following services:
- * -UserService
+ * -UserService;
+ * -BookService;
  * */
 @RestController
 @RequestMapping("/api/wookie_books")
@@ -38,6 +43,8 @@ public class RestApiController {
     private UserService userService;
     @Autowired
     private BookService bookService;
+
+    //-----------users--------------------
 
     //[POST]: Create User REST API
     @PostMapping("/createUser")
@@ -95,7 +102,7 @@ public class RestApiController {
             ResponseEntity.ok();
     }
 
-    //-------------------------------
+    //-----------books--------------------
 
     //[POST]: create book
     @PostMapping("/createBook")
@@ -114,5 +121,52 @@ public class RestApiController {
         BookDto createdBookDto = BookMapper.mapToBookDto(savedBook);
         return ok(createdBookDto);
     }
+
+    //[GET]: find Book byId
+    @GetMapping("/books/findBookById/{bookId}")
+    public ResponseEntity<Optional<BookDto>> findBookById(
+            @PathVariable Long bookId){
+        Optional<Book> bookOptional = bookService.findBookById(bookId);
+        if(bookOptional.isPresent()){
+            Book book = bookOptional.get();
+            BookDto bookDto = BookMapper.mapToBookDto(book);
+            return ok(Optional.of(bookDto));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    //[GET]: find Book byTitle
+    @GetMapping("/books/findBookByTitle")
+    public ResponseEntity<Optional<BookDto>> findBookByTitle(
+            @RequestParam String title){
+        Optional<Book> bookOptional = bookService.findBookByTitle(title);
+        if(bookOptional.isPresent()){
+            Book book = bookOptional.get();
+            BookDto bookDto = BookMapper.mapToBookDto(book);
+            return ok(Optional.of(bookDto));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+
+
+
+
+
+
+
+
+    //todo endpoints:
+    /**
+     * -update Book
+     * -update Book as owner
+     * -delete Book
+     * -delete Book  as owner
+     * -find all Books
+     * -find all authors
+     * -find all Books by author
+     * -find author by Book title
+     * -find Books by (special parameters: price + join author) - low price(< 10), middle price(>= 10 < 50), high price(>=50)
+     * */
 
 }

@@ -63,11 +63,7 @@ public class UserService implements UserServiceInterface{
     }
 
 
-
-
-    //todo
-    //un-publish a book (DELETE) - owner of the book could delete it
-
+    //todo un-publish a book (DELETE) - owner of the book could delete it
 
 
 }

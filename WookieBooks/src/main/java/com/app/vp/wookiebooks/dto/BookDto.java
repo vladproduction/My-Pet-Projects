@@ -1,6 +1,5 @@
 package com.app.vp.wookiebooks.dto;
 
-import com.app.vp.wookiebooks.model.User;
 import lombok.*;
 
 /**

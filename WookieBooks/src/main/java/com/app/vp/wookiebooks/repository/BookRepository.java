@@ -1,9 +1,10 @@
 package com.app.vp.wookiebooks.repository;
 
 import com.app.vp.wookiebooks.model.Book;
-import com.app.vp.wookiebooks.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 /**
  * This interface extends the `JpaRepository` provided by Spring Data JPA.
@@ -13,4 +14,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
+
+    Optional<Book> findBookByTitle(String title);
 }
