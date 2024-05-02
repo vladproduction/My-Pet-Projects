@@ -27,6 +27,7 @@ import static org.springframework.http.ResponseEntity.ok;
  * -[GET]:      findAllBooks;
  * -[GET]:      findAllBooksByUserId;
  * -[GET]:      findAllBooksByAuthorPseudonym;
+ * -[GET]:      findBooksByPriceLessThan;
  * Interacts with the following services:
  * -UserService;
  * -BookService;
@@ -118,6 +119,18 @@ public class BookController {
         return ResponseEntity.notFound().build();
     }
 
+    //[GET]: findBooksByPriceLessThan
+    @GetMapping("/books/findBooksByPriceLessThan")
+    public ResponseEntity<List<BookDto>> findBooksByPriceLessThan(@RequestParam double price){
+        Optional<List<Book>> optionalBooks = bookService.findBooksByPriceLessThan(price);
+        if(optionalBooks.isPresent()){
+            List<Book> bookList = optionalBooks.get();
+            List<BookDto> bookDtoList = BookMapper.mapToListDtoBooks(bookList);
+            return ok(bookDtoList);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 
 }
 
@@ -129,8 +142,8 @@ public class BookController {
  * -update Book as owner
  * -delete Book  as owner
  * -find Books by (special parameters: price + join author):
- *      low price(< 10),
- *      middle price(>= 10 < 50),
- *      high price(>=50)
+ *
+ *      middle price(>= 22 < 30),
+ *      high price(>=30)
  *
  * */

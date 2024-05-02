@@ -28,11 +28,11 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     List<Book> findBooksByAuthorUserId(Long userId);
 
     //[GET]: findAllBooksByAuthorPseudonym
-    //version-1:
-//    @Query("select b from Book b join User u where b.author.userId = u.userId and u.authorPseudonym = ?1")
-//    List<Book> findBooksByAuthorAuthorPseudonym(String authorPseudonym);
-
-    //version-2:
     @Query("select b from Book b join User u on b.author.userId = u.userId WHERE u.authorPseudonym = :authorPseudonym")
     List<Book> findByAuthorPseudonym(@Param("authorPseudonym") String authorPseudonym);
+
+    //[GET]: findBooksByPriceLessThan
+    @Query("SELECT b FROM Book b WHERE b.price < :price")
+    List<Book> findBooksByPriceLessThan(@Param("price") double price);
+
 }

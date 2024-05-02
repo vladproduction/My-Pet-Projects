@@ -71,4 +71,15 @@ public class BookService {
         return Optional.empty();
     }
 
+    //[GET]: findBooksByPriceLessThan
+    public Optional<List<Book>> findBooksByPriceLessThan(double price) {
+        if(price > 0){
+            List<Book> booksByPriceLessThan = bookRepository.findBooksByPriceLessThan(price);
+            return Optional.of(booksByPriceLessThan);
+        } else{
+            System.err.println("Price is not valid");
+            return Optional.empty();
+        }
+    }
+
 }
