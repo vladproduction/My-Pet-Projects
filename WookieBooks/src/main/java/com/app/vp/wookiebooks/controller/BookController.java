@@ -123,27 +123,42 @@ public class BookController {
     @GetMapping("/books/findBooksByPriceLessThan")
     public ResponseEntity<List<BookDto>> findBooksByPriceLessThan(@RequestParam double price){
         Optional<List<Book>> optionalBooks = bookService.findBooksByPriceLessThan(price);
+        ResponseEntity<List<BookDto>> bookDtoList = getListResponseEntity(optionalBooks);
+        if (bookDtoList != null) return bookDtoList;
+        return ResponseEntity.notFound().build();
+    }
+
+    //[GET]: findBooksByMiddlePrice
+    @GetMapping("/books/findBooksByMiddlePrice")
+    public ResponseEntity<List<BookDto>> findBooksByMiddlePrice(@RequestParam double minPrice,
+                                                                @RequestParam double maxPrice){
+        Optional<List<Book>> optionalBooks = bookService.findBooksByMiddlePrice(minPrice, maxPrice);
+        ResponseEntity<List<BookDto>> bookDtoList = getListResponseEntity(optionalBooks);
+        if (bookDtoList != null) return bookDtoList;
+        return ResponseEntity.notFound().build();
+    }
+
+    /**
+     * Helper getListResponseEntity;
+     * Offer to hide duplicate code;
+     * @param optionalBooks as Optional<List<Book>>.
+     * @return ResponseEntity<List<BookDto>> as OK (in other case 'null').
+     * */
+    private static ResponseEntity<List<BookDto>> getListResponseEntity(Optional<List<Book>> optionalBooks) {
         if(optionalBooks.isPresent()){
             List<Book> bookList = optionalBooks.get();
             List<BookDto> bookDtoList = BookMapper.mapToListDtoBooks(bookList);
             return ok(bookDtoList);
         }
-        return ResponseEntity.notFound().build();
+        return null;
     }
-
 
 }
 
 
 /**
- *
  * -Allows only GET (List/Detail) operations
  * -Make the List resource searchable with query parameters
  * -update Book as owner
  * -delete Book  as owner
- * -find Books by (special parameters: price + join author):
- *
- *      middle price(>= 22 < 30),
- *      high price(>=30)
- *
  * */

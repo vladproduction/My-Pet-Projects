@@ -1,7 +1,6 @@
 package com.app.vp.wookiebooks.repository;
 
 import com.app.vp.wookiebooks.model.Book;
-import com.app.vp.wookiebooks.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -34,5 +33,9 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     //[GET]: findBooksByPriceLessThan
     @Query("SELECT b FROM Book b WHERE b.price < :price")
     List<Book> findBooksByPriceLessThan(@Param("price") double price);
+
+    //[GET]: findBooksByMiddlePrice
+    @Query("SELECT b FROM Book b WHERE b.price >= :minPrice AND b.price < :maxPrice")
+    List<Book> findBooksByMiddlePrice(@Param("minPrice") double minPrice, @Param("maxPrice") double maxPrice);
 
 }

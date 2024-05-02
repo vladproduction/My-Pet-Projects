@@ -82,4 +82,14 @@ public class BookService {
         }
     }
 
+    //[GET]: findBooksByMiddlePrice
+    public Optional<List<Book>> findBooksByMiddlePrice(double minPrice, double maxPrice) {
+        if(minPrice > 0 & maxPrice > minPrice){
+            List<Book> booksByMiddlePrice = bookRepository.findBooksByMiddlePrice(minPrice, maxPrice);
+            return Optional.of(booksByMiddlePrice);
+        } else {
+            System.err.println("Price is not valid");
+            return Optional.empty();
+        }
+    }
 }
