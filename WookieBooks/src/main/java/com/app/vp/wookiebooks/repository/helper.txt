@@ -1,0 +1,18 @@
+#cross join:
+db:
+select * from tbl_book b cross join tbl_user u where b.user_id = u.user_id and u.user_id = 5
+jpa:
+@Query("SELECT b, u FROM Book b CROSS JOIN User u WHERE b.userId = u.userId AND u.userId = :userId")
+List<Tuple> findBookAndUserByUserId(@Param("userId") Long userId);
+
+#inner join:
+db: same as above
+jpa:
+@Query("SELECT b, u FROM Book b INNER JOIN User u ON b.userId = u.userId WHERE u.userId = :userId")
+List<Tuple> findBookAndUserByUserId(@Param("userId") Long userId);
+
+#inner join(if need specific fields from each entity, modify the SELECT clause):
+db:same as above
+jpa:
+@Query("SELECT b.title, u.username FROM Book b INNER JOIN User u ON b.userId = u.userId WHERE u.userId = :userId")
+List<Object[]> findBookTitleAndUsernameByUserId(@Param("userId") Long userId);

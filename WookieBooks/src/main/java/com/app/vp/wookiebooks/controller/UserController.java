@@ -135,5 +135,29 @@ public class UserController {
         return ok(bookDtoList);
     }
 
+    //[PATCH]: updateBookByUser
+    /**
+     * -Implemented an endpoint to update data of the chosen book for current Author by such steps:
+     * 1)have to find user;
+     * 2)have to retrieve all books by user was found;
+     * 3)find book that needs to update;
+     * 4)update book and save in repository;
+     * 5)return is: List<Book> updated (show that book been updated) and convert it as List<BooksDto>;
+     * */
+    @PatchMapping("/user/updateBookByUser/{userId}")
+    public ResponseEntity<List<BookDto>> updateBookByUser(@PathVariable Long userId,
+                                                          @RequestParam Long bookId,
+                                                          @RequestBody BookDto candidate){
+        Book bookCandidate = BookMapper.mapToBook(candidate);
+        List<Book> updatedBooks = userService.updateBookByUser(userId, bookId, bookCandidate);
+        List<BookDto> bookDtoList = BookMapper.mapToListDtoBooks(updatedBooks);
+        if(!bookDtoList.isEmpty()){
+            return ok(bookDtoList);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+
+
 
 }

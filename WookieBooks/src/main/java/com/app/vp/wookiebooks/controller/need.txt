@@ -1,5 +1,6 @@
 
 need to fix:
 -Make the List resource searchable with query parameters
--update Book as owner
 -endpoint to authenticate with the API using username, password and return a JWT
+
+

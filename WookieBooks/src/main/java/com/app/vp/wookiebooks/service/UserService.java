@@ -46,7 +46,7 @@ public class UserService {
                 .findUserByAuthorPseudonym(authorPseudonym);
     }
 
-    //[UPDATE]: updateAuthorPseudonym
+    //[PUT]: updateAuthorPseudonym
     public Optional<User> updateAuthorPseudonym(String authorPseudonym, String newPseudonym){
         Optional<User> optionalUser = userRepository.findUserByAuthorPseudonym(authorPseudonym);
         if (optionalUser.isPresent()){
@@ -108,4 +108,34 @@ public class UserService {
         }
         return remainingBooks;
     }
+
+    //[PATCH]: updateBookByUser
+    public List<Book> updateBookByUser(Long userId, Long bookId, Book candidate) {
+        //find user
+        Optional<User> optionalUser = userRepository.findById(userId);
+        //list with updated book
+        List<Book> updatedBooks = new ArrayList<>();
+        if (optionalUser.isPresent()) {
+            //get user
+            User user = optionalUser.get();
+            // Retrieve all user's books
+            List<Book> userBooks = bookRepository.findBookAndUserByUserId(user.getUserId());
+            // Find the book to be updated (filter by ID)
+            Book bookToUpdate = userBooks.stream()
+                    .filter(book -> book.getBookId().equals(bookId))
+                    .findFirst().orElse(null);
+            if (bookToUpdate != null) {
+                // Update book properties with data from Book candidate
+                // Update properties as needed
+                bookToUpdate.setTitle(candidate.getTitle());
+                bookToUpdate.setDescription(candidate.getDescription());
+                bookToUpdate.setCoverImage(candidate.getCoverImage());
+                bookToUpdate.setPrice(candidate.getPrice());
+                bookRepository.save(bookToUpdate); // Save the updated book
+                updatedBooks.add(bookToUpdate);
+            }
+        }
+        return updatedBooks;
+    }
+
 }
