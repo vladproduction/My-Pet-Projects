@@ -20,6 +20,7 @@ import static org.springframework.http.ResponseEntity.ok;
 
 /**
  * Spring REST controller handles incoming HTTP requests to RestApiController.
+ * -Allows only GET (List/Detail) operations
  * It provides endpoints for Book (postman):
  * -[POST]:     createBook;
  * -[GET]:      findBookById;
@@ -28,6 +29,8 @@ import static org.springframework.http.ResponseEntity.ok;
  * -[GET]:      findAllBooksByUserId;
  * -[GET]:      findAllBooksByAuthorPseudonym;
  * -[GET]:      findBooksByPriceLessThan;
+ * -[GET]:      findBooksByMiddlePrice;
+ * -[GET]:      findBooksByHighPrice;
  * Interacts with the following services:
  * -UserService;
  * -BookService;
@@ -138,11 +141,22 @@ public class BookController {
         return ResponseEntity.notFound().build();
     }
 
+    //[GET]: findBooksByHighPrice
+    @GetMapping("/books/findBooksByHighPrice")
+    public ResponseEntity<List<BookDto>> findBooksByHighPrice(@RequestParam double minPrice){
+        Optional<List<Book>> optionalBooks = bookService.findBooksByHighPrice(minPrice);
+        ResponseEntity<List<BookDto>> bookDtoList = getListResponseEntity(optionalBooks);
+        if (bookDtoList != null) return bookDtoList;
+        return ResponseEntity.notFound().build();
+    }
+
+
+
     /**
      * Helper getListResponseEntity;
      * Offer to hide duplicate code;
      * @param optionalBooks as Optional<List<Book>>.
-     * @return ResponseEntity<List<BookDto>> as OK (in other case 'null').
+     * @return ResponseEntity<List<BookDto>> as OK. (in other case 'null').
      * */
     private static ResponseEntity<List<BookDto>> getListResponseEntity(Optional<List<Book>> optionalBooks) {
         if(optionalBooks.isPresent()){
@@ -155,10 +169,3 @@ public class BookController {
 
 }
 
-
-/**
- * -Allows only GET (List/Detail) operations
- * -Make the List resource searchable with query parameters
- * -update Book as owner
- * -delete Book  as owner
- * */

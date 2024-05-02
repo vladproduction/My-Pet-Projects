@@ -1,0 +1,5 @@
+
+need to fix:
+-Make the List resource searchable with query parameters
+-update Book as owner
+-delete Book  as owner

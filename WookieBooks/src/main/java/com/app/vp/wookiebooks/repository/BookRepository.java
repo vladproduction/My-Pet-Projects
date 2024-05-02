@@ -38,4 +38,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query("SELECT b FROM Book b WHERE b.price >= :minPrice AND b.price < :maxPrice")
     List<Book> findBooksByMiddlePrice(@Param("minPrice") double minPrice, @Param("maxPrice") double maxPrice);
 
+    //[GET]: findBooksByHighPrice
+    @Query("SELECT b FROM Book b WHERE b.price >= :minPrice")
+    List<Book> findBooksByHighPrice(@Param("minPrice") double minPrice);
+
 }
