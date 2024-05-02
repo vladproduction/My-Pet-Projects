@@ -84,6 +84,10 @@ public class BookController {
 
 
 /**
+ *
+ * -Allows only GET (List/Detail) operations
+ * -Make the List resource searchable with query parameters
+ *
  * -update Book as owner
  * -delete Book  as owner
  * -find all Books
@@ -92,4 +96,5 @@ public class BookController {
  *      low price(< 10),
  *      middle price(>= 10 < 50),
  *      high price(>=50)
+ *
  * */

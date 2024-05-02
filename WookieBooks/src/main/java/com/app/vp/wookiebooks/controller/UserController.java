@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.http.ResponseEntity.ok;
@@ -15,10 +16,13 @@ import static org.springframework.http.ResponseEntity.ok;
 /**
  * Spring REST controller handles incoming HTTP requests to RestApiController.
  * It provides endpoints for User (postman):
- * +[POST] createUser;
- * +[GET] getUserById;
- * +[GET] findUserByAuthorPseudonym;
- * +[PUT] updateAuthorPseudonym;
+ * +[POST]      createUser;
+ * +[GET]       getUserById;
+ * +[GET]       findUserByAuthorPseudonym;
+ * +[PUT]       updateAuthorPseudonym;
+ * +[DELETE]:   deleteUserById;
+ * +[GET]:      findAllUsers
+ * +[GET]:      findUserByBookTitle
  * Interacts with the following services:
  * -UserService;
  * */
@@ -78,12 +82,45 @@ public class UserController {
         return ResponseEntity.notFound().build();
     }
 
+    //[DELETE]: deleteUserById
+    @DeleteMapping("/user/deleteUserById/{userId}")
+    public ResponseEntity<Optional<UserDto>> deleteUserById(@PathVariable Long userId){
+        Optional<User> optionalUser = userService.getUserById(userId);
+        if(optionalUser.isPresent()){
+            User user = optionalUser.get();
+            UserDto userDto = UserMapper.mapToUserDto(user);
+            userService.deleteUserById(userId);
+            return ok(Optional.of(userDto));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    //[GET]: findAllUsers
+    @GetMapping("/user/findAllUsers")
+    public ResponseEntity<List<UserDto>> findAllUsers(){
+        List<User> allUsers = userService.findAllUsers();
+        List<UserDto> allUsersDto = UserMapper.mapToListDtoUsers(allUsers);
+        return ok(allUsersDto);
+    }
+
+    //[GET]: findUserByBookTitle
+    @GetMapping("/user/findUserByBookTitle")
+    public ResponseEntity<Optional<UserDto>> findUserByBookTitle(@RequestParam String title){
+        Optional<User> optionalUser = userService.findUserByBookTitle(title);
+        if(optionalUser.isPresent()){
+            User user = optionalUser.get();
+            UserDto userDto = UserMapper.mapToUserDto(user);
+            return ok(Optional.of(userDto));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    //[Delete]: deleteBookByUser
+
 
 
     /**
-     * -delete user byId
-     * -find all authors
-     * -find author by Book title
+     * -Implement an endpoint to un-publish a book (DELETE)
      * */
 
 }

@@ -3,6 +3,9 @@ package com.app.vp.wookiebooks.mapper;
 import com.app.vp.wookiebooks.dto.UserDto;
 import com.app.vp.wookiebooks.model.User;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Class presenting conversion model object of User class to Dto
  * and vise-versa;
@@ -35,5 +38,31 @@ public class UserMapper {
                 .authorPseudonym(user.getAuthorPseudonym())
                 .build();
         return userDto;
+    }
+
+    /**
+     * Method for conversion List<User> to List<UserDto>.
+     * @param users List<User>;
+     * @return listDtoUsers List<UserDto>;
+     * */
+    public static List<UserDto> mapToListDtoUsers(List<User> users) {
+        List<UserDto> listDtoUsers = new ArrayList<>();
+        for (User user : users) {
+            listDtoUsers.add(mapToUserDto(user));
+        }
+        return listDtoUsers;
+    }
+
+    /**
+     * Method for conversion List<UserDto> to List<User>.
+     * @param usersDto List<UserDto>;
+     * @return listUsers List<User>;
+     * */
+    public static List<User> mapToListUsers(List<UserDto> usersDto) {
+        List<User> listUsers = new ArrayList<>();
+        for (UserDto userDto : usersDto) {
+            listUsers.add(mapToUser(userDto));
+        }
+        return listUsers;
     }
 }
