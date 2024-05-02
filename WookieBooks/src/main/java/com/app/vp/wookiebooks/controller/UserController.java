@@ -117,8 +117,6 @@ public class UserController {
 
     //[Delete]: deleteBookByUser
 
-
-
     /**
      * -Implement an endpoint to un-publish a book (DELETE)
      * */

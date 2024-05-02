@@ -3,6 +3,9 @@ package com.app.vp.wookiebooks.mapper;
 import com.app.vp.wookiebooks.dto.BookDto;
 import com.app.vp.wookiebooks.model.Book;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Class presenting conversion model object of Book class to Dto
  * and vise-versa;
@@ -45,4 +48,29 @@ public class BookMapper {
         return bookDto;
     }
 
+    /**
+     * Method for conversion List<Book> to List<BookDto>.
+     * @param books List<Book>;
+     * @return bookDtoList List<BookDto>;
+     * */
+    public static List<BookDto> mapToListDtoBooks(List<Book> books) {
+        List<BookDto> bookDtoList = new ArrayList<>();
+        for (Book book : books) {
+            bookDtoList.add(mapToBookDto(book));
+        }
+        return bookDtoList;
+    }
+
+    /**
+     * Method for conversion List<BookDto> to List<Book>.
+     * @param booksDto List<BookDto>;
+     * @return listBooks List<Book>;
+     * */
+    public static List<Book> mapToListBooks(List<BookDto> booksDto) {
+        List<Book> listBooks = new ArrayList<>();
+        for (BookDto bookDto : booksDto) {
+            listBooks.add(mapToBook(bookDto));
+        }
+        return listBooks;
+    }
 }

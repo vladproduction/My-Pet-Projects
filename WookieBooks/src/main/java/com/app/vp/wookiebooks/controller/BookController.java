@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.http.ResponseEntity.ok;
@@ -20,9 +21,12 @@ import static org.springframework.http.ResponseEntity.ok;
 /**
  * Spring REST controller handles incoming HTTP requests to RestApiController.
  * It provides endpoints for Book (postman):
- * +[POST]: createBook;
- * +[GET]: findBookById;
- * +[GET]: findBookByTitle;
+ * -[POST]:     createBook;
+ * -[GET]:      findBookById;
+ * -[GET]:      findBookByTitle;
+ * -[GET]:      findAllBooks;
+ * -[GET]:      findAllBooksByUserId;
+ * -[GET]:      findAllBooksByAuthorPseudonym;
  * Interacts with the following services:
  * -UserService;
  * -BookService;
@@ -80,6 +84,41 @@ public class BookController {
         return ResponseEntity.notFound().build();
     }
 
+    //[GET]: findAllBooks
+    @GetMapping("/books/findAllBooks")
+    public ResponseEntity<List<BookDto>> findAllBooks(){
+        List<Book> books = bookService.findAllBooks();
+        List<BookDto> bookDtoList = BookMapper.mapToListDtoBooks(books);
+        return ok(bookDtoList);
+    }
+
+    //[GET]: findAllBooksByUserId
+    @GetMapping("/books/findAllBooksByUserId/{userId}")
+    public ResponseEntity<List<BookDto>> findAllBooksByUserId(
+            @PathVariable Long userId){
+        Optional<List<Book>> optionalBooks = bookService.findAllBooksByUserId(userId);
+        if(optionalBooks.isPresent()){
+            List<Book> bookList = optionalBooks.get();
+            List<BookDto> bookDtoList = BookMapper.mapToListDtoBooks(bookList);
+            return ok(bookDtoList);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    //[GET]: findAllBooksByAuthorPseudonym
+    @GetMapping("/books/findAllBooksByAuthorPseudonym")
+    public ResponseEntity<Optional<List<BookDto>>> findAllBooksByAuthorPseudonym(
+            @RequestParam String authorPseudonym){
+        Optional<List<Book>> optionalBooks = bookService.findAllBooksByAuthorPseudonym(authorPseudonym);
+        if(optionalBooks.isPresent()){
+            List<Book> bookList = optionalBooks.get();
+            List<BookDto> bookDtoList = BookMapper.mapToListDtoBooks(bookList);
+            return ok(Optional.of(bookDtoList));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+
 }
 
 
@@ -87,11 +126,8 @@ public class BookController {
  *
  * -Allows only GET (List/Detail) operations
  * -Make the List resource searchable with query parameters
- *
  * -update Book as owner
  * -delete Book  as owner
- * -find all Books
- * -find all Books by author
  * -find Books by (special parameters: price + join author):
  *      low price(< 10),
  *      middle price(>= 10 < 50),
