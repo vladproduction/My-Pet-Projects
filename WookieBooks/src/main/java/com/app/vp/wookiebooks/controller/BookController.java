@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +30,7 @@ import static org.springframework.http.ResponseEntity.ok;
  * -[GET]:      findBooksByPriceLessThan;
  * -[GET]:      findBooksByMiddlePrice;
  * -[GET]:      findBooksByHighPrice;
+ * -[GET]:      findBookAndUserByUserId
  * Interacts with the following services:
  * -UserService;
  * -BookService;
@@ -145,6 +145,15 @@ public class BookController {
     @GetMapping("/books/findBooksByHighPrice")
     public ResponseEntity<List<BookDto>> findBooksByHighPrice(@RequestParam double minPrice){
         Optional<List<Book>> optionalBooks = bookService.findBooksByHighPrice(minPrice);
+        ResponseEntity<List<BookDto>> bookDtoList = getListResponseEntity(optionalBooks);
+        if (bookDtoList != null) return bookDtoList;
+        return ResponseEntity.notFound().build();
+    }
+
+    //[GET]: findBookAndUserByUserId
+    @GetMapping("/books/findBookAndUserByUserId/{userId}")
+    public ResponseEntity<List<BookDto>> findBookAndUserByUserId(@PathVariable Long userId){
+        Optional<List<Book>> optionalBooks = bookService.findBookAndUserByUserId(userId);
         ResponseEntity<List<BookDto>> bookDtoList = getListResponseEntity(optionalBooks);
         if (bookDtoList != null) return bookDtoList;
         return ResponseEntity.notFound().build();

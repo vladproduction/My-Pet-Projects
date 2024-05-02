@@ -7,6 +7,7 @@ import com.app.vp.wookiebooks.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,25 +28,25 @@ public class UserService {
     @Autowired
     private BookRepository bookRepository;
 
-    //createUser
+    //[POST]: createUser
     public User createUser(User user){
         return userRepository
                 .saveAndFlush(user);
     }
 
-    //getUserById
+    //[GET]: getUserById
     public Optional<User> getUserById(Long userId){
         return userRepository
                 .findById(userId);
     }
 
-    //findUserByAuthorPseudonym
+    //[GET]: findUserByAuthorPseudonym
     public Optional<User> findUserByAuthorPseudonym(String authorPseudonym){
         return userRepository
                 .findUserByAuthorPseudonym(authorPseudonym);
     }
 
-    //updateAuthorPseudonym
+    //[UPDATE]: updateAuthorPseudonym
     public Optional<User> updateAuthorPseudonym(String authorPseudonym, String newPseudonym){
         Optional<User> optionalUser = userRepository.findUserByAuthorPseudonym(authorPseudonym);
         if (optionalUser.isPresent()){
@@ -57,7 +58,7 @@ public class UserService {
         return Optional.empty();
     }
 
-    //deleteUserById
+    //[DELETE]: deleteUserById
     public int deleteUserById(Long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if(optionalUser.isPresent()){
@@ -68,13 +69,13 @@ public class UserService {
         return -1;
     }
 
-    //findAllUsers
+    //[GET]: findAllUsers
     public List<User> findAllUsers() {
         return userRepository
                 .findAll();
     }
 
-    //findUserByBookTitle
+    //[GET]: findUserByBookTitle
     public Optional<User> findUserByBookTitle(String title) {
         Optional<Book> bookByTitle = bookRepository.findBookByTitle(title);
         if(bookByTitle.isPresent()){
@@ -83,5 +84,28 @@ public class UserService {
             return Optional.of(user);
         }
         return Optional.empty();
+    }
+
+    //[DELETE]: deleteBookByUser
+    public List<Book> deleteBookByUser(Long userId, Long bookId){
+        Optional<User> optionalUser = userRepository.findById(userId);
+        List<Book> remainingBooks = new ArrayList<>();
+        if(optionalUser.isPresent()){
+            User user = optionalUser.get();
+            //retrieve all user`s books
+            List<Book> userBooks = bookRepository.findBookAndUserByUserId(user.getUserId());
+            //searching the book that need to delete
+            Book bookHasToBeDeleted = userBooks.stream()
+                    .filter(book -> book.getBookId().equals(bookId))
+                    .findFirst().orElse(null);
+            if(bookHasToBeDeleted != null){
+                //remove the book from user`s books and repository
+                userBooks.remove(bookHasToBeDeleted);
+                bookRepository.delete(bookHasToBeDeleted);
+            }
+            //update remaining books
+            remainingBooks.addAll(userBooks);
+        }
+        return remainingBooks;
     }
 }

@@ -42,4 +42,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query("SELECT b FROM Book b WHERE b.price >= :minPrice")
     List<Book> findBooksByHighPrice(@Param("minPrice") double minPrice);
 
+    //[GET]: findBooksByUser(user)
+    @Query("SELECT b, u FROM Book b INNER JOIN User u ON b.author.userId = u.userId WHERE u.userId = :userId")
+    List<Book> findBookAndUserByUserId(@Param("userId") Long userId);
+
 }

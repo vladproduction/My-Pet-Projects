@@ -19,48 +19,43 @@ public class BookService {
     @Autowired
     private UserRepository userRepository;
 
-    //createBook
+    //[POST]: createBook
     public Book createBook(Book book) {
         return bookRepository
                 .saveAndFlush(book);
     }
 
-    //findBookById
+    //[GET]: findBookById
     public Optional<Book> findBookById(Long bookId) {
         return bookRepository
                 .findById(bookId);
     }
 
-    //findBookByTitle
+    //[GET]: findBookByTitle
     public Optional<Book> findBookByTitle(String title) {
         return bookRepository
                 .findBookByTitle(title);
     }
 
-    //findAllBooks
+    //[GET]: findAllBooks
     public List<Book> findAllBooks() {
-        return bookRepository.findAll();
+        return bookRepository
+                .findAll();
     }
 
-    //findAllBooksByUserId
+    //[GET]: findAllBooksByUserId
     public Optional<List<Book>> findAllBooksByUserId(Long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         List<Book> bookList = new ArrayList<>();
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-//            Optional<Book> optionalBook = bookRepository.findById(user.getUserId());
-//            if (optionalBook.isPresent()){
-//                Book book = optionalBook.get();
-//                bookList.add(book);
-//            }
-            //instead of fetching a single book by userId, fetch all books associated with userId
             List<Book> userBooks = bookRepository.findBooksByAuthorUserId(user.getUserId()); //using custom method
             bookList.addAll(userBooks);
         }
         return Optional.of(bookList);
     }
 
-    //findAllBooksByAuthorPseudonym
+    //[GET]: findAllBooksByAuthorPseudonym
     public Optional<List<Book>> findAllBooksByAuthorPseudonym(String authorPseudonym) {
         Optional<User> optionalUser = userRepository.findUserByAuthorPseudonym(authorPseudonym);
         if (optionalUser.isPresent()) {
@@ -102,5 +97,12 @@ public class BookService {
             System.err.println("Price is not valid");
             return Optional.empty();
         }
+    }
+
+    //[GET]: findBookAndUserByUserId
+    public Optional<List<Book>> findBookAndUserByUserId(Long userId){
+        List<Book> bookList = bookRepository.findBookAndUserByUserId(userId);
+        if(bookList != null) return Optional.of(bookList);
+        return Optional.empty();
     }
 }
