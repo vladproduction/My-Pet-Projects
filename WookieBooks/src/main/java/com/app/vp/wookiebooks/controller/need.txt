@@ -1,6 +1,15 @@
 
 need to fix:
--Make the List resource searchable with query parameters
--endpoint to authenticate with the API using username, password and return a JWT
+-jwt
+-update book
+-exception case
+-criteria API
+-test moc docker
+-Dart Wider
+-role (Enum)
+-deploy
+
+
+
 
 
