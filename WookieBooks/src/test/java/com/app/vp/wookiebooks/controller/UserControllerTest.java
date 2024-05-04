@@ -1,12 +1,12 @@
 package com.app.vp.wookiebooks.controller;
 
+import com.app.vp.wookiebooks.dto.BookDto;
 import com.app.vp.wookiebooks.dto.UserDto;
-import com.app.vp.wookiebooks.mapper.UserMapper;
+import com.app.vp.wookiebooks.mapper.BookMapper;
+import com.app.vp.wookiebooks.model.Book;
 import com.app.vp.wookiebooks.model.User;
-import com.app.vp.wookiebooks.repository.UserRepository;
+import com.app.vp.wookiebooks.service.BookService;
 import com.app.vp.wookiebooks.service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.github.dockerjava.api.exception.NotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -20,14 +20,14 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Optional;
 
-import static com.app.vp.wookiebooks.mapper.UserMapper.*;
+import static com.app.vp.wookiebooks.mapper.UserMapper.mapToListDtoUsers;
+import static com.app.vp.wookiebooks.mapper.UserMapper.mapToUserDto;
 import static com.app.vp.wookiebooks.utils.JsonUtils.toJson;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -39,6 +39,9 @@ class UserControllerTest {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private BookService bookService;
 
     @Container
     static MySQLContainer mySQLContainer = new MySQLContainer(
@@ -204,15 +207,130 @@ class UserControllerTest {
     }
 
     @Test
-    void findAllUsersTest() {
+    void findAllUsersTest() throws Exception {
+        //create 2 new users
+        User user1 = User.builder()
+                .authorPseudonym("user1")
+                .build();
+        User user2 = User.builder()
+                .authorPseudonym("user2")
+                .build();
+        //saving both
+        userService.createUser(user1);
+        userService.createUser(user2);
+        //check if they are saved
+        List<User> allUsers = userService.findAllUsers();
+        int allUsersSize = allUsers.size();
+        System.out.println("allUsersSize = " + allUsersSize); //expected 2
+        //testing endpoint findAllUsers
+        var result = mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/wookie_books/user/findAllUsers")
+                        .contentType("application/json")
+                        .accept("application/json"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        //check if saved and response are equal
+        List<UserDto> usersSaved = mapToListDtoUsers(allUsers);
+        System.out.println("usersSaved = " + toJson(usersSaved));//saved
+        System.out.println("result = " + result.getResponse().getContentAsString());//response
+        assertThat(toJson(usersSaved).equals(result.getResponse().getContentAsString()));
+
     }
 
     @Test
-    void findUserByBookTitleTest() {
+    void findUserByBookTitleTest() throws Exception {
+        //findUserByBookTitle we path such scenario
+        //saving new book with particular and existing author
+        //create & save author:
+        User user = User.builder() //create
+                .authorPseudonym("Author")
+                .build();
+        userService.createUser(user); //save
+        //create & save book:
+        Book book = Book.builder() //create
+                .title("TitleExample")
+                .author(user)
+                .price(20.99)
+                .coverImage("cover")
+                .description("text")
+                .build();
+        bookService.createBook(book);//save
+        //testing endpoint findUserByBookTitle:
+        var result = mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/wookie_books/user/findUserByBookTitle")
+                        .param("title", book.getTitle())
+                        .contentType("application/json")
+                        .accept("application/json"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.authorPseudonym").value(user.getAuthorPseudonym()))
+                .andReturn();
+        System.out.println("result = " + result.getResponse().getContentAsString());
+        //check if saved and response are equal
+        assertThat(result.getResponse().getContentAsString().equals(toJson(mapToUserDto(user))));
     }
 
     @Test
-    void deleteBookByUserTest() {
+    void deleteBookByUserTest() throws Exception {
+        //scenario:
+        //1)create and save user
+        User user = User.builder() //create
+                .authorPseudonym("John")
+                .build();
+        User savedUser = userService.createUser(user);//save
+        String authorPseudonym = savedUser.getAuthorPseudonym();//get pseudonym to help to find existing user
+//2)create a couple of books for this user
+        Book book1 = Book.builder() //create
+                .title("TestBook1")
+                .author(user)
+                .price(20.99)
+                .coverImage("cover")
+                .description("text")
+                .build();
+        Book book1Saved = bookService.createBook(book1);
+        Long bookId = book1Saved.getBookId();
+        Book book2 = Book.builder() //create
+                .title("TestBook2")
+                .author(user)
+                .price(20.99)
+                .coverImage("cover")
+                .description("text")
+                .build();
+        bookService.createBook(book2);
+        //3)find all books by this user
+        Optional<List<Book>> books = bookService.findAllBooksByAuthorPseudonym(authorPseudonym);
+        //4)define a book wanted to delete
+        System.out.println("-------books before delete-------");
+        if(books.isPresent()){
+            List<Book> bookList = books.get();
+            for (Book book : bookList) {
+                String bookTitle = book.getTitle();
+                System.out.println(bookTitle);
+            }
+        }
+        //5)delete the book
+        //testing endpoint
+        Long userId = savedUser.getUserId();
+        var result = mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/api/wookie_books/user/deleteBookByUser/{userId}", userId)
+                        .param("bookId", String.valueOf(bookId))
+                        .contentType("application/json")
+                        .accept("application/json"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        //6)check if book was removed
+        Optional<List<Book>> booksUpdated = bookService.findAllBooksByAuthorPseudonym(authorPseudonym);
+        System.out.println("-------books after delete-------");
+        if(booksUpdated.isPresent()){
+            List<Book> bookList = booksUpdated.get();
+            for (Book book : bookList) {
+                System.out.println(book);
+            }
+        }
+        System.out.println("result = " + result.getResponse().getContentAsString());
+        //assertion
+        List<Book> bookList = booksUpdated.get();
+        List<BookDto> bookDtoList = BookMapper.mapToListDtoBooks(bookList);
+        assertThat(result.getResponse().getContentAsString().equals(toJson(bookDtoList)));
     }
 
     @Test
