@@ -21,6 +21,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Optional;
 
 import static com.app.vp.wookiebooks.mapper.UserMapper.*;
@@ -128,16 +129,78 @@ class UserControllerTest {
         //assert that result of endpoint is the same as user been saved
         assertThat(result.getResponse().getContentAsString())
                 .isEqualTo(toJson(mapToUserDto(optionalUser.get())));
-
-        assertThat(optionalUser.get().getAuthorPseudonym().equals("Link"));
+        //additional compare
+        String pseudonym = optionalUser.get().getAuthorPseudonym();
+        assertEquals(pseudonym,"Link");
     }
 
     @Test
-    void updateAuthorPseudonymTest() {
+    void updateAuthorPseudonymTest() throws Exception {
+        //create new user
+        User user = User.builder()
+                .authorPseudonym("Link-Pseudonym1")
+                .build();
+        //saving
+        User savedUser = userService.createUser(user);
+        String authorPseudonym = savedUser.getAuthorPseudonym();
+        //creating new author pseudonym that will be paste instead saved
+        String newPseudonym = "Link-Pseudonym2";
+        //testing endpoint updateAuthorPseudonym & get response
+        var result = mockMvc.perform(MockMvcRequestBuilders
+                        .put("/api/wookie_books/user/updateAuthorPseudonym")
+                        .param("authorPseudonym", authorPseudonym)
+                        .param("newPseudonym", newPseudonym)
+                        .contentType("application/json")
+                        .accept("application/json"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.authorPseudonym").value(newPseudonym)) //expecting updated
+                .andReturn();
+        //find user that has been saved with the newPseudonym
+        Optional<User> optionalUser = Optional.of(userService
+                .findUserByAuthorPseudonym(newPseudonym))
+                .orElseThrow();
+        //assert that result of endpoint is the same as user been saved
+        assertThat(result.getResponse().getContentAsString())
+                .isEqualTo(toJson(mapToUserDto(optionalUser.get())));
+        //additional compare
+        String pseudonym = optionalUser.get().getAuthorPseudonym();
+        assertEquals(pseudonym,"Link-Pseudonym2");
     }
 
     @Test
-    void deleteUserByIdTest() {
+    void deleteUserByIdTest() throws Exception {
+        //create 2 new users
+        User user1 = User.builder()
+                .authorPseudonym("Link-1")
+                .build();
+        User user2 = User.builder()
+                .authorPseudonym("Link-2")
+                .build();
+        //saving both
+        User savedUser1 = userService.createUser(user1);
+        User savedUser2 = userService.createUser(user2);
+        //check if they are both been saved
+        List<User> allUsers = userService.findAllUsers();
+        int allUsersAmountBeforeModification = allUsers.size();
+        System.out.println("allUsersAmountBeforeModification = " + allUsersAmountBeforeModification);//expected: 2
+        //get id from user that wanted to be deleted
+        Long userId = savedUser1.getUserId(); //want to delete user1
+        //testing endpoint deleteUserById
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/api/wookie_books/user/deleteUserById/{userId}", userId)
+                        .contentType("application/json")
+                        .accept("application/json"))
+                .andExpect(MockMvcResultMatchers.status().isOk());
+        //check if our users amount decremented by 1, (is really user been deleted)
+        List<User> allUsersNew = userService.findAllUsers();
+        int allUsersAmountAfterModification = allUsersNew.size();
+        System.out.println("allUsersAmountAfterModification = " + allUsersAmountAfterModification);//expected: 1
+        //check if we have expected user after delete user1, so find user2
+        Optional<User> optionalUser2 = userService.getUserById(savedUser2.getUserId());
+        User user2BeenSaved = optionalUser2.get();
+        String pseudonym2 = user2BeenSaved.getAuthorPseudonym();
+        //assertion by pseudonyms
+        assertEquals(pseudonym2, "Link-2");
     }
 
     @Test
