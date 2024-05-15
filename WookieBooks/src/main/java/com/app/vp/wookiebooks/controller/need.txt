@@ -9,6 +9,13 @@ need to fix:
 -role (Enum)
 -deploy
 
+-authorization
+1)service jwt
+2)ssconfig
+3)url signup new users
+4)url for generate token for existing user
+5)ssconfig open permit to crud user and book publishing
+6)check authenticate trough token for create and remove books
 
 
 
