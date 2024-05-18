@@ -8,6 +8,7 @@ import com.app.vp.wookiebooks.model.Book;
 import com.app.vp.wookiebooks.model.User;
 import com.app.vp.wookiebooks.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,14 +32,15 @@ import static org.springframework.http.ResponseEntity.ok;
  * -UserService;
  * */
 @RestController
-@RequestMapping("/api/wookie_books")
+@RequestMapping("/api/user")
 public class UserController {
 
     @Autowired
     private UserService userService;
 
     //[POST]: createUser
-    @PostMapping("/user/createUser")
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UserDto> createUser(
             @RequestBody UserDto userDto){
         User user = UserMapper.mapToUser(userDto);
@@ -48,7 +50,7 @@ public class UserController {
     }
 
     //[GET]: getUserById
-    @GetMapping("/user/getUserById/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<Optional<UserDto>> getUserById(
             @PathVariable Long userId){
         Optional<User> userOptional = userService.getUserById(userId);

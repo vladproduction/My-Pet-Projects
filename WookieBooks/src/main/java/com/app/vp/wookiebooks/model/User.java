@@ -42,12 +42,20 @@ public class User {
             updatable = false
     )
     private Long userId;
+
     @Column(
             name = "author_pseudonym",
             nullable = false,
             columnDefinition = "VARCHAR(255)"
     )
     private String authorPseudonym;
+
+    @Column(
+            name = "author_password",
+            nullable = false,
+            columnDefinition = "VARCHAR(255)"
+    )
+    private String authorPassword;
 
     @Override
     public final boolean equals(Object o) {

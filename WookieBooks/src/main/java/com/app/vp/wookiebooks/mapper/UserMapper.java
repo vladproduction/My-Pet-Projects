@@ -24,6 +24,7 @@ public class UserMapper {
     public static User mapToUser(UserDto userDto){
         User user = User.builder()
                 .authorPseudonym(userDto.getAuthorPseudonym())
+                .authorPassword(userDto.getAuthorPassword())
                 .build();
         return user;
     }
@@ -36,6 +37,7 @@ public class UserMapper {
     public static UserDto mapToUserDto(User user){
         UserDto userDto = UserDto.builder()
                 .authorPseudonym(user.getAuthorPseudonym())
+                .authorPassword(user.getAuthorPassword())
                 .build();
         return userDto;
     }

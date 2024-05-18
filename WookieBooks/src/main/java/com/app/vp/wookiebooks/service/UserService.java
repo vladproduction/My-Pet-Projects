@@ -5,6 +5,7 @@ import com.app.vp.wookiebooks.model.User;
 import com.app.vp.wookiebooks.repository.BookRepository;
 import com.app.vp.wookiebooks.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,11 +28,15 @@ public class UserService {
     private UserRepository userRepository;
     @Autowired
     private BookRepository bookRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     //[POST]: createUser
     public User createUser(User user){
+        String encoded = passwordEncoder.encode(user.getAuthorPassword());
+        user.setAuthorPassword(encoded);
         return userRepository
-                .saveAndFlush(user);
+                .save(user);
     }
 
     //[GET]: getUserById
