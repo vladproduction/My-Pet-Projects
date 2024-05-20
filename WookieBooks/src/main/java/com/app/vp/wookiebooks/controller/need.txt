@@ -3,7 +3,7 @@ need to fix:
 
 -update book
 -exception case
--criteria API
+-criteria API (partly done)
 -test moc docker
 -Dart Wider
 -role (Enum)
@@ -11,7 +11,7 @@ need to fix:
 
 
 -split logic in controller for security (save, put, delete) and not security for (get);
--organize queries to get from db side (jpa criteria);
+-organize queries to get from db side (jpa criteria api);
 
 
 

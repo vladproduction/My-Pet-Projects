@@ -4,8 +4,11 @@ import com.app.vp.wookiebooks.model.Book;
 import com.app.vp.wookiebooks.model.User;
 import com.app.vp.wookiebooks.repository.BookRepository;
 import com.app.vp.wookiebooks.repository.UserRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +21,42 @@ public class BookService {
     private BookRepository bookRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private EntityManager entityManager;
+
+    public List<Book> findAllBooks(String authorPseudonym,
+                                   String title,
+                                   Double price){
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Book> query = criteriaBuilder.createQuery(Book.class);
+        Root<Book> bookRoot = query.from(Book.class);
+        query.select(bookRoot);
+
+        List<Predicate> predicates = new ArrayList<>();
+
+        if(authorPseudonym != null){
+            Join<Book, User> authorJoin = bookRoot.join("author");
+            Predicate pseudonymPredicate = criteriaBuilder.equal(authorJoin.get("authorPseudonym"), authorPseudonym);
+            predicates.add(pseudonymPredicate);
+        }
+
+        if(title != null){
+            Predicate titlePredicate = criteriaBuilder.equal(bookRoot.get("title"), title);
+            predicates.add(titlePredicate);
+        }
+
+        if(price != null){
+            Predicate pricePredicate = criteriaBuilder.equal(bookRoot.get("price"), price);
+            predicates.add(pricePredicate);
+        }
+
+        Predicate [] predicatesArr = new Predicate[predicates.size()];
+        Predicate[] predicatesArray = predicates.toArray(predicatesArr);
+        query.where(criteriaBuilder.and(predicatesArray));
+
+        return entityManager.createQuery(query).getResultList();
+
+    }
 
     //[POST]: createBook
     public Book createBook(Book book) {

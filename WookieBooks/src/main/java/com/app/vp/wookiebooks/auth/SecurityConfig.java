@@ -35,7 +35,8 @@ public class SecurityConfig {
     private static final String[] WHITELIST = {
             "/api/user/**",
             "/api/token/**",
-            "/api/wookie_books/**"
+            "/api/wookie_books/**",
+            "/api/authors/**"
     };
 
 

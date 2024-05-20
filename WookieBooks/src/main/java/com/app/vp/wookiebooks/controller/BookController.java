@@ -86,20 +86,7 @@ public class BookController {
     public ResponseEntity<List<BookDto>> findAllBooks(@RequestParam(required = false) String authorPseudonym,
                                                       @RequestParam(required = false) String title,
                                                       @RequestParam(required = false) Double price) {
-        List<Book> books = bookService.findAllBooks().stream()
-                .filter(book -> {
-                            if (authorPseudonym == null) {
-                                return true;
-                            }
-                            return book.getAuthor().getAuthorPseudonym().equals(authorPseudonym);
-                        })
-                .filter(book -> {
-                    if (title == null) {
-                        return true;
-                    }
-                    return book.getTitle().equals(title);
-                })
-                .toList();
+        List<Book> books = bookService.findAllBooks(authorPseudonym, title, price);
         List<BookDto> bookDtoList = BookMapper.mapToListDtoBooks(books);
         return ok(bookDtoList);
     }
