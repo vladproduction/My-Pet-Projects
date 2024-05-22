@@ -11,6 +11,7 @@ import com.app.vp.wookiebooks.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,6 +54,26 @@ public class BookController {
             @RequestBody BookDto bookDto) {
         Book book = BookMapper.mapToBook(bookDto);
         UserDto bookDtoAuthor = bookDto.getAuthor();
+        defineAuthor(book, bookDtoAuthor);
+        Book savedBook = bookService.createBook(book);
+        BookDto createdBookDto = BookMapper.mapToBookDto(savedBook);
+        return ok(createdBookDto);
+    }
+
+    @PutMapping("/{bookId}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<BookDto> updateBook(
+            @RequestBody BookDto bookDto, @PathVariable Long bookId) {
+        String authorPseudonym = SecurityContextHolder.getContext().getAuthentication().getName();
+        Book book = BookMapper.mapToBook(bookDto);
+        UserDto bookDtoAuthor = bookDto.getAuthor();
+        defineAuthor(book, bookDtoAuthor);
+        Book updatedBook = bookService.updateBook(book,bookId, authorPseudonym);
+        BookDto createdBookDto = BookMapper.mapToBookDto(updatedBook);
+        return ok(createdBookDto);
+    }
+
+    private void defineAuthor(Book book, UserDto bookDtoAuthor){
         if (bookDtoAuthor != null) {
             String authorAuthorPseudonym = bookDtoAuthor.getAuthorPseudonym();
             if (authorAuthorPseudonym != null) {
@@ -60,9 +81,6 @@ public class BookController {
                 userOptional.ifPresent(book::setAuthor);
             }
         }
-        Book savedBook = bookService.createBook(book);
-        BookDto createdBookDto = BookMapper.mapToBookDto(savedBook);
-        return ok(createdBookDto);
     }
 
     //[GET]: findBookById
@@ -89,6 +107,14 @@ public class BookController {
         List<Book> books = bookService.findAllBooks(authorPseudonym, title, price);
         List<BookDto> bookDtoList = BookMapper.mapToListDtoBooks(books);
         return ok(bookDtoList);
+    }
+
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteBook(@RequestParam String title){
+        String authorPseudonym = SecurityContextHolder.getContext().getAuthentication().getName();
+        System.out.println("authorPseudonym = " + authorPseudonym);
+        bookService.deleteBook(title, authorPseudonym);
     }
 
 

@@ -3,6 +3,7 @@ package com.app.vp.wookiebooks.auth;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -35,7 +36,6 @@ public class SecurityConfig {
     private static final String[] WHITELIST = {
             "/api/user/**",
             "/api/token/**",
-            "/api/wookie_books/**",
             "/api/authors/**"
     };
 
@@ -43,9 +43,13 @@ public class SecurityConfig {
     @Bean //configuring chain for http request as security among app context
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+//                .authorizeRequests()
+
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
+                .requestMatchers(HttpMethod.GET, "/api/wookie_books/**")
+                .permitAll()
                 .requestMatchers(WHITELIST) //open for this urls
                 .permitAll()
                 .anyRequest()

@@ -1,5 +1,7 @@
 package com.app.vp.wookiebooks.service;
 
+import com.app.vp.wookiebooks.exceptions.PermissionDeniedException;
+import com.app.vp.wookiebooks.exceptions.ResourceNotFoundException;
 import com.app.vp.wookiebooks.model.Book;
 import com.app.vp.wookiebooks.model.User;
 import com.app.vp.wookiebooks.repository.BookRepository;
@@ -7,6 +9,7 @@ import com.app.vp.wookiebooks.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PermissionDeniedDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -74,6 +77,36 @@ public class BookService {
     public Optional<Book> findBookByTitle(String title) {
         return bookRepository
                 .findBookByTitle(title);
+    }
+
+    public void deleteBook(String title, String authorPseudonym){
+        Optional<Book> bookByTitle = bookRepository.findBookByTitle(title);
+        if(bookByTitle.isPresent()){
+            Book book = bookByTitle.get();
+            validateAuthor(authorPseudonym, book);
+            bookRepository.delete(book);
+        }
+        else {
+            throw new ResourceNotFoundException("Book with title " + title + " was not found");
+        }
+    }
+
+    public Book updateBook(Book candidate, Long bookId, String authorPseudonym){
+        Book book = bookRepository.findById(bookId).orElseThrow(()->
+                new ResourceNotFoundException("Book with provided id: " + bookId + " is not found"));
+        validateAuthor(authorPseudonym, book);
+        book.setTitle(candidate.getTitle());
+        book.setAuthor(candidate.getAuthor());
+        book.setDescription(candidate.getDescription());
+        book.setCoverImage(candidate.getCoverImage());
+        book.setPrice(candidate.getPrice());
+        return bookRepository.save(book);
+    }
+
+    private void validateAuthor(String authorPseudonym, Book book){
+        if(!book.getAuthor().getAuthorPseudonym().equals(authorPseudonym)){
+            throw new PermissionDeniedException("Not enough permissions for actions with this book");
+        }
     }
 
     //[GET]: findAllBooks
