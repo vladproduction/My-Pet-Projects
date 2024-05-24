@@ -5,6 +5,7 @@ import com.app.vp.wookiebooks.dto.UserDto;
 import com.app.vp.wookiebooks.mapper.BookMapper;
 import com.app.vp.wookiebooks.mapper.UserMapper;
 import com.app.vp.wookiebooks.model.Book;
+import com.app.vp.wookiebooks.model.Roles;
 import com.app.vp.wookiebooks.model.User;
 import com.app.vp.wookiebooks.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,9 @@ public class UserController {
     public ResponseEntity<UserDto> createUser(
             @RequestBody UserDto userDto){
         User user = UserMapper.mapToUser(userDto);
+        if(("DarthVader").equals(user.getAuthorPseudonym())){
+            user.setRoles(Roles.RESTRICTED_USER);
+        }
         User savedUser = userService.createUser(user);
         UserDto createdUserDto = UserMapper.mapToUserDto(savedUser);
         return ok(createdUserDto);

@@ -3,6 +3,7 @@ package com.app.vp.wookiebooks.service;
 import com.app.vp.wookiebooks.exceptions.PermissionDeniedException;
 import com.app.vp.wookiebooks.exceptions.ResourceNotFoundException;
 import com.app.vp.wookiebooks.model.Book;
+import com.app.vp.wookiebooks.model.Roles;
 import com.app.vp.wookiebooks.model.User;
 import com.app.vp.wookiebooks.repository.BookRepository;
 import com.app.vp.wookiebooks.repository.UserRepository;
@@ -104,6 +105,9 @@ public class BookService {
     }
 
     private void validateAuthor(String authorPseudonym, Book book){
+        if(book.getAuthor().getRoles().equals(Roles.SUPER_ADMIN)){
+            return;
+        }
         if(!book.getAuthor().getAuthorPseudonym().equals(authorPseudonym)){
             throw new PermissionDeniedException("Not enough permissions for actions with this book");
         }

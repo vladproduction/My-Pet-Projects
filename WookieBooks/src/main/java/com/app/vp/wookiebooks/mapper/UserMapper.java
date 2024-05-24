@@ -1,6 +1,7 @@
 package com.app.vp.wookiebooks.mapper;
 
 import com.app.vp.wookiebooks.dto.UserDto;
+import com.app.vp.wookiebooks.model.Roles;
 import com.app.vp.wookiebooks.model.User;
 
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class UserMapper {
         User user = User.builder()
                 .authorPseudonym(userDto.getAuthorPseudonym())
                 .authorPassword(userDto.getAuthorPassword())
+                .roles(Roles.USER)
                 .build();
         return user;
     }

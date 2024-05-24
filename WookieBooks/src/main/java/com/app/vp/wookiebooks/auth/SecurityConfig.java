@@ -1,5 +1,6 @@
 package com.app.vp.wookiebooks.auth;
 
+import com.app.vp.wookiebooks.model.Roles;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,6 +51,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(HttpMethod.GET, "/api/wookie_books/**")
                 .permitAll()
+//                .requestMatchers(HttpMethod.POST, "/api/wookie_books/**")
+//                .hasAnyRole(Roles.USER.name(),Roles.SUPER_ADMIN.name())
                 .requestMatchers(WHITELIST) //open for this urls
                 .permitAll()
                 .anyRequest()

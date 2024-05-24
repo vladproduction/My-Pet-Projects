@@ -1,5 +1,6 @@
 package com.app.vp.wookiebooks.repository;
 
+import com.app.vp.wookiebooks.model.Roles;
 import com.app.vp.wookiebooks.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -18,4 +19,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findUserByAuthorPseudonym(String authorPseudonym);
 
+    Optional<User> findUserByRoles(Roles roles);
 }

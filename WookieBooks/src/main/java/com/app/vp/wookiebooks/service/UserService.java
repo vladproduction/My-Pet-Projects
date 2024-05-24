@@ -1,12 +1,15 @@
 package com.app.vp.wookiebooks.service;
 
 import com.app.vp.wookiebooks.model.Book;
+import com.app.vp.wookiebooks.model.Roles;
 import com.app.vp.wookiebooks.model.User;
 import com.app.vp.wookiebooks.repository.BookRepository;
 import com.app.vp.wookiebooks.repository.UserRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,24 @@ public class UserService {
     private BookRepository bookRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @PostConstruct
+    public void init(){
+        Optional<User> optionalUser = findUserByRole(Roles.SUPER_ADMIN);
+        if (optionalUser.isEmpty()){
+            User userDefault = new User();
+            userDefault.setRoles(Roles.SUPER_ADMIN);
+            userDefault.setAuthorPseudonym("Lohgarra");
+            userDefault.setAuthorPassword("defaultPassword");
+            createUser(userDefault);
+        }
+
+    }
+
+    public Optional<User> findUserByRole(Roles roles){
+        return userRepository.findUserByRoles(roles);
+    }
+
 
     //[POST]: createUser
     public User createUser(User user){

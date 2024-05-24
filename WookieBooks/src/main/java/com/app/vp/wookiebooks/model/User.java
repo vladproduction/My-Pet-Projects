@@ -57,6 +57,9 @@ public class User {
     )
     private String authorPassword;
 
+    @Enumerated(EnumType.STRING)
+    private Roles roles;
+
     @Override
     public final boolean equals(Object o) {
         if (this == o) return true;
