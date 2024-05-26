@@ -1,0 +1,38 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Blog :: Login</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.3.0/dist/css/bootstrap.css}">
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="container login-form">
+    <h1>Blog Application: Login</h1>
+    <hr/>
+    <form action="#" class="login-form"
+          th:action="@{/login}"
+          method="POST">
+        <div>
+            <label for="email">Email:</label>
+            <input class="login-email" id="email" type="text" name="email" placeholder="Email"/>
+        </div>
+        <div>
+            <label for="password">Password:</label>
+            <input class="login-password" id="password" type="text" name="password" placeholder="Password"/>
+        </div>
+        <hr />
+        <button type="submit" class="button-login">Login!</button>
+    </form>
+</div>
+<script th:src="@{webjars/jquery/3.7.0/dist/jquery.js}"></script>
+<script th:src="@{webjars/popperjs__core/2.11.8/dist/umd/popper.js}"></script>
+<script th:src="@{webjars/bootstrap/5.3.0/dist/js/bootstrap.bundle.js}"></script>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,131 @@
+/* =====(home.html) body===== */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+/* =====(home.html) container===== */
+.container {
+    width: 80%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #d2e6f5;
+}
+/* =====(home.html) h1, h2, h3, h4, h5, h6===== */
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    padding: 0;
+}
+/* =====(home.html) h1===== */
+h1 {
+    font-size: 2em;
+    text-align: center;
+}
+/* =====(home.html) hr===== */
+hr {
+    border: 1px solid #ddd;
+    margin: 20px 0;
+}
+/* =====(home.html) navigation===== */
+.navigation {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
+/* =====(home.html) navigation li===== */
+.navigation li {
+    display: inline-block;
+    margin: 0 10px;
+}
+/* =====(home.html) navigation a===== */
+.navigation a {
+    text-decoration: none;
+    color: #278a15;
+    font-weight: bold;
+}
+/* =====(home.html) posts-container===== */
+.posts-container{
+    text-align: left;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+/* =====(home.html) posts===== */
+.posts{
+    .post-info{
+        color: #04229a;
+        font-weight: bold;
+    }
+}
+/* =====(home.html) auth-links===== */
+.auth-links{
+    color: #04229a;
+    font-weight: bold;
+}
+/* =====(home.html) user-info===== */
+.user-info{
+    color: #333;
+    font-weight: bold;
+    .button-logout{
+        color: #04229a;
+        font-weight: bold;
+    }
+}
+/* =====login.html===== */
+.login-form {
+    width: 800px;  /* Set a width for the registration form */
+    margin: 0 auto;  /* Center the form horizontally */
+    padding: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+.login-form label {
+    display: block;  /* Display labels on separate lines */
+    margin-bottom: 5px;
+}
+
+.login-form input[type="text"] {
+    width: 90%;   /* Maintain full width */
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    text-align: center;  /* Center the text within the inputs */
+}
+.button-login{
+    color: #04229a;
+    font-weight: bold;
+}
+
+/* =====register.html===== */
+.register-form {
+    width: 800px;  /* Set a width for the registration form */
+    margin: 0 auto;  /* Center the form horizontally */
+    padding: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+.register-form label {
+    display: block;  /* Display labels on separate lines */
+    margin-bottom: 5px;
+}
+
+.register-form input[type="text"] {
+    width: 90%;   /* Maintain full width */
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    text-align: center;  /* Center the text within the inputs */
+}
+.button-register{
+    color: #04229a;
+    font-weight: bold;
+}
+
+
+
+
+
