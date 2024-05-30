@@ -2,7 +2,7 @@
 need to fix:
 
 
--exception case(map exception to status code)
+
 -criteria API (partly done)
 -test moc docker
 -Dart Wider

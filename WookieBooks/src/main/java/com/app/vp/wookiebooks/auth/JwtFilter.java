@@ -64,7 +64,9 @@ public class JwtFilter extends OncePerRequestFilter {
                 System.out.println("REQUEST IS AUTHENTICATED!");
             }
         }
+        System.out.println("before doFilter");
         filterChain.doFilter(request, response);
+        System.out.println("after doFilter");
 
     }
 }
