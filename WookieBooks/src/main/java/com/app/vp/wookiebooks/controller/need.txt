@@ -1,11 +1,14 @@
 
 need to fix:
+1)refactoring
+2)deploy (no docker)
+3)deploy (docker)
+4)swagger documentationApi
+5)testing
+6)jenkins
+7)implement client (JavaFX, Thymeleaf)
+8)performance testing
 
 
 
--criteria API (partly done)
--test moc docker
--Dart Wider
--role (Enum) superAdmin
--deploy
 

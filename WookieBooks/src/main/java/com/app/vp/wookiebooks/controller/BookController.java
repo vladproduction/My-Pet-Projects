@@ -50,14 +50,13 @@ public class BookController {
 //    @PostMapping("/books/createBook")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<BookDto> createBook(
+    public BookDto createBook(
             @RequestBody BookDto bookDto) {
         Book book = BookMapper.mapToBook(bookDto);
         UserDto bookDtoAuthor = bookDto.getAuthor();
         defineAuthor(book, bookDtoAuthor);
         Book savedBook = bookService.createBook(book);
-        BookDto createdBookDto = BookMapper.mapToBookDto(savedBook);
-        return ok(createdBookDto);
+        return BookMapper.mapToBookDto(savedBook);
     }
 
     @PutMapping("/{bookId}")

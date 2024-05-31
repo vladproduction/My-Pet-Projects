@@ -41,7 +41,7 @@ public class UserController {
 
     //[POST]: createUser
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+//    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UserDto> createUser(
             @RequestBody UserDto userDto){
         User user = UserMapper.mapToUser(userDto);
@@ -50,7 +50,7 @@ public class UserController {
         }
         User savedUser = userService.createUser(user);
         UserDto createdUserDto = UserMapper.mapToUserDto(savedUser);
-        return ok(createdUserDto);
+        return new ResponseEntity<>(createdUserDto, HttpStatus.CREATED);
     }
 
     //[GET]: getUserById

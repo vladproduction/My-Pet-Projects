@@ -51,8 +51,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers(HttpMethod.GET, "/api/wookie_books/**")
                 .permitAll()
-//                .requestMatchers(HttpMethod.POST, "/api/wookie_books/**")
-//                .hasAnyRole(Roles.USER.name(),Roles.SUPER_ADMIN.name())
+                .requestMatchers(HttpMethod.POST, "/api/wookie_books/**")
+                .hasAnyAuthority(Roles.USER.name(),Roles.SUPER_ADMIN.name())
+                .requestMatchers(HttpMethod.PUT, "/api/wookie_books/**")
+                .hasAnyAuthority(Roles.USER.name(),Roles.SUPER_ADMIN.name())
+                .requestMatchers(HttpMethod.DELETE, "/api/wookie_books/**")
+                .hasAnyAuthority(Roles.USER.name(),Roles.SUPER_ADMIN.name())
                 .requestMatchers(WHITELIST) //open for this urls
                 .permitAll()
                 .anyRequest()
@@ -66,6 +70,28 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+    /*@Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf()
+                .disable()
+                .authorizeHttpRequests()
+                .requestMatchers(HttpMethod.GET, "/api/wookie_books/**")
+                .permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/wookie_books/**") // This line is corrected
+                .hasRole(Roles.USER.name()) // Only users with role "USER" can access POST requests
+                .anyRequest()
+                .authenticated()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authenticationProvider(authenticationProvider()) //from @Bean authenticationProvider()
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }*/
 
     //creating bean for authentication provider (responsible to take all inform for providing authentication)
     //so basically for we check matching username and password  we are using that authenticating provider
@@ -84,7 +110,7 @@ public class SecurityConfig {
     }
 
     /**
-     * @Bean for encrypting password
+     * Bean for encrypting password
      */
     @Bean
     public PasswordEncoder passwordEncoder() {

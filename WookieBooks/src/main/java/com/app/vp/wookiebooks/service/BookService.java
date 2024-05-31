@@ -10,11 +10,12 @@ import com.app.vp.wookiebooks.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.PermissionDeniedDataAccessException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -105,12 +106,17 @@ public class BookService {
     }
 
     private void validateAuthor(String authorPseudonym, Book book){
-        if(book.getAuthor().getRoles().equals(Roles.SUPER_ADMIN)){
-            return;
-        }
+        if(isSuperAdmin()) return;
+
         if(!book.getAuthor().getAuthorPseudonym().equals(authorPseudonym)){
             throw new PermissionDeniedException("Not enough permissions for actions with this book");
         }
+    }
+
+    private boolean isSuperAdmin(){
+        Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        Optional<? extends GrantedAuthority> optional = authorities.stream().filter((role) -> Roles.SUPER_ADMIN.name().equals(role.getAuthority())).findFirst();
+        return optional.isPresent();
     }
 
     //[GET]: findAllBooks
