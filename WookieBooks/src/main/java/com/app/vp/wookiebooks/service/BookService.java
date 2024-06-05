@@ -31,7 +31,7 @@ public class BookService {
 
     public List<Book> findAllBooks(String authorPseudonym,
                                    String title,
-                                   Double price){
+                                   Double price) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Book> query = criteriaBuilder.createQuery(Book.class);
         Root<Book> bookRoot = query.from(Book.class);
@@ -39,23 +39,23 @@ public class BookService {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        if(authorPseudonym != null){
+        if (authorPseudonym != null) {
             Join<Book, User> authorJoin = bookRoot.join("author");
             Predicate pseudonymPredicate = criteriaBuilder.equal(authorJoin.get("authorPseudonym"), authorPseudonym);
             predicates.add(pseudonymPredicate);
         }
 
-        if(title != null){
+        if (title != null) {
             Predicate titlePredicate = criteriaBuilder.equal(bookRoot.get("title"), title);
             predicates.add(titlePredicate);
         }
 
-        if(price != null){
+        if (price != null) {
             Predicate pricePredicate = criteriaBuilder.equal(bookRoot.get("price"), price);
             predicates.add(pricePredicate);
         }
 
-        Predicate [] predicatesArr = new Predicate[predicates.size()];
+        Predicate[] predicatesArr = new Predicate[predicates.size()];
         Predicate[] predicatesArray = predicates.toArray(predicatesArr);
         query.where(criteriaBuilder.and(predicatesArray));
 
@@ -66,7 +66,7 @@ public class BookService {
     //[POST]: createBook
     public Book createBook(Book book) {
         return bookRepository
-                .saveAndFlush(book);
+                .save(book);
     }
 
     //[GET]: findBookById
@@ -81,20 +81,19 @@ public class BookService {
                 .findBookByTitle(title);
     }
 
-    public void deleteBook(String title, String authorPseudonym){
+    public void deleteBook(String title, String authorPseudonym) {
         Optional<Book> bookByTitle = bookRepository.findBookByTitle(title);
-        if(bookByTitle.isPresent()){
+        if (bookByTitle.isPresent()) {
             Book book = bookByTitle.get();
             validateAuthor(authorPseudonym, book);
             bookRepository.delete(book);
-        }
-        else {
+        } else {
             throw new ResourceNotFoundException("Book with title " + title + " was not found");
         }
     }
 
-    public Book updateBook(Book candidate, Long bookId, String authorPseudonym){
-        Book book = bookRepository.findById(bookId).orElseThrow(()->
+    public Book updateBook(Book candidate, Long bookId, String authorPseudonym) {
+        Book book = bookRepository.findById(bookId).orElseThrow(() ->
                 new ResourceNotFoundException("Book with provided id: " + bookId + " is not found"));
         validateAuthor(authorPseudonym, book);
         book.setTitle(candidate.getTitle());
@@ -105,15 +104,15 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-    private void validateAuthor(String authorPseudonym, Book book){
-        if(isSuperAdmin()) return;
+    private void validateAuthor(String authorPseudonym, Book book) {
+        if (isSuperAdmin()) return;
 
-        if(!book.getAuthor().getAuthorPseudonym().equals(authorPseudonym)){
+        if (!book.getAuthor().getAuthorPseudonym().equals(authorPseudonym)) {
             throw new PermissionDeniedException("Not enough permissions for actions with this book");
         }
     }
 
-    private boolean isSuperAdmin(){
+    private boolean isSuperAdmin() {
         Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
         Optional<? extends GrantedAuthority> optional = authorities.stream().filter((role) -> Roles.SUPER_ADMIN.name().equals(role.getAuthority())).findFirst();
         return optional.isPresent();
@@ -148,43 +147,4 @@ public class BookService {
         return Optional.empty();
     }
 
-    //[GET]: findBooksByPriceLessThan
-    public Optional<List<Book>> findBooksByPriceLessThan(double price) {
-        if(price > 0){
-            List<Book> booksByPriceLessThan = bookRepository.findBooksByPriceLessThan(price);
-            return Optional.of(booksByPriceLessThan);
-        } else{
-            System.err.println("Price is not valid");
-            return Optional.empty();
-        }
-    }
-
-    //[GET]: findBooksByMiddlePrice
-    public Optional<List<Book>> findBooksByMiddlePrice(double minPrice, double maxPrice) {
-        if(minPrice > 0 & maxPrice > minPrice){
-            List<Book> booksByMiddlePrice = bookRepository.findBooksByMiddlePrice(minPrice, maxPrice);
-            return Optional.of(booksByMiddlePrice);
-        } else {
-            System.err.println("Price is not valid");
-            return Optional.empty();
-        }
-    }
-
-    //[GET]: findBooksByHighPrice
-    public Optional<List<Book>> findBooksByHighPrice(double minPrice) {
-        if(minPrice > 0){
-            List<Book> booksByHighPrice = bookRepository.findBooksByHighPrice(minPrice);
-            return Optional.of(booksByHighPrice);
-        } else {
-            System.err.println("Price is not valid");
-            return Optional.empty();
-        }
-    }
-
-    //[GET]: findBookAndUserByUserId
-    public Optional<List<Book>> findBookAndUserByUserId(Long userId){
-        List<Book> bookList = bookRepository.findBookAndUserByUserId(userId);
-        if(bookList != null) return Optional.of(bookList);
-        return Optional.empty();
-    }
 }

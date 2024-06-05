@@ -18,11 +18,11 @@ import java.util.Optional;
 /**
  * This class is a Spring Service responsible for business logic related to User.
  * It interacts with the database using:
- *  -the injected UserRepository (JpaRepository<User, Long>) interface;
- *  -the injected BookRepository (JpaRepository<Book, Long>) interface;
+ * -the injected UserRepository (JpaRepository<User, Long>) interface;
+ * -the injected BookRepository (JpaRepository<Book, Long>) interface;
  * This service provides methods for:
- *  -CRUD operations (Create, Read, Update, Delete) on User model.
- *  -Additional business logic specific to User management.
+ * -CRUD operations (Create, Read, Update, Delete) on User model.
+ * -Additional business logic specific to User management.
  */
 @Service
 public class UserService {
@@ -35,9 +35,9 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     @PostConstruct
-    public void init(){
+    public void init() {
         Optional<User> optionalUser = findUserByRole(Roles.SUPER_ADMIN);
-        if (optionalUser.isEmpty()){
+        if (optionalUser.isEmpty()) {
             User userDefault = new User();
             userDefault.setRoles(Roles.SUPER_ADMIN);
             userDefault.setAuthorPseudonym("Lohgarra");
@@ -47,13 +47,13 @@ public class UserService {
 
     }
 
-    public Optional<User> findUserByRole(Roles roles){
+    public Optional<User> findUserByRole(Roles roles) {
         return userRepository.findUserByRoles(roles);
     }
 
 
     //[POST]: createUser
-    public User createUser(User user){
+    public User createUser(User user) {
         String encoded = passwordEncoder.encode(user.getAuthorPassword());
         user.setAuthorPassword(encoded);
         return userRepository
@@ -61,21 +61,21 @@ public class UserService {
     }
 
     //[GET]: getUserById
-    public Optional<User> getUserById(Long userId){
+    public Optional<User> getUserById(Long userId) {
         return userRepository
                 .findById(userId);
     }
 
     //[GET]: findUserByAuthorPseudonym
-    public Optional<User> findUserByAuthorPseudonym(String authorPseudonym){
+    public Optional<User> findUserByAuthorPseudonym(String authorPseudonym) {
         return userRepository
                 .findUserByAuthorPseudonym(authorPseudonym);
     }
 
     //[PUT]: updateAuthorPseudonym
-    public Optional<User> updateAuthorPseudonym(String authorPseudonym, String newPseudonym){
+    public Optional<User> updateAuthorPseudonym(String authorPseudonym, String newPseudonym) {
         Optional<User> optionalUser = userRepository.findUserByAuthorPseudonym(authorPseudonym);
-        if (optionalUser.isPresent()){
+        if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             user.setAuthorPseudonym(newPseudonym);
             return Optional.of(userRepository
@@ -87,7 +87,7 @@ public class UserService {
     //[DELETE]: deleteUserById
     public int deleteUserById(Long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
-        if(optionalUser.isPresent()){
+        if (optionalUser.isPresent()) {
             userRepository
                     .deleteById(userId);
             return 0;
@@ -104,7 +104,7 @@ public class UserService {
     //[GET]: findUserByBookTitle
     public Optional<User> findUserByBookTitle(String title) {
         Optional<Book> bookByTitle = bookRepository.findBookByTitle(title);
-        if(bookByTitle.isPresent()){
+        if (bookByTitle.isPresent()) {
             Book book = bookByTitle.get();
             User user = book.getAuthor();
             return Optional.of(user);
@@ -113,10 +113,10 @@ public class UserService {
     }
 
     //[DELETE]: deleteBookByUser
-    public List<Book> deleteBookByUser(Long userId, Long bookId){
+    public List<Book> deleteBookByUser(Long userId, Long bookId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         List<Book> remainingBooks = new ArrayList<>();
-        if(optionalUser.isPresent()){
+        if (optionalUser.isPresent()) {
             User user = optionalUser.get();
             //retrieve all user`s books
             List<Book> userBooks = bookRepository.findBookAndUserByUserId(user.getUserId());
@@ -124,7 +124,7 @@ public class UserService {
             Book bookHasToBeDeleted = userBooks.stream()
                     .filter(book -> book.getBookId().equals(bookId))
                     .findFirst().orElse(null);
-            if(bookHasToBeDeleted != null){
+            if (bookHasToBeDeleted != null) {
                 //remove the book from user`s books and repository
                 userBooks.remove(bookHasToBeDeleted);
                 bookRepository.delete(bookHasToBeDeleted);

@@ -1,5 +1,6 @@
 package com.app.vp.wookiebooks.auth;
 
+import com.app.vp.wookiebooks.exceptions.ResourceNotFoundException;
 import com.app.vp.wookiebooks.model.User;
 import com.app.vp.wookiebooks.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,11 +31,9 @@ public class CustomUserDetailService implements UserDetailsService {
      * -logic is: to find at 1-step; and get details by this user at 2-step for springframework.User ;
      * */
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
         User user = findUser(username);
-        if(user == null){
-            throw new UsernameNotFoundException("User not found");
-        }
+
         return new org.springframework.security.core.userdetails.User(
                 user.getAuthorPseudonym(), //private String authorPseudonym from model.User
                 user.getAuthorPassword(), //private String authorPassword from model.User
@@ -45,8 +44,7 @@ public class CustomUserDetailService implements UserDetailsService {
      * Helper method: just to find user by authorPseudonym
      */
     private User findUser(String authorPseudonym){
-        Optional<User> optionalUser = userRepository.findUserByAuthorPseudonym(authorPseudonym);
-        return optionalUser.orElse(null);
+        return userRepository.findUserByAuthorPseudonym(authorPseudonym).orElseThrow(ResourceNotFoundException::new);
     }
 
 

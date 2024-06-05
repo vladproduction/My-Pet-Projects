@@ -19,24 +19,6 @@ import java.util.Optional;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-/**
- * Spring REST controller handles incoming HTTP requests to RestApiController.
- * -Allows only GET (List/Detail) operations
- * It provides endpoints for Book (postman):
- * -[POST]:     createBook;
- * -[GET]:      findBookById;
- * -[GET]:      findBookByTitle;
- * -[GET]:      findAllBooks;
- * -[GET]:      findAllBooksByUserId;
- * -[GET]:      findAllBooksByAuthorPseudonym;
- * -[GET]:      findBooksByPriceLessThan;
- * -[GET]:      findBooksByMiddlePrice;
- * -[GET]:      findBooksByHighPrice;
- * -[GET]:      findBookAndUserByUserId
- * Interacts with the following services:
- * -UserService;
- * -BookService;
- */
 @RestController
 @RequestMapping("/api/wookie_books")
 public class BookController {
@@ -47,7 +29,6 @@ public class BookController {
     private UserService userService;
 
     //[POST]: createBook
-//    @PostMapping("/books/createBook")
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public BookDto createBook(
@@ -67,12 +48,12 @@ public class BookController {
         Book book = BookMapper.mapToBook(bookDto);
         UserDto bookDtoAuthor = bookDto.getAuthor();
         defineAuthor(book, bookDtoAuthor);
-        Book updatedBook = bookService.updateBook(book,bookId, authorPseudonym);
+        Book updatedBook = bookService.updateBook(book, bookId, authorPseudonym);
         BookDto createdBookDto = BookMapper.mapToBookDto(updatedBook);
         return ok(createdBookDto);
     }
 
-    private void defineAuthor(Book book, UserDto bookDtoAuthor){
+    private void defineAuthor(Book book, UserDto bookDtoAuthor) {
         if (bookDtoAuthor != null) {
             String authorAuthorPseudonym = bookDtoAuthor.getAuthorPseudonym();
             if (authorAuthorPseudonym != null) {
@@ -83,22 +64,20 @@ public class BookController {
     }
 
     //[GET]: findBookById
-//    @GetMapping("/books/findBookById/{bookId}")
     @GetMapping("/{bookId}")
-    public ResponseEntity<Optional<BookDto>> findBookById(
+    public ResponseEntity<BookDto> findBookById(
             @PathVariable Long bookId) {
         Optional<Book> bookOptional = bookService.findBookById(bookId);
         if (bookOptional.isPresent()) {
             Book book = bookOptional.get();
             BookDto bookDto = BookMapper.mapToBookDto(book);
-            return ok(Optional.of(bookDto));
+            return ok(bookDto);
         }
         return ResponseEntity.notFound().build();
     }
 
 
     //[GET]: findAllBooks
-//    @GetMapping("/books/findAllBooks")
     @GetMapping
     public ResponseEntity<List<BookDto>> findAllBooks(@RequestParam(required = false) String authorPseudonym,
                                                       @RequestParam(required = false) String title,
@@ -110,104 +89,9 @@ public class BookController {
 
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteBook(@RequestParam String title){
+    public void deleteBook(@RequestParam String title) {
         String authorPseudonym = SecurityContextHolder.getContext().getAuthentication().getName();
-        System.out.println("authorPseudonym = " + authorPseudonym);
         bookService.deleteBook(title, authorPseudonym);
-    }
-
-
-    //[GET]: findBookByTitle
-    @GetMapping("/books/findBookByTitle")
-    public ResponseEntity<Optional<BookDto>> findBookByTitle(
-            @RequestParam String title) {
-        Optional<Book> bookOptional = bookService.findBookByTitle(title);
-        if (bookOptional.isPresent()) {
-            Book book = bookOptional.get();
-            BookDto bookDto = BookMapper.mapToBookDto(book);
-            return ok(Optional.of(bookDto));
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-    //[GET]: findAllBooksByUserId
-    @GetMapping("/books/findAllBooksByUserId/{userId}")
-    public ResponseEntity<List<BookDto>> findAllBooksByUserId(
-            @PathVariable Long userId) {
-        Optional<List<Book>> optionalBooks = bookService.findAllBooksByUserId(userId);
-        if (optionalBooks.isPresent()) {
-            List<Book> bookList = optionalBooks.get();
-            List<BookDto> bookDtoList = BookMapper.mapToListDtoBooks(bookList);
-            return ok(bookDtoList);
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-    //[GET]: findAllBooksByAuthorPseudonym
-    @GetMapping("/books/findAllBooksByAuthorPseudonym")
-    public ResponseEntity<Optional<List<BookDto>>> findAllBooksByAuthorPseudonym(
-            @RequestParam String authorPseudonym) {
-        Optional<List<Book>> optionalBooks = bookService.findAllBooksByAuthorPseudonym(authorPseudonym);
-        if (optionalBooks.isPresent()) {
-            List<Book> bookList = optionalBooks.get();
-            List<BookDto> bookDtoList = BookMapper.mapToListDtoBooks(bookList);
-            return ok(Optional.of(bookDtoList));
-        }
-        return ResponseEntity.notFound().build();
-    }
-
-    //[GET]: findBooksByPriceLessThan
-    @GetMapping("/books/findBooksByPriceLessThan")
-    public ResponseEntity<List<BookDto>> findBooksByPriceLessThan(@RequestParam double price) {
-        Optional<List<Book>> optionalBooks = bookService.findBooksByPriceLessThan(price);
-        ResponseEntity<List<BookDto>> bookDtoList = getListResponseEntity(optionalBooks);
-        if (bookDtoList != null) return bookDtoList;
-        return ResponseEntity.notFound().build();
-    }
-
-    //[GET]: findBooksByMiddlePrice
-    @GetMapping("/books/findBooksByMiddlePrice")
-    public ResponseEntity<List<BookDto>> findBooksByMiddlePrice(@RequestParam double minPrice,
-                                                                @RequestParam double maxPrice) {
-        Optional<List<Book>> optionalBooks = bookService.findBooksByMiddlePrice(minPrice, maxPrice);
-        ResponseEntity<List<BookDto>> bookDtoList = getListResponseEntity(optionalBooks);
-        if (bookDtoList != null) return bookDtoList;
-        return ResponseEntity.notFound().build();
-    }
-
-    //[GET]: findBooksByHighPrice
-    @GetMapping("/books/findBooksByHighPrice")
-    public ResponseEntity<List<BookDto>> findBooksByHighPrice(@RequestParam double minPrice) {
-        Optional<List<Book>> optionalBooks = bookService.findBooksByHighPrice(minPrice);
-        ResponseEntity<List<BookDto>> bookDtoList = getListResponseEntity(optionalBooks);
-        if (bookDtoList != null) return bookDtoList;
-        return ResponseEntity.notFound().build();
-    }
-
-    //[GET]: findBookAndUserByUserId
-    @GetMapping("/books/findBookAndUserByUserId/{userId}")
-    public ResponseEntity<List<BookDto>> findBookAndUserByUserId(@PathVariable Long userId) {
-        Optional<List<Book>> optionalBooks = bookService.findBookAndUserByUserId(userId);
-        ResponseEntity<List<BookDto>> bookDtoList = getListResponseEntity(optionalBooks);
-        if (bookDtoList != null) return bookDtoList;
-        return ResponseEntity.notFound().build();
-    }
-
-
-    /**
-     * Helper getListResponseEntity;
-     * Offer to hide duplicate code;
-     *
-     * @param optionalBooks as Optional<List<Book>>.
-     * @return ResponseEntity<List < BookDto>> as OK. (in other case 'null').
-     */
-    private static ResponseEntity<List<BookDto>> getListResponseEntity(Optional<List<Book>> optionalBooks) {
-        if (optionalBooks.isPresent()) {
-            List<Book> bookList = optionalBooks.get();
-            List<BookDto> bookDtoList = BookMapper.mapToListDtoBooks(bookList);
-            return ok(bookDtoList);
-        }
-        return null;
     }
 
 }

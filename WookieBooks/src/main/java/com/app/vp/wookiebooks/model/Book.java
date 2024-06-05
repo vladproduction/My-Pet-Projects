@@ -12,7 +12,7 @@ import java.util.Objects;
  * Constraints:
  * -bookId (generated sequence)
  * -title (unique value)
- * */
+ */
 @Entity
 @Getter
 @Setter

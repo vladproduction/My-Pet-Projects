@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = ResourceNotFoundException.class)
-    public ResponseEntity<Object> handle(ResourceNotFoundException exception){
+    public ResponseEntity<Object> handle(ResourceNotFoundException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = PermissionDeniedException.class)
-    public ResponseEntity<Object> handle2(PermissionDeniedException exception){
+    public ResponseEntity<Object> handle(PermissionDeniedException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.FORBIDDEN);
     }
 

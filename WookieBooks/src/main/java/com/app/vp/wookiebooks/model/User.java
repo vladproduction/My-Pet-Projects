@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * Model class:
  * custom user model with an "author pseudonym" field
- * */
+ */
 @Entity
 @Getter
 @Setter

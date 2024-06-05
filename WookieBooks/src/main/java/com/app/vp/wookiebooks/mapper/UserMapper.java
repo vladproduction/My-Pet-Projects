@@ -14,15 +14,16 @@ import java.util.List;
  * -mapToUser(UserDto),
  * -mapToUserDto(User);
  * For creating objects using @Builder;
- * */
+ */
 public class UserMapper {
 
     /**
      * Method for conversion UserDto to User object.
+     *
      * @param userDto UserDto object
      * @return user User object
-     * */
-    public static User mapToUser(UserDto userDto){
+     */
+    public static User mapToUser(UserDto userDto) {
         User user = User.builder()
                 .authorPseudonym(userDto.getAuthorPseudonym())
                 .authorPassword(userDto.getAuthorPassword())
@@ -33,10 +34,11 @@ public class UserMapper {
 
     /**
      * Method for conversion User to UserDto object.
+     *
      * @param user User object
      * @return userDto UserDto object
-     * */
-    public static UserDto mapToUserDto(User user){
+     */
+    public static UserDto mapToUserDto(User user) {
         UserDto userDto = UserDto.builder()
                 .authorPseudonym(user.getAuthorPseudonym())
                 .authorPassword(user.getAuthorPassword())
@@ -46,9 +48,10 @@ public class UserMapper {
 
     /**
      * Method for conversion List<User> to List<UserDto>.
+     *
      * @param users List<User>;
      * @return listDtoUsers List<UserDto>;
-     * */
+     */
     public static List<UserDto> mapToListDtoUsers(List<User> users) {
         List<UserDto> listDtoUsers = new ArrayList<>();
         for (User user : users) {
@@ -57,16 +60,4 @@ public class UserMapper {
         return listDtoUsers;
     }
 
-    /**
-     * Method for conversion List<UserDto> to List<User>.
-     * @param usersDto List<UserDto>;
-     * @return listUsers List<User>;
-     * */
-    public static List<User> mapToListUsers(List<UserDto> usersDto) {
-        List<User> listUsers = new ArrayList<>();
-        for (UserDto userDto : usersDto) {
-            listUsers.add(mapToUser(userDto));
-        }
-        return listUsers;
-    }
 }
