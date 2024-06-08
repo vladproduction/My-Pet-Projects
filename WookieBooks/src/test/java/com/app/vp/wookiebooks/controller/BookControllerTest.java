@@ -1,12 +1,10 @@
 package com.app.vp.wookiebooks.controller;
 
 import com.app.vp.wookiebooks.dto.BookDto;
-import com.app.vp.wookiebooks.dto.UserDto;
 import com.app.vp.wookiebooks.model.Book;
 import com.app.vp.wookiebooks.model.User;
 import com.app.vp.wookiebooks.service.BookService;
 import com.app.vp.wookiebooks.service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,14 +21,12 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
-import static com.app.vp.wookiebooks.mapper.BookMapper.*;
-import static com.app.vp.wookiebooks.mapper.UserMapper.mapToListDtoUsers;
-import static com.app.vp.wookiebooks.mapper.UserMapper.mapToUserDto;
-import static com.app.vp.wookiebooks.utils.JsonUtils.toJson;
+import static com.app.vp.wookiebooks.controller.JsonUtils.toJson;
+import static com.app.vp.wookiebooks.mapper.BookMapper.mapToBookDto;
+import static com.app.vp.wookiebooks.mapper.BookMapper.mapToListDtoBooks;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
