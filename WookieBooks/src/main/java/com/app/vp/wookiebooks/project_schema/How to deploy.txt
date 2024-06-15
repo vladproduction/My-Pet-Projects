@@ -1,0 +1,60 @@
+-/..>clean install for project locally (prepare project to deploy)
+-/..WookieBooks\target> java -jar .\WookieBooks-0.0.1-SNAPSHOT.jar (run project locally by jar file)
+-DigitalOcean create group of projects (VladProjects) create droplet - comp in Germany
+-password for connection: VladProjects2024Ocean
+-open WinSCP: 
+	*host name:167.172.39.210
+	*user name:root
+	*password:VladProjects2024Ocean
+	*hit Login
+-moove files to right side (remote comp)
+-open session in terminal: 'ctrl + p' and press password and enter
+-after success connection to remote comp, we can send commands...
+-commands:
+	*what version of java we have:java --version
+	openjdk 17.0.11 2024-04-16
+	OpenJDK Runtime Environment (build 17.0.11+9-Ubuntu-1)
+	OpenJDK 64-Bit Server VM (build 17.0.11+9-Ubuntu-1, mixed mode, sharing)
+	
+	*which directory we are now: pwd
+	/root
+	
+	*what files in current directory: ls
+	WookieBooks-0.0.1-SNAPSHOT.jar
+	
+	*to run jar:
+	java -jar WookieBooks-0.0.1-SNAPSHOT.jar
+	
+	*how to check if we have installed mysql:
+	mysql --version
+	mysql  Ver 8.0.36-2ubuntu3 for Linux on x86_64 ((Ubuntu))
+	(if not install go lin steps: https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-20-04)
+	comands to install:
+	-sudo apt update
+	-sudo apt install mysql-server
+	-sudo systemctl start mysql.service
+	
+	*create user for db:
+	ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+	do
+	ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '11111111';
+	exit
+	
+	*enter to db as user (root) with password (11111111)
+	mysql -u root -p
+	11111111
+	
+	*now we can create db: 
+	create database wookie_books;
+	
+- now we are ready to run project from remote server:
+java -jar WookieBooks-0.0.1-SNAPSHOT.jar
+
+-how to check if any screens work:
+screen -ls
+
+-how to create sceen:
+screen -S 'name of screen'
+
+-how to screen kill:
+skreen kill -9 'name of screen'
