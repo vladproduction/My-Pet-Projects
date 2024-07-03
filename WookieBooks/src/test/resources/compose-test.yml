@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: 11111111
+      MYSQL_DATABASE: wookie_books
+    networks:
+      sb-mysql-wookie:
+    healthcheck:
+      test: ["CMD-SHELL", "mysql --user=root --password=11111111 --execute 'show databases;' || exit 1"]
+      interval: 15s
+      retries: 5
+
+
+  container-wookie:
+    depends_on:
+      - mysql
+    image: vladbogdadocker/wookie:1.0
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/wookie_books
+    ports:
+      - "8090:8083"
+    networks:
+      sb-mysql-wookie:
+    restart: on-failure
+
+networks:
+  sb-mysql-wookie:
