@@ -11,8 +11,10 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @ToString
+@EqualsAndHashCode
 public class UserDto {
 
+    private Long userId;
     private String authorPseudonym;
     private String authorPassword;
 

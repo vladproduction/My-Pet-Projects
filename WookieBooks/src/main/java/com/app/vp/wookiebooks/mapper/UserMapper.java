@@ -25,6 +25,7 @@ public class UserMapper {
      */
     public static User mapToUser(UserDto userDto) {
         User user = User.builder()
+                .userId(userDto.getUserId())
                 .authorPseudonym(userDto.getAuthorPseudonym())
                 .authorPassword(userDto.getAuthorPassword())
                 .roles(Roles.USER)
@@ -40,6 +41,7 @@ public class UserMapper {
      */
     public static UserDto mapToUserDto(User user) {
         UserDto userDto = UserDto.builder()
+                .userId(user.getUserId())
                 .authorPseudonym(user.getAuthorPseudonym())
                 .authorPassword(user.getAuthorPassword())
                 .build();

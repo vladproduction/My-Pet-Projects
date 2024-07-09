@@ -1,13 +1,8 @@
 package com.app.vp.wookiebooks.controller;
 
-import com.app.vp.wookiebooks.dto.BookDto;
 import com.app.vp.wookiebooks.dto.UserDto;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.ClassRule;
 import org.junit.Test;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.testcontainers.containers.DockerComposeContainer;
@@ -26,7 +21,7 @@ import static org.junit.Assert.*;
 //@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 //@AutoConfigureMockMvc
 @Testcontainers
-public class BookControllerContainerTest {
+public class UserControllerContainerTest {
 
     private RestTemplate restTemplate = new RestTemplate();
     private static final String BASE_URL_TEMPLATE = "http://localhost:8090/api";
@@ -39,26 +34,7 @@ public class BookControllerContainerTest {
     @Test
     public void test() throws URISyntaxException, IOException, InterruptedException {
 
-        //create user
-        UserDto userDto = createUser("Login123", "password123");
-
-        //generate token
-        String token = createToken(userDto.getAuthorPseudonym(), userDto.getAuthorPassword());
-
-        //create new book with token in headers
-        BookDto bookDto = new BookDto(
-                "Title1",
-                "description1",
-                userDto,
-                "defaultPicture1",
-                25.5
-        );
-        BookDto bookDtoCreated = createBook(bookDto, token);
-
-
-
-
-/*//        Thread.sleep();
+//        Thread.sleep();
         assertTrue(findAllUsers().size() == 1);
         UserDto lohgarra = findUserByAuthorPseudonym("Lohgarra");
 
@@ -110,41 +86,9 @@ public class BookControllerContainerTest {
 //        assertTrue(deleteId.getStatusCode().value() == 404);
 
         //finAllAfterDelete
-        assertTrue(findAllUsers().size() == 2);*/
+        assertTrue(findAllUsers().size() == 2);
 
 
-    }
-
-    private String createToken(String login, String password ){
-        Map<String, String> jsonBody = new HashMap<>();
-        jsonBody.put("username", login);
-        jsonBody.put("password", password);
-        ResponseEntity<String> response =
-                restTemplate.postForEntity(BASE_URL_TEMPLATE + "/token", jsonBody, String.class);
-        assertTrue(200 == response.getStatusCode().value());
-        return response.getBody();
-    }
-
-    private BookDto createBook(BookDto bookDto, String token) throws JsonProcessingException {
-        String json = makeJson(bookDto);
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", "Bearer " + token);
-        HttpEntity<String> httpEntity = new HttpEntity<>(json, headers);
-
-        ResponseEntity<BookDto> response =
-                restTemplate.postForEntity(BASE_URL_TEMPLATE + "/wookie_books", httpEntity, BookDto.class);
-        assertTrue(201 == response.getStatusCode().value());
-        BookDto bookDtoResponse = response.getBody();
-        assertNotNull(bookDtoResponse);
-        assertEquals(bookDto.getTitle(), bookDtoResponse.getTitle());
-        return bookDtoResponse;
-
-
-    }
-
-    private String makeJson(Object dto) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(dto);
     }
 
     private UserDto createUser(String login,  String password){
