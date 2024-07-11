@@ -8,7 +8,9 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.testcontainers.containers.DockerComposeContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -43,74 +45,66 @@ public class BookControllerContainerTest {
         UserDto userDto = createUser("Login123", "password123");
 
         //generate token
-        String token = createToken(userDto.getAuthorPseudonym(), userDto.getAuthorPassword());
+        String token = createToken(userDto.getAuthorPseudonym(), "password123");
+
+        List<BookDto> allBooksCreated = findAllBooks();
+        assertTrue(allBooksCreated.isEmpty());
 
         //create new book with token in headers
-        BookDto bookDto = new BookDto(
+        BookDto bookDto1 = new BookDto(
                 "Title1",
                 "description1",
                 userDto,
                 "defaultPicture1",
                 25.5
         );
-        BookDto bookDtoCreated = createBook(bookDto, token);
+        BookDto bookDtoCreated1 = createBook(bookDto1, token);
+        allBooksCreated = findAllBooks();
+        assertTrue(allBooksCreated.size() == 1);
 
+        //scenario to create more than one book:
+        BookDto bookDto2 = new BookDto(
+                "Title2",
+                "description2",
+                userDto,
+                "defaultPicture2",
+                26.5
+        );
+        BookDto bookDtoCreated2 = createBook(bookDto2, token);
+        allBooksCreated = findAllBooks();
+        assertTrue(allBooksCreated.size() == 2);
 
+        BookDto bookDto3 = new BookDto(
+                "Title3",
+                "description3",
+                userDto,
+                "defaultPicture3",
+                27.5
+        );
+        BookDto bookDtoCreated3 = createBook(bookDto3, token);
+        allBooksCreated = findAllBooks();
+        assertTrue(allBooksCreated.size() == 3);
 
+        //todo: need add 'id' to bookDto
+//        findBookById();
 
-/*//        Thread.sleep();
-        assertTrue(findAllUsers().size() == 1);
-        UserDto lohgarra = findUserByAuthorPseudonym("Lohgarra");
+        List<BookDto> bookDtoListByTitle = findAllBooks(null, bookDto1.getTitle(), null);
+        assertTrue(bookDtoListByTitle.size() == 1);
+        assertEquals(bookDtoListByTitle.get(0).getTitle(), bookDtoCreated1.getTitle());
 
-        //create
-        UserDto userDto1 = createUser("User1", "User1");
-        UserDto userDto2 = createUser("User2", "User2");
+        List<BookDto> bookDtoListByPrice = findAllBooks(null, null, bookDto1.getPrice());
+        assertTrue(bookDtoListByPrice.size() == 1);
+        assertEquals(bookDtoListByPrice.get(0).getPrice(), bookDtoCreated1.getPrice());
 
-        //getAll
-        List<UserDto> userDtoList = findAllUsers();
-        assertNotNull(userDtoList);
-        assertTrue(userDtoList.size() == 3);
-        assertEquals(userDtoList.get(0), lohgarra);
-        assertEquals(userDtoList.get(1), userDto1);
-        assertEquals(userDtoList.get(2), userDto2);
+        List<BookDto> bookDtoListByPseudo = findAllBooks(userDto.getAuthorPseudonym(), null, null);
+        assertTrue(bookDtoListByPseudo.size() == 3);
 
-        //getById
-        UserDto userDtoById1 = findUserById(userDto1.getUserId());
-        UserDto userDtoById2 = findUserById(userDto2.getUserId());
-        assertEquals(userDtoById1, userDto1);
-        assertEquals(userDtoById2, userDto2);
+        List<BookDto> bookDtoListByAllParams = findAllBooks(userDto.getAuthorPseudonym(), bookDto1.getTitle(), bookDto1.getPrice());
+        assertTrue(bookDtoListByAllParams.size() == 1);
+        assertEquals(bookDtoListByAllParams.get(0).getTitle(), bookDtoCreated1.getTitle());
+        assertEquals(bookDtoListByAllParams.get(0).getPrice(), bookDtoCreated1.getPrice());
+        assertEquals(bookDtoListByAllParams.get(0).getAuthor().getAuthorPseudonym(), bookDtoCreated1.getAuthor().getAuthorPseudonym());
 
-        //getByAuthorPseudonym
-        UserDto userDtoAP1 = findUserByAuthorPseudonym(userDto1.getAuthorPseudonym());
-        UserDto userDtoAP2 = findUserByAuthorPseudonym(userDto2.getAuthorPseudonym());
-        assertEquals(userDtoAP1, userDto1);
-        assertEquals(userDtoAP2, userDto2);
-
-        //incorrect byId
-//        ResponseEntity<UserDto> userByIdOptional = findUserByIdOptional(-1L);
-//        assertTrue(userByIdOptional.getStatusCode().value() == 404);
-
-        //incorrect byAuthorPseudonym
-//        ResponseEntity<UserDto> userByAuthorPseudonymOptional = findUserByAuthorPseudonymOptional("-1L");
-//        assertTrue(userByAuthorPseudonymOptional.getStatusCode().value() == 404);
-
-        //update
-        updateUserByAuthorPseudonym(userDto1.getAuthorPseudonym(), "UserUpdated1");
-//        userByAuthorPseudonymOptional = findUserByAuthorPseudonymOptional(userDto1.getAuthorPseudonym());
-//        assertTrue(userByAuthorPseudonymOptional.getStatusCode().value() == 404);
-        userDtoById1 = findUserById(userDto1.getUserId());
-        assertNotNull(userDtoById1);
-        assertNotEquals(userDtoById1, userDto1);
-        assertNotEquals(userDtoById1.getAuthorPseudonym(), userDto1.getAuthorPseudonym());
-        assertEquals(userDtoById1.getUserId(), userDto1.getUserId());
-
-        //deleteById
-        deleteById(userDto1.getUserId());
-//        ResponseEntity<UserDto> deleteId = findUserByIdOptional(userDto1.getUserId());
-//        assertTrue(deleteId.getStatusCode().value() == 404);
-
-        //finAllAfterDelete
-        assertTrue(findAllUsers().size() == 2);*/
 
 
     }
@@ -129,6 +123,7 @@ public class BookControllerContainerTest {
         String json = makeJson(bookDto);
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + token);
+        headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<String> httpEntity = new HttpEntity<>(json, headers);
 
         ResponseEntity<BookDto> response =
@@ -160,13 +155,13 @@ public class BookControllerContainerTest {
         return userDto;
     }
 
-    private UserDto findUserById(Long id){
-        ResponseEntity<UserDto> response =
-                restTemplate.getForEntity(BASE_URL_TEMPLATE + "/user/" + id, UserDto.class);
+    private BookDto findBookById(Long id){
+        ResponseEntity<BookDto> response =
+                restTemplate.getForEntity(BASE_URL_TEMPLATE + "/wookie_books/" + id, BookDto.class);
         assertTrue(200 == response.getStatusCode().value());
-        UserDto userDto = response.getBody();
-        assertNotNull(userDto);
-        return userDto;
+        BookDto bookDto = response.getBody();
+        assertNotNull(bookDto);
+        return bookDto;
     }
 
     //if incorrect input or if not exist:
@@ -202,15 +197,36 @@ public class BookControllerContainerTest {
         restTemplate.delete(BASE_URL_TEMPLATE + "/user/" + userId);
     }
 
-    private List<UserDto> findAllUsers(){
-        ResponseEntity<UserDto[]> response =
-                restTemplate.getForEntity(BASE_URL_TEMPLATE + "/user", UserDto[].class);
+    private List<BookDto> findAllBooks(String authorPseudonym,
+                                       String title,
+                                       Double price){
+        String params = "?";
+        if(authorPseudonym != null){
+            params += "authorPseudonym=" + authorPseudonym + "&";
+        }
+        if(title != null){
+            params += "title=" + title + "&";
+        }
+        if(price != null){
+            params += "price=" + price;
+        }
+        ResponseEntity<BookDto[]> response =
+                restTemplate.getForEntity(BASE_URL_TEMPLATE + params, BookDto[].class);
         assertTrue(200 == response.getStatusCode().value());
-        UserDto[] userDto = response.getBody();
-        assertNotNull(userDto);
-        return Arrays.asList(userDto);
+        BookDto[] bookDto = response.getBody();
+        assertNotNull(bookDto);
+        return Arrays.asList(bookDto);
     }
 
+    private List<BookDto> findAllBooks(){
+        return findAllBooks(null, null, null);
+    }
+
+    //todo
+    //findall
+    //update, delete
+    //extract methods to other class (user, book)
+    //refact
     //by book title need too
 
 
