@@ -20,7 +20,7 @@ public class TestMain {
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<BookDto[]> response =
-                restTemplate.getForEntity("http://localhost:8090/api/wookie_books", BookDto[].class);
+                restTemplate.getForEntity("http://localhost:8083/api/wookie_books", BookDto[].class);
         System.out.println("response = " + response.getStatusCode());
         System.out.println("response = " + Arrays.toString(response.getBody()));
 

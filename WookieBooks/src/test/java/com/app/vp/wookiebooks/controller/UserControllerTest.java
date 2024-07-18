@@ -23,7 +23,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.util.List;
 import java.util.Optional;
 
-import static com.app.vp.wookiebooks.controller.JsonUtils.toJson;
+import static com.app.vp.wookiebooks.controller.utils.Utils.toJson;
 import static com.app.vp.wookiebooks.mapper.UserMapper.mapToListDtoUsers;
 import static com.app.vp.wookiebooks.mapper.UserMapper.mapToUserDto;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
