@@ -1,8 +1,6 @@
-package com.app.vp.wookiebooks.controller;
+package com.app.vp.wookiebooks.controller.mock;
 
-import com.app.vp.wookiebooks.dto.BookDto;
 import com.app.vp.wookiebooks.dto.UserDto;
-import com.app.vp.wookiebooks.mapper.BookMapper;
 import com.app.vp.wookiebooks.model.Book;
 import com.app.vp.wookiebooks.model.User;
 import com.app.vp.wookiebooks.service.BookService;
@@ -28,11 +26,14 @@ import static com.app.vp.wookiebooks.mapper.UserMapper.mapToListDtoUsers;
 import static com.app.vp.wookiebooks.mapper.UserMapper.mapToUserDto;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @Testcontainers
 class UserControllerTest {
+
+    private static final String BASE_URL = "/api/user";
 
     @Autowired
     private MockMvc mockMvc;
@@ -60,14 +61,15 @@ class UserControllerTest {
         //create new user
         UserDto userDto = UserDto.builder()
                 .authorPseudonym("Neo")
+                .authorPassword("123123")
                 .build();
         //testing endpoint save (userDto that been created) & getting result as  response userDto
         var result = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/wookie_books/user/createUser")
+                        .post(BASE_URL)
                         .contentType("application/json")
                         .content(toJson(userDto))
                         .accept("application/json"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andReturn();
         //find user that has been saved
         Optional<User> optionalUser = Optional.of(userService
@@ -84,6 +86,7 @@ class UserControllerTest {
         //create new user
         User user = User.builder()
                 .authorPseudonym("Trinity")
+                .authorPassword("123123")
                 .build();
         //saving
         User savedUser = userService.createUser(user);
@@ -91,7 +94,7 @@ class UserControllerTest {
         Long userId = savedUser.getUserId();
         //testing endpoint getUserById & get response
         var result = mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/wookie_books/user/getUserById/{userId}", userId)
+                        .get(BASE_URL + "/{userId}", userId)
                         .contentType("application/json")
                         .accept("application/json"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -99,8 +102,8 @@ class UserControllerTest {
 
         //find user that has been saved by userId
         Optional<User> optionalUser = Optional.of(userService
-                        .getUserById(savedUser.getUserId())
-                        .orElseThrow());
+                .getUserById(savedUser.getUserId())
+                .orElseThrow());
         //assert that result of endpoint is the same as user been saved
         assertThat(result.getResponse().getContentAsString())
                 .isEqualTo(toJson(mapToUserDto(optionalUser.get())));
@@ -111,6 +114,7 @@ class UserControllerTest {
         //create new user
         User user = User.builder()
                 .authorPseudonym("Link")
+                .authorPassword("123123123")
                 .build();
         //saving
         User savedUser = userService.createUser(user);
@@ -118,8 +122,7 @@ class UserControllerTest {
         String authorPseudonym = savedUser.getAuthorPseudonym();
         //testing endpoint findUserByAuthorPseudonym & get response
         var result = mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/wookie_books/user/findUserByAuthorPseudonym")
-                        .param("authorPseudonym", authorPseudonym)
+                        .get(BASE_URL + "/authorPseudonym/" + authorPseudonym)
                         .contentType("application/json")
                         .accept("application/json"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -134,7 +137,7 @@ class UserControllerTest {
                 .isEqualTo(toJson(mapToUserDto(optionalUser.get())));
         //additional compare
         String pseudonym = optionalUser.get().getAuthorPseudonym();
-        assertEquals(pseudonym,"Link");
+        assertEquals(pseudonym, "Link");
     }
 
     @Test
@@ -142,6 +145,7 @@ class UserControllerTest {
         //create new user
         User user = User.builder()
                 .authorPseudonym("Link-Pseudonym1")
+                .authorPassword("121231233")
                 .build();
         //saving
         User savedUser = userService.createUser(user);
@@ -150,8 +154,7 @@ class UserControllerTest {
         String newPseudonym = "Link-Pseudonym2";
         //testing endpoint updateAuthorPseudonym & get response
         var result = mockMvc.perform(MockMvcRequestBuilders
-                        .put("/api/wookie_books/user/updateAuthorPseudonym")
-                        .param("authorPseudonym", authorPseudonym)
+                        .put(BASE_URL + "/authorPseudonym/" + authorPseudonym)
                         .param("newPseudonym", newPseudonym)
                         .contentType("application/json")
                         .accept("application/json"))
@@ -160,14 +163,14 @@ class UserControllerTest {
                 .andReturn();
         //find user that has been saved with the newPseudonym
         Optional<User> optionalUser = Optional.of(userService
-                .findUserByAuthorPseudonym(newPseudonym))
+                        .findUserByAuthorPseudonym(newPseudonym))
                 .orElseThrow();
         //assert that result of endpoint is the same as user been saved
         assertThat(result.getResponse().getContentAsString())
                 .isEqualTo(toJson(mapToUserDto(optionalUser.get())));
         //additional compare
         String pseudonym = optionalUser.get().getAuthorPseudonym();
-        assertEquals(pseudonym,"Link-Pseudonym2");
+        assertEquals(pseudonym, "Link-Pseudonym2");
     }
 
     @Test
@@ -175,31 +178,34 @@ class UserControllerTest {
         //create 2 new users
         User user1 = User.builder()
                 .authorPseudonym("Link-1")
+                .authorPassword("48899555")
                 .build();
         User user2 = User.builder()
                 .authorPseudonym("Link-2")
+                .authorPassword("48899566")
                 .build();
         //saving both
         User savedUser1 = userService.createUser(user1);
         User savedUser2 = userService.createUser(user2);
         //check if they are both been saved
         List<User> allUsers = userService.findAllUsers();
-        int allUsersAmountBeforeModification = allUsers.size();
-        System.out.println("allUsersAmountBeforeModification = " + allUsersAmountBeforeModification);//expected: 2
+        int allUsersAmountBeforeModification = allUsers.size() + 1; //default Langharra user 'post construct'
+        System.out.println("allUsersAmountBeforeModification = " + allUsersAmountBeforeModification);//expected: 3
         //get id from user that wanted to be deleted
         Long userId = savedUser1.getUserId(); //want to delete user1
         //testing endpoint deleteUserById
         mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/api/wookie_books/user/deleteUserById/{userId}", userId)
+                        .delete(BASE_URL + "/{userId}", userId)
                         .contentType("application/json")
                         .accept("application/json"))
                 .andExpect(MockMvcResultMatchers.status().isOk());
         //check if our users amount decremented by 1, (is really user been deleted)
         List<User> allUsersNew = userService.findAllUsers();
-        int allUsersAmountAfterModification = allUsersNew.size();
-        System.out.println("allUsersAmountAfterModification = " + allUsersAmountAfterModification);//expected: 1
+        int allUsersAmountAfterModification = allUsersNew.size() + 1; //Longharra as always
+        System.out.println("allUsersAmountAfterModification = " + allUsersAmountAfterModification);//expected: 2
         //check if we have expected user after delete user1, so find user2
         Optional<User> optionalUser2 = userService.getUserById(savedUser2.getUserId());
+        assertTrue(optionalUser2.isPresent());
         User user2BeenSaved = optionalUser2.get();
         String pseudonym2 = user2BeenSaved.getAuthorPseudonym();
         //assertion by pseudonyms
@@ -211,20 +217,22 @@ class UserControllerTest {
         //create 2 new users
         User user1 = User.builder()
                 .authorPseudonym("user1")
+                .authorPassword("1233444")
                 .build();
         User user2 = User.builder()
                 .authorPseudonym("user2")
+                .authorPassword("45666888")
                 .build();
         //saving both
         userService.createUser(user1);
         userService.createUser(user2);
         //check if they are saved
         List<User> allUsers = userService.findAllUsers();
-        int allUsersSize = allUsers.size();
-        System.out.println("allUsersSize = " + allUsersSize); //expected 2
+        int allUsersSize = allUsers.size() + 1;
+        System.out.println("allUsersSize = " + allUsersSize); //expected 3
         //testing endpoint findAllUsers
         var result = mockMvc.perform(MockMvcRequestBuilders
-                .get("/api/wookie_books/user/findAllUsers")
+                        .get(BASE_URL)
                         .contentType("application/json")
                         .accept("application/json"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -244,6 +252,7 @@ class UserControllerTest {
         //create & save author:
         User user = User.builder() //create
                 .authorPseudonym("Author")
+                .authorPassword("12356667")
                 .build();
         userService.createUser(user); //save
         //create & save book:
@@ -257,8 +266,7 @@ class UserControllerTest {
         bookService.createBook(book);//save
         //testing endpoint findUserByBookTitle:
         var result = mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/wookie_books/user/findUserByBookTitle")
-                        .param("title", book.getTitle())
+                        .get(BASE_URL + "/title/" + book.getTitle())
                         .contentType("application/json")
                         .accept("application/json"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -269,72 +277,4 @@ class UserControllerTest {
         assertThat(result.getResponse().getContentAsString().equals(toJson(mapToUserDto(user))));
     }
 
-    @Test
-    void deleteBookByUserTest() throws Exception {
-        //scenario:
-        //1)create and save user
-        User user = User.builder() //create
-                .authorPseudonym("John")
-                .build();
-        User savedUser = userService.createUser(user);//save
-        String authorPseudonym = savedUser.getAuthorPseudonym();//get pseudonym to help to find existing user
-//2)create a couple of books for this user
-        Book book1 = Book.builder() //create
-                .title("TestBook1")
-                .author(user)
-                .price(20.99)
-                .coverImage("cover")
-                .description("text")
-                .build();
-        Book book1Saved = bookService.createBook(book1);
-        Long bookId = book1Saved.getBookId();
-        Book book2 = Book.builder() //create
-                .title("TestBook2")
-                .author(user)
-                .price(20.99)
-                .coverImage("cover")
-                .description("text")
-                .build();
-        bookService.createBook(book2);
-        //3)find all books by this user
-        Optional<List<Book>> books = bookService.findAllBooksByAuthorPseudonym(authorPseudonym);
-        //4)define a book wanted to delete
-        System.out.println("-------books before delete-------");
-        if(books.isPresent()){
-            List<Book> bookList = books.get();
-            for (Book book : bookList) {
-                String bookTitle = book.getTitle();
-                System.out.println(bookTitle);
-            }
-        }
-        //5)delete the book
-        //testing endpoint
-        Long userId = savedUser.getUserId();
-        var result = mockMvc.perform(MockMvcRequestBuilders
-                        .delete("/api/wookie_books/user/deleteBookByUser/{userId}", userId)
-                        .param("bookId", String.valueOf(bookId))
-                        .contentType("application/json")
-                        .accept("application/json"))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andReturn();
-        //6)check if book was removed
-        Optional<List<Book>> booksUpdated = bookService.findAllBooksByAuthorPseudonym(authorPseudonym);
-        System.out.println("-------books after delete-------");
-        if(booksUpdated.isPresent()){
-            List<Book> bookList = booksUpdated.get();
-            for (Book book : bookList) {
-                System.out.println(book);
-            }
-        }
-        System.out.println("result = " + result.getResponse().getContentAsString());
-        //assertion
-        List<Book> bookList = booksUpdated.get();
-        List<BookDto> bookDtoList = BookMapper.mapToListDtoBooks(bookList);
-        assertThat(result.getResponse().getContentAsString().equals(toJson(bookDtoList)));
-    }
-
-    @Test
-    void updateBookByUserTest() {
-        //todo: have to define endpoint first
-    }
 }

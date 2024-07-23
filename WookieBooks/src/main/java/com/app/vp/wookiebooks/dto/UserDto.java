@@ -15,7 +15,7 @@ import lombok.*;
 public class UserDto {
 
     private Long userId;
-    private String authorPseudonym;
+    private String authorPseudonym; //authorPseudonym
     private String authorPassword;
 
 }

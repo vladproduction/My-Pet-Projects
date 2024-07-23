@@ -28,7 +28,6 @@ public class BookController {
     @Autowired
     private UserService userService;
 
-    //[POST]: createBook
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public BookDto createBook(

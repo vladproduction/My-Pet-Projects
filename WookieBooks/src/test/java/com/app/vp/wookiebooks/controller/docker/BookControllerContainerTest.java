@@ -1,4 +1,4 @@
-package com.app.vp.wookiebooks.controller;
+package com.app.vp.wookiebooks.controller.docker;
 
 import com.app.vp.wookiebooks.dto.BookDto;
 import com.app.vp.wookiebooks.dto.UserDto;
@@ -25,7 +25,7 @@ public class BookControllerContainerTest {
             new DockerComposeContainer(new File("src/test/resources/compose-test.yml"));
 
     @Test
-    public void test() throws IOException{
+    public void test() throws IOException {
 
         verifyStart(10000L, 5);
 
@@ -79,7 +79,7 @@ public class BookControllerContainerTest {
 
         List<BookDto> bookDtoListByPrice = findAllBooks(null, null, bookDto1.getPrice());
         assertTrue(bookDtoListByPrice.size() == 1);
-        assertEquals(bookDtoListByPrice.get(0).getPrice(), bookDtoCreated1.getPrice());
+        assertTrue(bookDtoListByPrice.get(0).getPrice() == bookDtoCreated1.getPrice());
 
         List<BookDto> bookDtoListByPseudo = findAllBooks(userDto.getAuthorPseudonym(), null, null);
         assertTrue(bookDtoListByPseudo.size() == 3);
@@ -87,20 +87,8 @@ public class BookControllerContainerTest {
         List<BookDto> bookDtoListByAllParams = findAllBooks(userDto.getAuthorPseudonym(), bookDto1.getTitle(), bookDto1.getPrice());
         assertTrue(bookDtoListByAllParams.size() == 1);
         assertEquals(bookDtoListByAllParams.get(0).getTitle(), bookDtoCreated1.getTitle());
-        assertEquals(bookDtoListByAllParams.get(0).getPrice(), bookDtoCreated1.getPrice());
+        assertTrue(bookDtoListByAllParams.get(0).getPrice() == bookDtoCreated1.getPrice());
         assertEquals(bookDtoListByAllParams.get(0).getAuthor().getAuthorPseudonym(), bookDtoCreated1.getAuthor().getAuthorPseudonym());
-
-
-
     }
-
-
-
-    //todo (2.0)
-    //fix bookControllerContainerTest
-
-
-
-
 
 }

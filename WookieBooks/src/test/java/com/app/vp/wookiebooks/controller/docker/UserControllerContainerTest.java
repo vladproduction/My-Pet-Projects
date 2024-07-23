@@ -1,4 +1,4 @@
-package com.app.vp.wookiebooks.controller;
+package com.app.vp.wookiebooks.controller.docker;
 
 import com.app.vp.wookiebooks.dto.UserDto;
 import org.junit.ClassRule;

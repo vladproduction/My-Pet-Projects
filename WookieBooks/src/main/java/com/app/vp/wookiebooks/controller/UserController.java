@@ -100,7 +100,6 @@ public class UserController {
         List<UserDto> list = allUsers.stream()
                 .map(UserMapper::mapToUserDto)
                 .collect(Collectors.toList());
-
         return ok(list);
     }
 
@@ -115,6 +114,5 @@ public class UserController {
         }
         return ResponseEntity.notFound().build();
     }
-
 
 }

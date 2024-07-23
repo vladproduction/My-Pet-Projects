@@ -124,7 +124,7 @@ public class BookRestClient {
             params += "price=" + price;
         }
         ResponseEntity<BookDto[]> response =
-                restTemplate.getForEntity(BASE_URL_TEMPLATE + params, BookDto[].class);
+                restTemplate.getForEntity(BASE_URL_TEMPLATE + "/wookie_books" + params, BookDto[].class);
         assertTrue(200 == response.getStatusCode().value());
         BookDto[] bookDto = response.getBody();
         assertNotNull(bookDto);
@@ -134,7 +134,7 @@ public class BookRestClient {
     public static List<BookDto> findAllBooks(){
 
         ResponseEntity<BookDto[]> response =
-                restTemplate.getForEntity(BASE_URL_TEMPLATE , BookDto[].class);
+                restTemplate.getForEntity(BASE_URL_TEMPLATE + "/wookie_books" , BookDto[].class);
         assertTrue(200 == response.getStatusCode().value());
         BookDto[] bookDto = response.getBody();
         assertNotNull(bookDto);

@@ -1,6 +1,7 @@
-package com.app.vp.wookiebooks.controller;
+package com.app.vp.wookiebooks.controller.mock;
 
 import com.app.vp.wookiebooks.dto.BookDto;
+import com.app.vp.wookiebooks.mapper.BookMapper;
 import com.app.vp.wookiebooks.model.Book;
 import com.app.vp.wookiebooks.model.User;
 import com.app.vp.wookiebooks.service.BookService;
@@ -32,6 +33,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @AutoConfigureMockMvc
 @Testcontainers
 class BookControllerTest {
+
+    private static  final String BASE_URL = "/api/wookie_books";
 
     @Autowired
     private MockMvc mockMvc;
@@ -71,7 +74,7 @@ class BookControllerTest {
                 .build();
         //testing endpoint createBook
         var result = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/wookie_books/books/createBook")
+                        .post(BASE_URL)
                         .contentType("application/json")
                         .content(toJson(book))
                         .accept("application/json"))
@@ -103,7 +106,7 @@ class BookControllerTest {
         Long bookId = savedBook.getBookId();
         //testing endpoint findBookById
         var result = mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/wookie_books/books/findBookById/{bookId}", bookId)
+                        .get(BASE_URL + "/{bookId}", bookId)
                         .contentType("application/json")
                         .accept("application/json"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -134,7 +137,7 @@ class BookControllerTest {
         String bookTitle = savedBook.getTitle();
         //testing endpoint findBookByTitle
         var result = mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/wookie_books/books/findBookByTitle")
+                        .get(BASE_URL)
                         .param("title", bookTitle)
                         .contentType("application/json")
                         .accept("application/json"))
@@ -177,7 +180,7 @@ class BookControllerTest {
         System.out.println("sizeOfSavedBooksList = " + sizeOfSavedBooksList); //expected: 2
         //testing endpoint findAllBooks
         var result = mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/wookie_books/books/findAllBooks")
+                        .get(BASE_URL)
                         .contentType("application/json")
                         .accept("application/json"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -223,7 +226,7 @@ class BookControllerTest {
         System.out.println("sizeOfSavedBooksList = " + sizeOfSavedBooksList); //expected: 2
         //testing endpoint findAllBooksByUserId
         var result = mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/wookie_books/books/findAllBooksByUserId/{userId}", userId)
+                        .get(BASE_URL + "/{userId}", userId)
                         .contentType("application/json")
                         .accept("application/json"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -267,7 +270,7 @@ class BookControllerTest {
         System.out.println("allBookSize = " + allBookSize); //expected: 2
         //testing endpoint findAllBooksByAuthorPseudonym
         var result = mockMvc.perform(MockMvcRequestBuilders
-                        .get("/api/wookie_books/books/findAllBooksByAuthorPseudonym")
+                        .get(BASE_URL)
                         .param("authorPseudonym", authorPseudonym)
                         .contentType("application/json")
                         .accept("application/json"))
@@ -411,5 +414,75 @@ class BookControllerTest {
 
     @Test
     void findBookAndUserByUserId() {
+    }
+
+    @Test
+    void deleteBookByUserTest() throws Exception {
+        //scenario:
+        //1)create and save user
+        User user = User.builder() //create
+                .authorPseudonym("John")
+                .authorPassword("1233334455")
+                .build();
+        User savedUser = userService.createUser(user);//save
+        String authorPseudonym = savedUser.getAuthorPseudonym();//get pseudonym to help to find existing user
+//2)create a couple of books for this user
+        Book book1 = Book.builder() //create
+                .title("TestBook1")
+                .author(user)
+                .price(20.99)
+                .coverImage("cover")
+                .description("text")
+                .build();
+        Book book1Saved = bookService.createBook(book1);
+        Long bookId = book1Saved.getBookId();
+        Book book2 = Book.builder() //create
+                .title("TestBook2")
+                .author(user)
+                .price(20.99)
+                .coverImage("cover")
+                .description("text")
+                .build();
+        bookService.createBook(book2);
+        //3)find all books by this user
+        Optional<List<Book>> books = bookService.findAllBooksByAuthorPseudonym(authorPseudonym);
+        //4)define a book wanted to delete
+        System.out.println("-------books before delete-------");
+        if(books.isPresent()){
+            List<Book> bookList = books.get();
+            for (Book book : bookList) {
+                String bookTitle = book.getTitle();
+                System.out.println(bookTitle);
+            }
+        }
+        //5)delete the book
+        //testing endpoint
+        Long userId = savedUser.getUserId();
+        var result = mockMvc.perform(MockMvcRequestBuilders
+                        .delete(BASE_URL + "/user/deleteBookByUser/{userId}", userId)
+                        .param("bookId", String.valueOf(bookId))
+                        .contentType("application/json")
+                        .accept("application/json"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andReturn();
+        //6)check if book was removed
+        Optional<List<Book>> booksUpdated = bookService.findAllBooksByAuthorPseudonym(authorPseudonym);
+        System.out.println("-------books after delete-------");
+        if(booksUpdated.isPresent()){
+            List<Book> bookList = booksUpdated.get();
+            for (Book book : bookList) {
+                System.out.println(book);
+            }
+        }
+        System.out.println("result = " + result.getResponse().getContentAsString());
+        //assertion
+        List<Book> bookList = booksUpdated.get();
+        List<BookDto> bookDtoList = BookMapper.mapToListDtoBooks(bookList);
+        assertThat(result.getResponse().getContentAsString().equals(toJson(bookDtoList)));
+    }
+
+    @Test
+    void updateBookByUserTest() {
+        //todo: have to define endpoint first
     }
 }
