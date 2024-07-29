@@ -81,7 +81,4 @@ public class UserRestClient {
         return Arrays.asList(userDto);
     }
 
-
-
-
 }

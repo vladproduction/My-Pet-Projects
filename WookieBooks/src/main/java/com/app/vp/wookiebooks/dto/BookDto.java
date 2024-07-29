@@ -12,6 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @ToString
+@Data
 public class BookDto {
 
     private String title;

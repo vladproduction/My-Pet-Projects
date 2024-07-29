@@ -63,7 +63,7 @@ class UserControllerTest {
                 .authorPseudonym("Neo")
                 .authorPassword("123123")
                 .build();
-        //testing endpoint save (userDto that been created) & getting result as  response userDto
+        //testing endpoint save (userDto that been created) & getting result as response userDto
         var result = mockMvc.perform(MockMvcRequestBuilders
                         .post(BASE_URL)
                         .contentType("application/json")
@@ -78,7 +78,6 @@ class UserControllerTest {
         //assert that result of endpoint is the same as user been saved
         assertThat(result.getResponse().getContentAsString())
                 .isEqualTo(toJson(mapToUserDto(optionalUser.get())));
-
     }
 
     @Test

@@ -54,10 +54,12 @@ public class UserService {
 
     //[POST]: createUser
     public User createUser(User user) {
-        String encoded = passwordEncoder.encode(user.getAuthorPassword());
-        user.setAuthorPassword(encoded);
-        return userRepository
-                .save(user);
+        String originalPassword = user.getAuthorPassword(); //12345
+        String encoded = passwordEncoder.encode(user.getAuthorPassword()); //"$ljkdfgosierfyaw324345dfdfh"
+        user.setAuthorPassword(encoded);//set encoded pass: "$ljkdfgosierfyaw324345dfdfh"
+        User saved = userRepository.save(user); //"$ljkdfgosierfyaw324345dfdfh" it will be at DB
+        saved.setAuthorPassword(originalPassword); //12345
+        return saved;
     }
 
     //[GET]: getUserById

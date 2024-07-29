@@ -1,5 +1,6 @@
 package com.app.vp.wookiebooks.controller.utils;
 
+import com.app.vp.wookiebooks.dto.BookDto;
 import com.app.vp.wookiebooks.dto.UserDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,6 +15,11 @@ public class Utils {
 
     public static String toJson(Object object) throws JsonProcessingException {
         return mapper.writeValueAsString(object);
+    }
+
+    //from Json to Object:
+    public static BookDto fromJson(String str) throws JsonProcessingException {
+        return mapper.readValue(str, BookDto.class);
     }
 
     //for trying start container:
