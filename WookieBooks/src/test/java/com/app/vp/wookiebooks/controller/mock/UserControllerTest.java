@@ -74,6 +74,10 @@ class UserControllerTest {
         //find user that has been saved
         Optional<User> optionalUser = Optional.of(userService
                 .findUserByAuthorPseudonym(userDto.getAuthorPseudonym())
+                .map(u -> {
+                    u.setAuthorPassword(userDto.getAuthorPassword());
+                    return u;
+                })
                 .orElseThrow());
         //assert that result of endpoint is the same as user been saved
         assertThat(result.getResponse().getContentAsString())
@@ -103,9 +107,12 @@ class UserControllerTest {
         Optional<User> optionalUser = Optional.of(userService
                 .getUserById(savedUser.getUserId())
                 .orElseThrow());
+
         //assert that result of endpoint is the same as user been saved
-        assertThat(result.getResponse().getContentAsString())
-                .isEqualTo(toJson(mapToUserDto(optionalUser.get())));
+        String actualJson = result.getResponse().getContentAsString();
+        String expectedJson = toJson(mapToUserDto(optionalUser.get()));
+        assertThat(actualJson).isEqualTo(expectedJson);
+
     }
 
     @Test

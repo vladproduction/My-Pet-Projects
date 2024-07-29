@@ -7,6 +7,7 @@ import com.app.vp.wookiebooks.model.Roles;
 import com.app.vp.wookiebooks.model.User;
 import com.app.vp.wookiebooks.service.BookService;
 import com.app.vp.wookiebooks.service.UserService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,7 +19,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import org.springframework.web.client.RestTemplate;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -30,7 +30,6 @@ import java.util.Optional;
 import static com.app.vp.wookiebooks.controller.utils.Utils.toJson;
 import static com.app.vp.wookiebooks.mapper.BookMapper.mapToBookDto;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.Assert.*;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -86,8 +85,8 @@ class BookControllerTest {
                         .andReturn();
         String stringAsJson = result.getResponse().getContentAsString();
         BookDto bookDtoResponse = Utils.fromJson(stringAsJson);
-        assertNotNull(bookDtoResponse);
-        assertEquals(bookDto, bookDtoResponse);
+        Assertions.assertNotNull(bookDtoResponse);
+        Assertions.assertEquals(bookDto, bookDtoResponse);
         return bookDtoResponse;
     }
 
@@ -115,10 +114,10 @@ class BookControllerTest {
         //find book that has been saved
         Optional<Book> optionalBook = bookService.findBookByTitle(book.getTitle());
         //assert that result of endpoint is the same as book been saved
-        assertTrue(optionalBook.isPresent());
+        Assertions.assertTrue(optionalBook.isPresent());
         BookDto bookDtoFromService = mapToBookDto(optionalBook.get());
         assertThat(bookDtoSaved).isEqualTo(bookDtoFromService);
-        assertEquals(bookDtoSaved, bookDtoFromService);
+        Assertions.assertEquals(bookDtoSaved, bookDtoFromService);
     }
 
 }
