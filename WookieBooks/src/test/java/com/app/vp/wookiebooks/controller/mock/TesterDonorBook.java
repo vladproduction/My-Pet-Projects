@@ -2,37 +2,8 @@ package com.app.vp.wookiebooks.controller.mock;
 
 public class TesterDonorBook {
 
- //    @Test
-//    void findBookById() throws Exception {
-//        //create & save author
-//        User user = User.builder()
-//                .authorPseudonym("Link")
-//                .build();
-//        userService.createUser(user);
-//        //create & save book
-//        Book book = Book.builder()
-//                .title("Test title")
-//                .description("Test description")
-//                .author(user)
-//                .price(20.99)
-//                .coverImage("Test cover image")
-//                .build();
-//        Book savedBook = bookService.createBook(book);
-//        Long bookId = savedBook.getBookId();
-//        //testing endpoint findBookById
-//        var result = mockMvc.perform(MockMvcRequestBuilders
-//                        .get(BASE_URL + "/{bookId}", bookId)
-//                        .contentType("application/json")
-//                        .accept("application/json"))
-//                .andExpect(MockMvcResultMatchers.status().isOk())
-//                .andReturn();
-//        //find book that has been saved by bookId
-//        Optional<Book> optionalBook = Optional.of(bookService.findBookById(bookId)).orElseThrow();
-//        //assert that result of endpoint is the same as book been saved
-//        assertThat(result.getResponse().getContentAsString())
-//                .isEqualTo(toJson(mapToBookDto(optionalBook.get())));
-//    }
-//
+
+
 //    @Test
 //    void findBookByTitle() throws Exception {
 //        //create & save author

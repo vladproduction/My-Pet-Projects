@@ -28,6 +28,7 @@ public class BookController {
     @Autowired
     private UserService userService;
 
+    //[POST]: createBook
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public BookDto createBook(
@@ -39,6 +40,7 @@ public class BookController {
         return BookMapper.mapToBookDto(savedBook);
     }
 
+    //[PUT]: updateBook
     @PutMapping("/{bookId}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<BookDto> updateBook(
@@ -86,6 +88,7 @@ public class BookController {
         return ok(bookDtoList);
     }
 
+    //[DELETE]: deleteBook
     @DeleteMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteBook(@RequestParam String title) {
