@@ -1,11 +1,11 @@
 -/..>clean install for project locally (prepare project to deploy)
 -/..WookieBooks\target> java -jar .\WookieBooks-0.0.1-SNAPSHOT.jar (run project locally by jar file)
 -DigitalOcean create group of projects (VladProjects) create droplet - comp in Germany
--password for connection: VladProjects2024Ocean
+-password for connection: *****
 -open WinSCP: 
-	*host name:167.172.39.210
-	*user name:root
-	*password:VladProjects2024Ocean
+	*host name:****
+	*user name:****
+	*password:*****
 	*hit Login
 -moove files to right side (remote comp)
 -open session in terminal: 'ctrl + p' and press password and enter
@@ -37,12 +37,12 @@
 	*create user for db:
 	ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
 	do
-	ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '11111111';
+	ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '********';
 	exit
 	
-	*enter to db as user (root) with password (11111111)
+	*enter to db as user (root) with password (********)
 	mysql -u root -p
-	11111111
+	********
 	
 	*now we can create db: 
 	create database wookie_books;
