@@ -7,7 +7,6 @@ import com.app.vp.wookiebooks.model.Roles;
 import com.app.vp.wookiebooks.model.User;
 import com.app.vp.wookiebooks.service.BookService;
 import com.app.vp.wookiebooks.service.UserService;
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +23,7 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static com.app.vp.wookiebooks.controller.utils.Utils.toJson;
 import static com.app.vp.wookiebooks.mapper.BookMapper.*;
@@ -80,10 +76,10 @@ class BookControllerTest {
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders
                         .post(BASE_URL)
                         .header("Authorization", "Bearer " + token)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(toJson(bookDto)))
-                        .andExpect(MockMvcResultMatchers.status().isCreated())
-                        .andReturn();
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(toJson(bookDto)))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andReturn();
         String stringAsJson = result.getResponse().getContentAsString();
         BookDto bookDtoResponse = Utils.fromJson(stringAsJson);
         Assertions.assertNotNull(bookDtoResponse);
@@ -91,6 +87,13 @@ class BookControllerTest {
         return bookDtoResponse;
     }
 
+    //helper method to merge lists:
+    private static List<Book> mergingList(List<Book> list1, List<Book> list2){
+        List<Book> mergeList = new ArrayList<>(list1.size() + list2.size());
+        mergeList.addAll(list1);
+        mergeList.addAll(list2);
+        return mergeList;
+    }
     @Test
     void createBookTest() throws Exception {
         //1) create user
@@ -101,7 +104,7 @@ class BookControllerTest {
                 .build();
         User savedUser = userService.createUser(user);
         //2) generate Token
-        String token = createToken(savedUser.getAuthorPseudonym(),  savedUser.getAuthorPassword());
+        String token = createToken(savedUser.getAuthorPseudonym(), savedUser.getAuthorPassword());
         //3)create book in accordance of auth by token
         Book book = Book.builder()
                 .title("Test title unique")
@@ -254,26 +257,96 @@ class BookControllerTest {
     void findAllBooksTest() throws Exception {
         //1)create users
         //---user1
+        User user1 = User.builder()
+                .authorPseudonym("Author1")
+                .authorPassword("1234567")
+                .roles(Roles.USER)
+                .build();
+        User savedUser1 = userService.createUser(user1);
         //---user2
+        User user2 = User.builder()
+                .authorPseudonym("Author2")
+                .authorPassword("1234567")
+                .roles(Roles.USER)
+                .build();
+        User savedUser2 = userService.createUser(user2);
 
         //2)create tokens
         //---token1
+        String token1 = createToken(savedUser1.getAuthorPseudonym(), savedUser1.getAuthorPassword());
         //---token2
+        String token2 = createToken(savedUser2.getAuthorPseudonym(), savedUser2.getAuthorPassword());
 
         //3)create books
 
         //---books by user1
         //---user1Book1
+        Book user1Book1 = Book.builder()
+                .title("user1Book1")
+                .description("Test user1Book1 description")
+                .author(savedUser1)
+                .price(245.99)
+                .coverImage("Test user1Book1 cover image")
+                .build();
+        BookDto bookDto1_1 = mapToBookDto(user1Book1); //mapping to DTO
+        createBookHelper(bookDto1_1, token1);
         //---user1Book2
+        Book user1Book2 = Book.builder()
+                .title("user1Book2")
+                .description("Test user1Book2 description")
+                .author(savedUser1)
+                .price(245.99)
+                .coverImage("Test user1Book2 cover image")
+                .build();
+        BookDto bookDto1_2 = mapToBookDto(user1Book2); //mapping to DTO
+        createBookHelper(bookDto1_2, token1);
         //---user1Book3
+        Book user1Book3 = Book.builder()
+                .title("user1Book3")
+                .description("Test user1Book3 description")
+                .author(savedUser1)
+                .price(245.99)
+                .coverImage("Test user1Book3 cover image")
+                .build();
+        BookDto bookDto1_3 = mapToBookDto(user1Book3); //mapping to DTO
+        createBookHelper(bookDto1_3, token1);
 
         //---books by user2
         //---user2Book1
+        Book user2Book1 = Book.builder()
+                .title("user2Book1")
+                .description("Test user2Book1 description")
+                .author(savedUser2)
+                .price(245.99)
+                .coverImage("Test user2Book1 cover image")
+                .build();
+        BookDto bookDto2_1 = mapToBookDto(user2Book1); //mapping to DTO
+        createBookHelper(bookDto2_1, token2);
         //---user2Book2
+        Book user2Book2 = Book.builder()
+                .title("user2Book2")
+                .description("Test user2Book2 description")
+                .author(savedUser2)
+                .price(245.99)
+                .coverImage("Test user2Book2 cover image")
+                .build();
+        BookDto bookDto2_2 = mapToBookDto(user2Book2); //mapping to DTO
+        createBookHelper(bookDto2_2, token2);
         //---user2Book3
+        Book user2Book3 = Book.builder()
+                .title("user2Book3")
+                .description("Test user2Book3 description")
+                .author(savedUser2)
+                .price(245.99)
+                .coverImage("Test user2Book3 cover image")
+                .build();
+        BookDto bookDto2_3 = mapToBookDto(user2Book3); //mapping to DTO
+        createBookHelper(bookDto2_3, token2);
 
         //4)check if books has been saved (by size)
         List<Book> savedBooks = bookService.findAllBooks();
+
+        Assertions.assertEquals(9, savedBooks.size());
 
         //5)testing endpoint findAllBooks
         var resultMvc = mockMvc.perform(MockMvcRequestBuilders
@@ -284,8 +357,78 @@ class BookControllerTest {
                 .andReturn();
 
         //6)check if savedBooks and resultMvc are equal (by json)
-        List<BookDto> booksSaved = mapToListDtoBooks(savedBooks);
-        assertThat(toJson(booksSaved)).isEqualTo(resultMvc.getResponse().getContentAsString());
+        List<BookDto> booksDtoSaved = mapToListDtoBooks(savedBooks); // mapping to Dto
+        assertThat(toJson(booksDtoSaved)).isEqualTo(resultMvc.getResponse().getContentAsString());
+
+        //7) check if saved books by scope of this test is 6:
+        List<Book> listUser1 = bookService.findAllBooks(savedUser1.getAuthorPseudonym(), null, null);
+        List<Book> listUser2 = bookService.findAllBooks(savedUser2.getAuthorPseudonym(), null, null);
+        List<Book> totalBooks = mergingList(listUser1, listUser2);
+        Assertions.assertEquals(6, totalBooks.size());
     }
+
+    @Test
+    void deleteBookTest() throws Exception {
+        /*[DELETE]: deleteBook
+        @DeleteMapping
+        @ResponseStatus(HttpStatus.NO_CONTENT)
+        public void deleteBook(@RequestParam String title){...}*/
+        //1) create user
+        User user = User.builder()
+                .authorPseudonym("AuthorD")
+                .authorPassword("1234567")
+                .roles(Roles.USER)
+                .build();
+        User savedUser = userService.createUser(user);
+        //2) create token
+        String token = createToken(savedUser.getAuthorPseudonym(), savedUser.getAuthorPassword());
+        //3) create books
+        Book book1 = Book.builder()
+                .title("Test_1")
+                .description("Test_1 description")
+                .author(savedUser)
+                .price(240.99)
+                .coverImage("Test_1 cover image")
+                .build();
+        BookDto bookDto1 = mapToBookDto(book1);
+        Book book2 = Book.builder()
+                .title("Test_2")
+                .description("Test_2 description")
+                .author(savedUser)
+                .price(240.99)
+                .coverImage("Test_2 cover image")
+                .build();
+        BookDto bookDto2 = mapToBookDto(book2);
+        Book book3 = Book.builder()
+                .title("Test_3")
+                .description("Test_3 description")
+                .author(savedUser)
+                .price(240.99)
+                .coverImage("Test_3 cover image")
+                .build();
+        BookDto bookDto3 = mapToBookDto(book3);
+        createBookHelper(bookDto1, token);
+        createBookHelper(bookDto2, token);
+        createBookHelper(bookDto3, token);
+        //4) check amount of books before deleting by current author (AuthorD)
+        List<Book> savedBooksAuthorD = bookService.findAllBooks(savedUser.getAuthorPseudonym(),null,null);
+        Assertions.assertEquals(3, savedBooksAuthorD.size());
+
+        //5) testing endpoint of deleting book (based on title parameter)
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete(BASE_URL)
+                        .param("title", String.valueOf(book2.getTitle()))
+                        .header("Authorization", "Bearer " + token)
+                        .contentType("application/json")
+                        .accept("application/json"))
+                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful()) //NO_CONTENT(204, HttpStatus.Series.SUCCESSFUL, "No Content")
+                .andReturn();
+
+        //6) check amount of books after deleting by current author (AuthorD)
+        List<Book> booksAfterDeleting = bookService.findAllBooks(savedUser.getAuthorPseudonym(),null,null);
+        Assertions.assertEquals(2, booksAfterDeleting.size());
+
+    }
+
 
 }
