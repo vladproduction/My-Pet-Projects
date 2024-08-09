@@ -1,10 +1,9 @@
 
 need to fix:
-1)refactoring
+1)swagger DocumentationAPI
 2)deploy version (the last one)
-3)swagger DocumentationAPI
-4)jenkins
-5)implement client (JavaFX, Thymeleaf)
+3)jenkins
+4)implement client (JavaFX, Thymeleaf)
 
 
 
