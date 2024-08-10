@@ -1,0 +1,36 @@
+description:
+Write code that uses standard J2SE APIs in the java.util and java.util.regex packages to
+format or parse strings or streams. For strings, write code that uses the Pattern and Matcher
+classes and the String.split method. Recognize and use regular expression patterns for matching
+(limited to: .(dot), *(star), +(plus), ?, \d, \s, \w, [ ], () ). The use of *, + , and ? will
+be limited to greedy quantifiers, and the parenthesis operator will only be used as a grouping
+mechanism, not for capturing content during matching. For streams, write code using the
+Formatter and Scanner classes and the PrintWriter.format/printf methods. Recognize and use
+formatting parameters (limited to: %b, %c, %d, %f, %s) in format strings.
+
+covered:
+1)Using the Pattern and Matcher classes for string manipulation.
+2)Using String.split method.
+3)Using regular expression patterns.
+4)Using the Formatter and Scanner classes.
+5)Using PrintWriter for formatted output.
+
+Explanation of the Code
+-Scanner Class: We use Scanner to read a line of input from the user.
+-Pattern and Matcher Classes:
+We compile a regular expression pattern that matches words containing digits.
+We then use the Matcher to find all occurrences of this pattern in the input string and print them.
+-String.split Method: We use inputString.split("\\s+") to split the input string into words based on whitespace.
+-Formatter and PrintWriter:
+We create a PrintWriter to write formatted output to a file named output.txt.
+A Formatter is used to format the number of words and their lengths into the output file.
+-Regular Expressions: The regex pattern \\w+\\d+\\w* matches any word containing at least one digit.
+
+Compile and Run the Program
+Save your Java code.
+Compile it using javac RegexAndFormattingDemo.java.
+Run the program using java RegexAndFormattingDemo, and then enter a sentence when prompted.
+
+Check the Output
+After running the program, check the console output for words with digits and those split by spaces.
+Check the output.txt file for formatted output showing the total number of words and their respective lengths.

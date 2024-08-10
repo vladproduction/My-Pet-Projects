@@ -1,0 +1,16 @@
+Total words: 15
+Word: Whether, Length: 7
+Word: you're, Length: 6
+Word: looking, Length: 7
+Word: for, Length: 3
+Word: stuff, Length: 5
+Word: or, Length: 2
+Word: tokenizing, Length: 10
+Word: stuff,, Length: 6
+Word: a, Length: 1
+Word: lot, Length: 3
+Word: of, Length: 2
+Word: the, Length: 3
+Word: concepts, Length: 8
+Word: are, Length: 3
+Word: the, Length: 3
