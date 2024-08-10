@@ -1,0 +1,8 @@
+Running the Program
+1)Save your Java code in a file named SoundEffectExample.java;
+2)Place the sound file (pirates.wav) in the same directory as your .java file;
+3)Compile the program using javac SoundEffectExample.java;
+4)Run the program with java SoundEffectExample;
+
+//to convert files:
+https://www.freeconvert.com/mp3-to-wav
