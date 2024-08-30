@@ -1,7 +1,7 @@
 package com.example.io;
 
 
-        public class DataProcessFactory {
+public class DataProcessFactory {
 
 
     public static DataProcess getDataProcess(int typeDataProcess) {

@@ -9,7 +9,7 @@ Project simulate of PhoneBook actions (create, read, delete, update);
      new JSONDataProcess();
      new XMLSAXDataProcess();
 
--all processes implements DataProcess, but by it`s oun logic;
+-all processes implements DataProcess, but by it`s own logic;
 -class HelloController:
     *injected stack of ui_elements;
     *logic implemented for each element(buttons, textFields, listView);
