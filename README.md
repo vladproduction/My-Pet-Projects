@@ -1,6 +1,4 @@
-# Projects
-Approaches to resolve tasks
+# My-Pet-Projects
+**This repository is a collection of projects builds for demo, education and test samples;**
+##
 
-Repository presenting projects and ways of solutions. Each task has README or description. 
-Mostly projects builds for demo, education and test samples.
-Also presenting some JavaFX.
