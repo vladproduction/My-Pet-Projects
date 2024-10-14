@@ -5,14 +5,15 @@ public class MainShopApp {
 
         double tax = 0.2;
         double total = 0.0;
-        int measurement = 3;
+        int measurement = 8;
 
         System.out.println("Shop App is started.");
 
         Customer c1 = new Customer();
         c1.setName("Pinky");
-        c1.setSize("S");
-        System.out.println("Customer is: " + c1.getName());
+//        c1.setSize("S");
+        c1.setSize(measurement);
+        System.out.println("Customer is: " + c1.getName() + ", " + c1.getSize());
 
         Clothing item1 = new Clothing();
         Clothing item2 = new Clothing();
@@ -48,25 +49,7 @@ public class MainShopApp {
         /*total = (item1.price + item2.price * 2) * (1 + tax);
         System.out.println("Total = " + total);*/
 
-        switch (measurement) {
-            case 1:
-            case 2:
-            case 3:
-                c1.setSize("S");
-                break;
-            case 4:
-            case 5:
-            case 6:
-                c1.setSize("M");
-                break;
-            case 7:
-            case 8:
-            case 9:
-                c1.setSize("L");
-                break;
-            default:
-                c1.setSize("X");
-        }
+
 
         for (Clothing item : items) {
             if(c1.getSize().equals(item.getSize())){
