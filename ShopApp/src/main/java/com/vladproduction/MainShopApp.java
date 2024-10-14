@@ -18,13 +18,26 @@ public class MainShopApp {
                 new Clothing("Green Scarf", 5.0, "S")
         };
 
+        int count = 0;
+        int avg = 0;
+
         customer1.addItems(items);
         System.out.println("Customer is: " + customer1.getName() + ", " + customer1.getSize() + ", Total Clothing Cost: " + customer1.getTotalClothingCost());
         //looping through the items of the concrete customer:
         for (Clothing item : customer1.getItems()) {
-            System.out.println("Item: " + item.getDescription() + ", price = " + item.getPrice());
+            if (item.getSize().equals("XL")) {
+                count++;
+                System.out.println("Item: " + item.getDescription() + ", price = " + item.getPrice());
+                avg += item.getPrice();
+            }
         }
-
+        try{
+            avg = (count ==0) ? 0 : avg / count; //check if count is zero or not;
+            avg = avg / count; // we do not have any XL, so got exception (/ by zero)
+            System.out.println("AVG: " + avg + " COUNT: " + count); //if exception is caught this line will not execute
+        }catch (ArithmeticException e){
+            System.out.println("Not allowed to divide by '0'.");
+        }
 
     }
 }
