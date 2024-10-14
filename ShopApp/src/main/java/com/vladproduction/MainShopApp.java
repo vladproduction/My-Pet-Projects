@@ -1,5 +1,7 @@
 package com.vladproduction;
 
+import java.util.Arrays;
+
 public class MainShopApp {
     public static void main(String[] args) {
         System.out.println("Shop App is started.");
@@ -18,6 +20,7 @@ public class MainShopApp {
                 new Clothing("Green Scarf", 5.0, "S")
         };
 
+        //unsorted
         for (Clothing item : items) {
             System.out.println("Item: " + item);
         }
@@ -41,6 +44,13 @@ public class MainShopApp {
             System.out.println("AVG: " + avg + " COUNT: " + count); //if exception is caught this line will not execute
         }catch (ArithmeticException e){
             System.out.println("Not allowed to divide by '0'.");
+        }
+
+        //sorted
+        System.out.println("=== sorted (by description) ===");
+        Arrays.sort(customer1.getItems()); //sort method call for compareTo for our comparable object (Clothing.class object)
+        for (Clothing item : items) {
+            System.out.println("Item: " + item);
         }
 
     }

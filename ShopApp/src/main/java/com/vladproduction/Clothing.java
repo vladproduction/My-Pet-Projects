@@ -1,6 +1,6 @@
 package com.vladproduction;
 
-public class Clothing {
+public class Clothing implements Comparable<Clothing>{
 
     public static final double MIN_PRICE = 10.0;
     public static final double TAX_RATE = 0.2;
@@ -41,5 +41,10 @@ public class Clothing {
     @Override
     public String toString() {
         return "Description = " + getDescription() + ", Size = " + getSize() + ", Price = " + getPrice();
+    }
+
+    @Override
+    public int compareTo(Clothing o) {
+        return this.description.compareTo(o.description);
     }
 }
