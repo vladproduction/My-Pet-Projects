@@ -3,8 +3,6 @@ package com.vladproduction;
 public class MainShopApp {
     public static void main(String[] args) {
 
-        double tax = 0.2;
-        double total = 0.0;
         int measurement = 8;
 
         System.out.println("Shop App is started.");
@@ -13,7 +11,7 @@ public class MainShopApp {
         c1.setName("Pinky");
 //        c1.setSize("S");
         c1.setSize(measurement);
-        System.out.println("Customer is: " + c1.getName() + ", " + c1.getSize());
+
 
         Clothing item1 = new Clothing();
         Clothing item2 = new Clothing();
@@ -41,27 +39,13 @@ public class MainShopApp {
         items[4].setPrice(5.0);
         items[4].setSize("S");
 
-
-        /*System.out.println("Item - 1: " + item1.description + ", " + item1.price + ", " + item1.size);
-        System.out.println("Item - 2: " + item2.description + ", " + item2.price + ", " + item2.size);
-        System.out.println("Item - 3: " + item3.description + ", " + item3.price + ", " + item3.size);*/
-
-        /*total = (item1.price + item2.price * 2) * (1 + tax);
-        System.out.println("Total = " + total);*/
-
-
-
-        for (Clothing item : items) {
-            if(c1.getSize().equals(item.getSize())){
-                total = total + item.getPrice();
-                System.out.println("Item: " + item.getDescription() + ", " + item.getPrice() + ", " + item.getSize());
-                total = total + total * tax;
-                if(total > 15){
-                    break;
-                }
-            }
+        c1.addItems(items);
+        System.out.println("Customer is: " + c1.getName() + ", " + c1.getSize() + ", Total Clothing Cost: " + c1.getTotalClothingCost());
+        //looping through the items of the concrete customer:
+        for (Clothing item : c1.getItems()) {
+            System.out.println("Item: " + item.getDescription() + ", price = " + item.getPrice());
         }
-        System.out.println("Total = " + total);
+
 
     }
 }
