@@ -8,6 +8,12 @@ public class Clothing {
     private double price;
     private String size = "M";
 
+    public Clothing(String description, double price, String aSize) {
+        this.description = description;
+        this.price = price;
+        size = aSize;
+    }
+
     public String getDescription() {
         return description;
     }
