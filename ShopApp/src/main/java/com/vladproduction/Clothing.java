@@ -2,11 +2,11 @@ package com.vladproduction;
 
 public class Clothing {
 
-    private final double MIN_PRICE = 10.0;
-    private final double TAX = 0.2;
+    public static final double MIN_PRICE = 10.0;
+    public static final double TAX_RATE = 0.2;
     private String description;
     private double price;
-    private String size = "M";
+    private String size;
 
     public Clothing(String description, double price, String aSize) {
         this.description = description;
@@ -23,7 +23,7 @@ public class Clothing {
     }
 
     public double getPrice() {
-        return price + (price * TAX);
+        return price + (price * TAX_RATE);
     }
 
     public void setPrice(double price) {

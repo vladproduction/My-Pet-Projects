@@ -5,13 +5,15 @@ public class MainShopApp {
         System.out.println("Shop App is started.");
 
         int measurement = 8;
+        System.out.println("MIN_PRICE: " + Clothing.MIN_PRICE);
+        System.out.println("TAX_RATE: " + Clothing.TAX_RATE);
 
         Customer customer1 = new Customer("Pinky", measurement);
 
         Clothing[] items = {
-                new Clothing("Blue Jacket", 20.9, "M"),
+                new Clothing("Blue Jacket", 20.5, "M"),
                 new Clothing("Orange T-Shirt", 10.5, "S"),
-                new Clothing("Green T-Shirt", 16.5, "L"),
+                new Clothing("Green T-Shirt", 15.5, "L"),
                 new Clothing("Blue T-Shirt", 10.5, "S"),
                 new Clothing("Green Scarf", 5.0, "S")
         };
