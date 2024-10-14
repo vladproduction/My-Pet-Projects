@@ -18,6 +18,10 @@ public class MainShopApp {
                 new Clothing("Green Scarf", 5.0, "S")
         };
 
+        for (Clothing item : items) {
+            System.out.println("Item: " + item);
+        }
+
         int count = 0;
         int avg = 0;
 
