@@ -27,7 +27,12 @@ public class Clothing implements Comparable<Clothing>{
     }
 
     public void setPrice(double price) {
-        this.price = (price > MIN_PRICE) ? price : MIN_PRICE;
+        if (price > MIN_PRICE) {
+            this.price = price;
+        } else {
+            this.price = MIN_PRICE;
+        }
+//        this.price = (price > MIN_PRICE) ? price : MIN_PRICE;
     }
 
     public String getSize() {
