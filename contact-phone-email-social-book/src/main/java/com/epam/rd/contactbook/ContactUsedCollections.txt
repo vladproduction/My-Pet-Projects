@@ -1,0 +1,218 @@
+public class ContactUsedCollections{
+    private static final String EPAM_COM = "epam.com";
+    private String contactName;
+    private final ContactInfo[] contactInfos;
+    private int currentIndex;
+    private boolean phoneAdded;
+    private int totalEmailCount;
+    private int totalSocialMediaCount;
+    private List<String> titleList;
+    //private static String title;
+
+    public ContactUsedCollections(String contactName) {
+        this.contactName = contactName;
+        this.contactInfos = new ContactInfo[9];
+        this.currentIndex = 0;
+        this.phoneAdded = false;
+        this.totalEmailCount = 0;
+        this.totalSocialMediaCount = 0;
+        titleList = new ArrayList<>();
+    }
+
+    public void rename(String newName) {
+        if (newName != null && !newName.isEmpty()) {
+            contactName = newName;
+        }
+    }
+
+    public Email addEmail(String localPart, String domain) {
+        if (totalEmailCount < 3) {
+            String result = localPart + "@" + domain;
+            Email email = new Email(result);
+            addContactInfo(email);
+            totalEmailCount++;
+            return email;
+        }
+        return null;
+    }
+
+    public Email addEpamEmail(String firstname, String lastname) {
+        if (totalEmailCount < 3) {
+            String result = firstname + "_" + lastname + "@" + EPAM_COM;
+            Email email = new Email(result) {
+                @Override
+                public String getTitle() {
+                    return "Epam Email";
+                }
+            };
+            addContactInfo(email);
+            totalEmailCount++;
+            return email;
+        }
+        return null;
+    }
+
+
+    public ContactInfo addPhoneNumber(int code, String number) {
+        if (!phoneAdded) {
+            ContactInfo contactInfo = new ContactInfo() {
+                @Override
+                public String getTitle() {
+                    return "Tel";
+                }
+
+                @Override
+                public String getValue() {
+                    return "+" + code + " " + number;
+                }
+            };
+            addContactInfo(contactInfo);
+            phoneAdded = true;
+            return contactInfo;
+        }
+        return null;
+    }
+
+    public Social addTwitter(String twitterId) {
+        return addSocialMedia("Twitter", twitterId);
+    }
+
+
+    public Social addInstagram(String instagramId) {
+        return addSocialMedia("Instagram", instagramId);
+    }
+
+    public Social addSocialMedia(String title, String id) {
+        if (totalSocialMediaCount < 5) {
+            Social social = new Social(title, id) {
+                @Override
+                public String getTitle() {
+                    return title;
+                }
+
+                @Override
+                public String getValue() {
+                    return id;
+                }
+            };
+            addContactInfo(social);
+            totalSocialMediaCount++;
+            titleList.add(title);
+            return social;
+        }
+        return null;
+    }
+
+    private void addContactInfo(ContactInfo info) {
+        if (currentIndex < contactInfos.length) {
+            contactInfos[currentIndex++] = info;
+        }
+    }
+
+
+    public ContactInfo[] getInfo() {
+        // Initialize result array with potential size: Name + Phone (if exists) + Emails/Social Media
+        int totalEntries = 1 + (phoneAdded ? 1 : 0); // Starting with the Name and potentially the Phone number
+
+        // Add Email entries count
+        totalEntries += totalEmailCount; // Emails can be added but are limited to 3
+
+        // Add Social Media entries count
+        totalEntries += totalSocialMediaCount; // Medias can be added but are limited to 5
+
+        ContactInfo[] result = new ContactInfo[totalEntries];
+
+        // The first entry is always the Name ContactInfo
+        result[0] = new NameContactInfo();
+
+        // If a phone number exists, add it at index 1
+        if (phoneAdded) {
+            for (ContactInfo info : contactInfos) {
+                if (info != null && info.getTitle().equals("Tel")) {
+                    result[1] = info; // Add phone info at index 1
+                    break;
+                }
+            }
+        }
+
+        // Initialize the index for filling in other entries
+        int resultIndex = phoneAdded ? 2 : 1; // Start adding after Name and potentially Phone
+
+        // Add Email entries
+        for (int i = 0; i < currentIndex; i++) {
+            if (contactInfos[i] != null && (contactInfos[i].getTitle().equals("Email") || contactInfos[i].getTitle().equals("Epam Email"))) {
+                result[resultIndex++] = contactInfos[i];
+            }
+        }
+
+        // Add Social Media entries
+        for (int i = 0; i < currentIndex; i++) {
+            if (contactInfos[i] != null &&
+                    (
+                            contactInfos[i].getTitle().equals("Twitter") ||
+                                    contactInfos[i].getTitle().equals("Instagram") ||
+                                    titleList.contains(contactInfos[i].getTitle())
+                    )) {
+                result[resultIndex++] = contactInfos[i];
+            }
+        }
+
+        return result;
+    }
+
+
+    public static class Email implements ContactInfo {
+        private final String email;
+
+        public Email(String email) {
+            this.email = email;
+        }
+
+        @Override
+        public String getTitle() {
+            return "Email";
+        }
+
+        @Override
+        public String getValue() {
+            return email;
+        }
+    }
+
+    public static class Social implements ContactInfo {
+        private String socialId;
+        private String title;
+
+        public Social(String title) {
+            this.title = title;
+        }
+
+        public Social(String title, String socialId) {
+            this(title);
+            this.socialId = socialId;
+        }
+
+        @Override
+        public String getTitle() {
+            return title != null ? title : "Social";
+        }
+
+        @Override
+        public String getValue() {
+            return socialId;
+        }
+    }
+
+
+    private class NameContactInfo implements ContactInfo {
+        @Override
+        public String getTitle() {
+            return "Name";
+        }
+
+        @Override
+        public String getValue() {
+            return contactName;
+        }
+    }
+}
