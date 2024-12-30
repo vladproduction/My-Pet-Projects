@@ -1,21 +1,24 @@
 package com.vladproduction.processors;
 
+import com.vladproduction.exceptions.TaskProcessingException;
 import com.vladproduction.tasks.DelayTask;
 
-public class DelayProcessor extends TaskProcessor {
-    /*public void process(DelayTask delayTask){
-        Runnable runnable = delayTask.getAction();
-        executorService.schedule(runnable, delayTask.getDelay(), delayTask.getTimeUnit());
-    }*/
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-    public void process(DelayTask delayTask) {
+import java.util.concurrent.ScheduledFuture;
+
+public class DelayProcessor extends TaskProcessor {
+    private static final Logger logger = LoggerFactory.getLogger(DelayProcessor.class);
+
+    public ScheduledFuture<?> process(DelayTask delayTask) {
         Runnable runnable = delayTask.getAction();
-        executorService.schedule(() -> {
+        return executorService.schedule(() -> {
             try {
                 runnable.run();
             } catch (Exception e) {
-                // Log the error (use any logging framework or System.out for simplicity)
-                System.err.println("Error executing DelayTask: " + e.getMessage());
+               logger.error("Error executing DelayTask: {}", e.getMessage(), e);
+               throw new TaskProcessingException("DelayTask execution failed", e);
             }
         }, delayTask.getDelay(), delayTask.getTimeUnit());
     }
