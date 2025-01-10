@@ -8,9 +8,7 @@ import java.sql.Statement;
 
 public class DatabaseInitializer {
     public static void initializeDatabase(Connection connection) {
-        // Path for creating database
-        executeSqlScript(connection, "create_database.sql");
-        // Path for creating tables
+        // Execute the script to create tables
         executeSqlScript(connection, "create_tables.sql");
     }
 
@@ -29,7 +27,7 @@ public class DatabaseInitializer {
                 // Append line to SQL script
                 sql.append(line).append("\n");
 
-                // If we reach the end of a statement, execute it
+                // If we reach the end of a statement (multi-line support), execute it
                 if (line.trim().endsWith(";")) {
                     statement.executeUpdate(sql.toString());
                     sql.setLength(0); // Clear the StringBuilder for the next statement

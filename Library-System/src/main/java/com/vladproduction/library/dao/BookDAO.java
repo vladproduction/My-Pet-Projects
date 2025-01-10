@@ -10,4 +10,8 @@ public interface BookDAO {
     List<Book> getAllBooks();
     void updateBook(Book book);
     void deleteBook(int id);
+    List<Book> getBooksByAuthorName(String authorName); // New method
+    List<Book> getBooksByNationality(String nationality); // New method
+    List<Book> getBooksByPublishedYear(int year); // New method
+
 }

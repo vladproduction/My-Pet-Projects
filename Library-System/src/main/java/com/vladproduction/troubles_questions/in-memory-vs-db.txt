@@ -1,0 +1,21 @@
+Question? ->
+it seems like correct relationship, but we still have a '0' for a author books after we call #8 action;
+is it because we call a list of authors but not an information about each of authors?
+if so, maybe we do not have to print number of books associated to each author?
+
+Conclusion! ->
+Books List: The books list within the Author class is meant to maintain the relationships of books associated with that author in memory.
+However, this list isn’t automatically populated from the database when you retrieve author information.
+
+Data Retrieval: The getAllAuthors() method fetches all authors from the database but does not include any logic
+to also retrieve or populate the associated books for each author.
+Thus, when you print the authors, the books size remains 0.
+
+Options to Resolve This Issue:
+1)Loading Associated Books:
+  When retrieving authors, you can also consider fetching associated books as part of the query, or alternatively,
+  load the author’s books based on their relationships directly after fetching the authors.
+
+2)Separating the Display Logic:
+  If you choose to only display the number of books, this would require ensuring that when an author
+  is added or referenced, their book list is populated immediately.

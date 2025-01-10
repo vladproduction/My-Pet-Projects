@@ -52,8 +52,8 @@ public class Author {
 
     @Override
     public String toString() {
-        return String.format("Author [id: %d, name: %s, nationality: %s, number of books: %d]",
-                this.id, this.name, this.nationality, this.books.size());
+        return String.format("Author [id: %d, name: %s, nationality: %s]",
+                this.id, this.name, this.nationality);
     }
 
 }

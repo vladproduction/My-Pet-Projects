@@ -11,12 +11,13 @@ public class DatabaseConnection {
 
     private static final PropertiesUtils propertiesUtil = new PropertiesUtils();
 
+    // Base URL for MySQL connection without specifying a database
     private static final String URL = "jdbc:mysql://localhost:3306/";
     private static final String USERNAME = propertiesUtil.getProperty("db.username");
     private static final String PASSWORD = propertiesUtil.getProperty("db.password");
 
     public static Connection getConnection() throws SQLException {
-        // First, connect to the server without a specific database
+        // Connect to MySQL server
         Connection connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
 
         // Create the library database if it does not exist

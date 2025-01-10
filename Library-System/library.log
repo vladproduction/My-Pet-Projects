@@ -1,0 +1,164 @@
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService getAllAuthors
+INFO: Retrieved all authors. Count: 0
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.AuthorDAOImpl addAuthor
+INFO: Added author: Author One
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addAuthor
+INFO: Author added: Author One
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.AuthorDAOImpl addAuthor
+INFO: Added author: Author Two
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addAuthor
+INFO: Author added: Author Two
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.AuthorDAOImpl addAuthor
+INFO: Added author: Author Three
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addAuthor
+INFO: Author added: Author Three
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.AuthorDAOImpl addAuthor
+INFO: Added author: Author Four
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addAuthor
+INFO: Author added: Author Four
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.AuthorDAOImpl addAuthor
+INFO: Added author: Author Five
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addAuthor
+INFO: Author added: Author Five
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.AuthorDAOImpl addAuthor
+INFO: Added author: Author Six
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addAuthor
+INFO: Author added: Author Six
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.AuthorDAOImpl addAuthor
+INFO: Added author: Author Seven
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addAuthor
+INFO: Author added: Author Seven
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.AuthorDAOImpl addAuthor
+INFO: Added author: Author Eight
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addAuthor
+INFO: Author added: Author Eight
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.AuthorDAOImpl addAuthor
+INFO: Added author: Author Nine
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addAuthor
+INFO: Author added: Author Nine
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.AuthorDAOImpl addAuthor
+INFO: Added author: Author Ten
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addAuthor
+INFO: Author added: Author Ten
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService getAllAuthors
+INFO: Retrieved all authors. Count: 10
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author One's Book 1
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author One's Book 1
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author One's Book 2
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author One's Book 2
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author One's Book 3
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author One's Book 3
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Two's Book 1
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Two's Book 1
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Two's Book 2
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Two's Book 2
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Two's Book 3
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Two's Book 3
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Three's Book 1
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Three's Book 1
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Three's Book 2
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Three's Book 2
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Three's Book 3
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Three's Book 3
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Four's Book 1
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Four's Book 1
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Four's Book 2
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Four's Book 2
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Four's Book 3
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Four's Book 3
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Five's Book 1
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Five's Book 1
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Five's Book 2
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Five's Book 2
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Five's Book 3
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Five's Book 3
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Six's Book 1
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Six's Book 1
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Six's Book 2
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Six's Book 2
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Six's Book 3
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Six's Book 3
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Seven's Book 1
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Seven's Book 1
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Seven's Book 2
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Seven's Book 2
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Seven's Book 3
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Seven's Book 3
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Eight's Book 1
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Eight's Book 1
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Eight's Book 2
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Eight's Book 2
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Eight's Book 3
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Eight's Book 3
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Nine's Book 1
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Nine's Book 1
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Nine's Book 2
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Nine's Book 2
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Nine's Book 3
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Nine's Book 3
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Ten's Book 1
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Ten's Book 1
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Ten's Book 2
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Ten's Book 2
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.dao.impl.BookDAOImpl addBook
+INFO: Added book: Author Ten's Book 3
+Jan 10, 2025 8:00:38 PM com.vladproduction.library.service.LibraryService addBook
+INFO: Book added: Author Ten's Book 3

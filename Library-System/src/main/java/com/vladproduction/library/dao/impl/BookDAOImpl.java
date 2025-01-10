@@ -118,4 +118,88 @@ public class BookDAOImpl implements BookDAO {
         }
     }
 
+    @Override
+    public List<Book> getBooksByAuthorName(String authorName) {
+        List<Book> books = new ArrayList<>();
+        String sql = "SELECT b.id, b.title, b.published_year, a.id AS author_id, a.name, a.nationality " +
+                "FROM books b JOIN authors a ON b.author_id = a.id WHERE a.name LIKE ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, "%" + authorName + "%");
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Author author = new Author(
+                        resultSet.getInt("author_id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("nationality")
+                );
+                Book book = new Book(
+                        resultSet.getInt("id"),
+                        resultSet.getString("title"),
+                        author,
+                        resultSet.getInt("published_year")
+                );
+                books.add(book);
+            }
+        } catch (SQLException e) {
+            logger.severe("Error retrieving books by author name: " + e.getMessage());
+        }
+        return books;
+    }
+
+    @Override
+    public List<Book> getBooksByNationality(String nationality) {
+        List<Book> books = new ArrayList<>();
+        String sql = "SELECT b.id, b.title, b.published_year, a.id AS author_id, a.name, a.nationality " +
+                "FROM books b JOIN authors a ON b.author_id = a.id WHERE a.nationality LIKE ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, "%" + nationality + "%"); // Allows for partial matches
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Author author = new Author(
+                        resultSet.getInt("author_id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("nationality")
+                );
+                Book book = new Book(
+                        resultSet.getInt("id"),
+                        resultSet.getString("title"),
+                        author,
+                        resultSet.getInt("published_year")
+                );
+                books.add(book);
+            }
+        } catch (SQLException e) {
+            logger.severe("Error retrieving books by nationality: " + e.getMessage());
+        }
+        return books;
+    }
+
+    @Override
+    public List<Book> getBooksByPublishedYear(int year) {
+        List<Book> books = new ArrayList<>();
+        String sql = "SELECT b.id, b.title, b.published_year, a.id AS author_id, a.name, a.nationality " +
+                "FROM books b JOIN authors a ON b.author_id = a.id WHERE b.published_year = ?";
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, year);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Author author = new Author(
+                        resultSet.getInt("author_id"),
+                        resultSet.getString("name"),
+                        resultSet.getString("nationality")
+                );
+                Book book = new Book(
+                        resultSet.getInt("id"),
+                        resultSet.getString("title"),
+                        author,
+                        resultSet.getInt("published_year")
+                );
+                books.add(book);
+            }
+        } catch (SQLException e) {
+            logger.severe("Error retrieving books by published year: " + e.getMessage());
+        }
+        return books;
+    }
+
 }

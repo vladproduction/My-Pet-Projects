@@ -86,4 +86,22 @@ public class LibraryService {
         authorDAO.deleteAuthor(id);
         logger.info("Author deleted with ID: " + id);
     }
+
+    public List<Book> getBooksByAuthorName(String authorName) {
+        List<Book> books = bookDAO.getBooksByAuthorName(authorName);
+        logger.info("Retrieved books by author: " + authorName);
+        return books;
+    }
+
+    public List<Book> getBooksByNationality(String nationality) {
+        List<Book> books = bookDAO.getBooksByNationality(nationality);
+        logger.info("Retrieved books by nationality: " + nationality);
+        return books;
+    }
+
+    public List<Book> getBooksByPublishedYear(int year) {
+        List<Book> books = bookDAO.getBooksByPublishedYear(year);
+        logger.info("Retrieved books published in year: " + year);
+        return books;
+    }
 }
