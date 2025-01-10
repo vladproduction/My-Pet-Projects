@@ -3,6 +3,10 @@ package com.vladproduction.library.app;
 import com.vladproduction.db.DatabaseConnection;
 import com.vladproduction.db.DatabaseInitializer;
 import com.vladproduction.db.DatabaseSeeder;
+import com.vladproduction.library.dao.AuthorDAO;
+import com.vladproduction.library.dao.BookDAO;
+import com.vladproduction.library.dao.impl.AuthorDAOImpl;
+import com.vladproduction.library.dao.impl.BookDAOImpl;
 import com.vladproduction.library.model.Author;
 import com.vladproduction.library.model.Book;
 import com.vladproduction.library.service.LibraryService;
@@ -27,11 +31,14 @@ public class LibraryApp {
     //implementing users interaction to the app:
     public static void main(String[] args) {
         try (Connection connection = DatabaseConnection.getConnection()) {
-            // Ensure the database and tables are initialized
-            DatabaseInitializer.initializeDatabase(connection);
+            // Initialize DAOs with the connection
+            BookDAO bookDAO = new BookDAOImpl(connection);
+            AuthorDAO authorDAO = new AuthorDAOImpl(connection);
 
-            // Create an instance of LibraryService
-            LibraryService libraryService = new LibraryService(connection);
+            // Create an instance of LibraryService with the DAO implementations
+            LibraryService libraryService = new LibraryService(bookDAO, authorDAO);
+
+            DatabaseInitializer.initializeDatabase(connection);
 
             // Seed the database with initial data
             DatabaseSeeder seeder = new DatabaseSeeder(libraryService);

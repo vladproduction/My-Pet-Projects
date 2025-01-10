@@ -18,10 +18,10 @@ public class DatabaseSeeder {
         // Check if authors already exist
         if (authorsExist()) {
             System.out.println("Authors already exist in the database. Skipping seeding.");
-            return; // Skip seeding if authors already exists
+            return; // Skip seeding if authors already exist
         }
-        seedAuthors();
-        seedBooks();
+        seedAuthors(); // Seed authors first
+        seedBooks();   // Seed books after authors
     }
 
     private boolean authorsExist() {

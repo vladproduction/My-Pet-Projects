@@ -18,10 +18,11 @@ public class LibraryService {
     private AuthorDAO authorDAO;
 
     // Constructor to inject DAO dependencies
-    public LibraryService(Connection connection) {
-        this.bookDAO = new BookDAOImpl(connection);
-        this.authorDAO = new AuthorDAOImpl(connection);
+    public LibraryService(BookDAO bookDAO, AuthorDAO authorDAO) {
+        this.bookDAO = bookDAO; // Using injected DAO for testing
+        this.authorDAO = authorDAO; // Using injected DAO for testing
     }
+
 
     // Book related methods
     public void addBook(Book book) {
@@ -57,7 +58,7 @@ public class LibraryService {
 
     // Author related methods
     public void addAuthor(Author author) {
-        authorDAO.addAuthor(author);
+        authorDAO.addAuthor(author); // Ensure this line actually makes the call to DAO
         logger.info("Author added: " + author.getName());
     }
 
