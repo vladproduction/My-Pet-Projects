@@ -4,10 +4,7 @@ import com.vladproduction.library.dao.BookDAO;
 import com.vladproduction.library.model.Author;
 import com.vladproduction.library.model.Book;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -24,19 +21,21 @@ public class BookDAOImpl implements BookDAO {
     @Override
     public void addBook(Book book) {
         String sql = "INSERT INTO books (title, author_id, published_year) VALUES (?, ?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, book.getTitle());
-            statement.setInt(2, book.getAuthor().getId()); // Assuming author is already fetched and set
+            statement.setInt(2, book.getAuthor().getId()); // Assuming the author object is valid
             statement.setInt(3, book.getPublishedYear());
             statement.executeUpdate();
 
-            // Optionally add the book to the author's list
-            book.getAuthor().addBook(book); // Maintain relationship in memory
+            // Retrieve the generated keys (ID)
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                book.setId(generatedKeys.getInt(1)); // Set the generated ID for the book
+            }
             logger.info("Added book: " + book.getTitle());
         } catch (SQLException e) {
             logger.severe("Error adding book: " + e.getMessage());
         }
-
     }
 
     @Override

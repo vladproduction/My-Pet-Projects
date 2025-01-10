@@ -120,24 +120,42 @@ class LibraryServiceTest {
 
     @Test
     void deleteBook() {
-        int bookId = 1;
-        libraryService.deleteBook(bookId); // Call the service method to delete
+        // Arrange
+        Author author = new Author(1, "Jane Doe", "Canadian");
 
-        // Verify that the deleteBook method on the DAO was called
-        verify(bookDAO).deleteBook(bookId);
+        // Mock behavior for adding author
+        doNothing().when(authorDAO).addAuthor(any(Author.class));
+        libraryService.addAuthor(author); // Ensure the author exists
+
+        // Ensure that the new book will also be added
+        Book book = new Book(1, "Learning Java", author, 2022);
+
+        // Simulating the add operation and hypothetical behavior of DAO
+        doNothing().when(bookDAO).addBook(any(Book.class)); // Mock behavior for adding book
+        libraryService.addBook(book); // Call the service method to add the book
+
+        // Mock behavior for retrieving the book before deleting
+        when(bookDAO.getBook(book.getId())).thenReturn(book); // Ensure the mocked getBook returns the added book
+
+        // Act
+        libraryService.deleteBook(book.getId()); // Call to delete the book
+
+        // Verify that the delete method was called on the DAO
+        verify(bookDAO, times(1)).deleteBook(book.getId());
     }
 
     @Test
     void addAuthor() {
         Author author = new Author(0, "John Doe", "American");
 
-        // Setup mock behavior - simulate the addAuthor call
-        doNothing().when(authorDAO).addAuthor(any(Author.class)); // Ensure it can accept any Author
+        // Simulating the add operation and ID generation
+        doNothing().when(authorDAO).addAuthor(any(Author.class)); // No operation for the add
+        when(authorDAO.getAuthor(anyInt())).thenReturn(author); // Simulating retrieval of that author after adding
 
         libraryService.addAuthor(author); // Call the service method
 
-        // Verify that the author was added to the DAO
-        verify(authorDAO, times(1)).addAuthor(author); // Verify it was called once
+        // Verify that the author was added
+        verify(authorDAO).addAuthor(author); // Check if the DAO method was called
     }
 
     @Test
@@ -173,11 +191,18 @@ class LibraryServiceTest {
 
     @Test
     void deleteAuthor() {
-        int authorId = 1;
-        libraryService.deleteAuthor(authorId); // Call the service method to delete
+        // Arrange
+        Author author = new Author(1, "John Doe", "American");
 
-        // Verify that the author was deleted in the DAO
-        verify(authorDAO).deleteAuthor(authorId);
+        // Set up the mock to return the author with the specified ID
+        when(authorDAO.getAuthor(author.getId())).thenReturn(author); // Mock to return the author
+
+        // Act
+        libraryService.addAuthor(author); // This should result in saving the author
+        libraryService.deleteAuthor(author.getId()); // Call to delete the author
+
+        // Verify that the delete method was called on the DAO
+        verify(authorDAO).deleteAuthor(author.getId()); // Now it should be invoked properly
     }
 
     @Test

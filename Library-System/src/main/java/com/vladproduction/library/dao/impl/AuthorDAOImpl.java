@@ -3,10 +3,7 @@ package com.vladproduction.library.dao.impl;
 import com.vladproduction.library.dao.AuthorDAO;
 import com.vladproduction.library.model.Author;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -24,10 +21,16 @@ public class AuthorDAOImpl implements AuthorDAO {
     @Override
     public void addAuthor(Author author) {
         String sql = "INSERT INTO authors (name, nationality) VALUES (?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+        try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, author.getName());
             statement.setString(2, author.getNationality());
             statement.executeUpdate();
+
+            // Get the generated keys (ID)
+            ResultSet generatedKeys = statement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                author.setId(generatedKeys.getInt(1)); // set generated ID
+            }
             logger.info("Added author: " + author.getName());
         } catch (SQLException e) {
             logger.severe("Error adding author: " + e.getMessage());

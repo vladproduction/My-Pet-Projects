@@ -52,8 +52,12 @@ public class LibraryService {
     }
 
     public void deleteBook(int id) {
+        if (bookDAO.getBook(id) == null) {
+            logger.warning("Attempted to delete non-existent book with ID: " + id);
+            return; // Silent exit if book does not exist
+        }
         bookDAO.deleteBook(id);
-        logger.info("Book deleted with ID: " + id);
+        logger.info("Deleted book with ID: " + id);
     }
 
     // Author related methods
@@ -84,8 +88,12 @@ public class LibraryService {
     }
 
     public void deleteAuthor(int id) {
+        if (authorDAO.getAuthor(id) == null) {
+            logger.warning("Attempted to delete non-existent author with ID: " + id);
+            return; // Silent exit if author does not exist
+        }
         authorDAO.deleteAuthor(id);
-        logger.info("Author deleted with ID: " + id);
+        logger.info("Deleted author with ID: " + id);
     }
 
     public List<Book> getBooksByAuthorName(String authorName) {
