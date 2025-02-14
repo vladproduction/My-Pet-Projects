@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Preview</title>
+    <link rel="stylesheet" href="styles.css"> <!--  CSS styles -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            max-width: 800px; /* Ensuring width for A4 format */
+            margin: auto; /* Centering the container */
+        }
+        h1 {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #00457c;
+            color: white;
+        }
+        .button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        button {
+            background-color: #00457c;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #003366;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Tax Declaration Form</h1>
+<div id="current-date-time" style="text-align: center; margin-bottom: 20px; font-weight: bold;">
+    Today: <span id="formatted-date-time"></span>
+</div>
+<table>
+    <tr>
+        <th>Field</th>
+        <th>Value</th>
+    </tr>
+    <tr>
+        <td>Full Name</td>
+        <td id="full-name-preview"></td>
+    </tr>
+    <tr>
+        <td>Address</td>
+        <td id="address-preview"></td>
+    </tr>
+    <tr>
+        <td>Social Security Number</td>
+        <td id="ssn-preview"></td>
+    </tr>
+    <tr>
+        <td>Primary Income (EURO)</td>
+        <td id="primary-income-preview"></td>
+    </tr>
+    <tr>
+        <td>Additional Income (EURO)</td>
+        <td id="additional-income-preview"></td>
+    </tr>
+    <tr>
+        <td>Medical Expenses (EURO)</td>
+        <td id="medical-expenses-preview"></td>
+    </tr>
+    <tr>
+        <td>Educational Costs (EURO)</td>
+        <td id="educational-costs-preview"></td>
+    </tr>
+    <tr>
+        <td>Other Deductible Expenses (EURO)</td>
+        <td id="other-expenses-preview"></td>
+    </tr>
+    <tr>
+        <td><strong>Total Income (EURO)</strong></td>
+        <td id="total-income"></td>
+    </tr>
+    <tr>
+        <td><strong>Total Expenses (EURO)</strong></td>
+        <td id="total-expenses"></td>
+    </tr>
+    <tr>
+        <td><strong>Tax Amount (EURO)</strong></td>
+        <td id="tax-amount"></td>
+    </tr>
+</table>
+
+<div class="button-container">
+    <button id="print-btn">Print this document</button>
+    <button id="return-btn">Return to Form</button>
+</div>
+
+<script>
+    // Fetch URL parameters and populate the content
+    function getQueryParams() {
+        const params = {};
+        window.location.search.substr(1).split("&").forEach(function(item) {
+            const parts = item.split("=");
+            params[decodeURIComponent(parts[0])] = decodeURIComponent(parts[1].replace(/\+/g, ' ')); // Replace + with space
+        });
+        return params;
+    }
+
+    // Function to format date and time
+    function getCurrentDateTime() {
+        const now = new Date();
+        const day = String(now.getDate()).padStart(2, '0'); // Two-digit day
+        const month = String(now.getMonth() + 1).padStart(2, '0'); // Two-digit month (0-indexed)
+        const year = now.getFullYear();
+        const hours = String(now.getHours()).padStart(2, '0'); // Two-digit hours
+        const minutes = String(now.getMinutes()).padStart(2, '0'); // Two-digit minutes
+        const seconds = String(now.getSeconds()).padStart(2, '0'); // Two-digit seconds
+        return `Today : ${day}-${month}-${year} ${hours}:${minutes}:${seconds}`; // Return formatted date string
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const params = getQueryParams();
+        document.getElementById('full-name-preview').textContent = params.fullName || '';
+        document.getElementById('address-preview').textContent = params.address || '';
+        document.getElementById('ssn-preview').textContent = params.ssn || '';
+        document.getElementById('primary-income-preview').textContent = params.primaryIncome || '';
+        document.getElementById('additional-income-preview').textContent = params.additionalIncome || '';
+        document.getElementById('medical-expenses-preview').textContent = params.medicalExpenses || '';
+        document.getElementById('educational-costs-preview').textContent = params.educationalCosts || '';
+        document.getElementById('other-expenses-preview').textContent = params.otherExpenses || '';
+
+        // Calculate totals for income and expenses
+        const primaryIncome = parseFloat(params.primaryIncome) || 0;
+        const additionalIncome = parseFloat(params.additionalIncome) || 0;
+        const medicalExpenses = parseFloat(params.medicalExpenses) || 0;
+        const educationalCosts = parseFloat(params.educationalCosts) || 0;
+        const otherExpenses = parseFloat(params.otherExpenses) || 0;
+
+        const totalIncome = primaryIncome + additionalIncome;
+        const totalExpenses = medicalExpenses + educationalCosts + otherExpenses;
+        const taxAmount = totalIncome - totalExpenses; // Difference between income and expenses
+
+        // Display totals
+        document.getElementById('total-income').textContent = totalIncome.toFixed(2);
+        document.getElementById('total-expenses').textContent = totalExpenses.toFixed(2);
+        document.getElementById('tax-amount').textContent = taxAmount.toFixed(2);
+
+        // Set current date and time on the form
+        document.getElementById('current-date-time').textContent = getCurrentDateTime();
+
+        // Print function
+        document.getElementById('print-btn').onclick = function() {
+            window.print();
+        };
+
+        // Return to form button functionality
+        document.getElementById('return-btn').onclick = function() {
+            window.history.back(); // Go back to the previous page (the declaration form)
+        };
+    });
+</script>

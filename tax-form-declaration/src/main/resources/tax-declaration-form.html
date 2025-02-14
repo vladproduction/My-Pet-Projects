@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tax Declaration Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- should before custom CSS file -->
+    <link rel="stylesheet" href="styles.css"> <!-- Link to external CSS file -->
+    <script src="script.js" defer></script> <!-- Link to external JS file -->
+</head>
+
+<body>
+
+<header>
+    <h1 class="main-title">Tax Declaration Form</h1> <!-- Main Title -->
+    <h2 class="sub-title">Mockup Tax Declaration Form</h2> <!-- Subtitle -->
+</header>
+
+<form id="tax-form">
+
+    <section class="personal-info">
+        <div id="current-date-time" style="text-align: center; margin-bottom: 20px; font-weight: bold;">
+            Today: <span id="formatted-date-time"></span>
+        </div>
+        <h3><i class="fas fa-user"></i> Personal Information</h3>
+        <label for="full-name">Full Name:</label>
+        <input type="text" id="full-name" placeholder="John Doe" required class="personal-input">
+
+        <label for="address">Address:</label>
+        <input type="text" id="address" placeholder="123 Main St" required class="personal-input">
+
+        <label for="ssn">Social Security Number:</label>
+        <input type="text" id="ssn" placeholder="123-45-6789" required>
+        <div class="validation-message" id="ssn-error"></div>
+    </section>
+
+    <section class="income-details">
+        <h3><i class="fas fa-money-bill-wave"></i> Income Details</h3>
+        <label for="primary-income">Primary Income (EURO):</label>
+        <input type="number" id="primary-income" placeholder="150" required class="money-input">
+
+        <label for="additional-income">Additional Income (EURO):</label>
+        <input type="number" id="additional-income" placeholder="150" class="money-input">
+    </section>
+
+    <section class="expense-deductions">
+        <h3><i class="fas fa-file-invoice-dollar"></i> Expense Deductions</h3>
+        <label for="medical-expenses">Medical Expenses (EURO):</label>
+        <input type="number" id="medical-expenses" placeholder="150" class="money-input">
+
+        <label for="educational-costs">Educational Costs (EURO):</label>
+        <input type="number" id="educational-costs" placeholder="150" class="money-input">
+
+        <label for="other-expenses">Other Deductible Expenses (EURO):</label>
+        <input type="number" id="other-expenses" placeholder="150" class="money-input">
+    </section>
+
+    <div class="buttons">
+        <button type="submit" id="submit-btn">Submit</button>
+        <button type="reset" id="reset-btn">Reset</button>
+    </div>
+
+</form>
+
+<footer>
+    <p>For assistance, contact: <a href="mailto:support-office@tax.euro.com">support-office@tax.euro.com</a></p>
+</footer>
+
+</body>
+</html>
