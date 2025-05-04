@@ -79,3 +79,41 @@ CREATE TABLE workouts (
                               ON DELETE CASCADE
                               ON UPDATE CASCADE
 );
+
+-- Meal types: Breakfast, Lunch, etc. can be ENUM or controlled in app logic
+CREATE TABLE meals (
+                       id INT AUTO_INCREMENT PRIMARY KEY,
+                       user_id INT NOT NULL,
+                       meal_type VARCHAR(20) NOT NULL,
+                       meal_date DATE NOT NULL,
+                       notes TEXT,
+                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                       FOREIGN KEY (user_id) REFERENCES users(id)
+                           ON DELETE CASCADE
+                           ON UPDATE CASCADE
+);
+
+-- Master list of foods with nutritional info per 100 grams
+CREATE TABLE foods (
+                       id INT AUTO_INCREMENT PRIMARY KEY,
+                       name VARCHAR(100) NOT NULL UNIQUE,
+                       calories_per_100g DECIMAL(6,2),
+                       protein_per_100g DECIMAL(6,2),
+                       carbs_per_100g DECIMAL(6,2),
+                       fat_per_100g DECIMAL(6,2)
+);
+
+-- Link table for what foods are included in each meal and in what quantity
+CREATE TABLE meal_items (
+                            id INT AUTO_INCREMENT PRIMARY KEY,
+                            meal_id INT NOT NULL,
+                            food_id INT NOT NULL,
+                            quantity_g DECIMAL(6,2) NOT NULL,
+                            FOREIGN KEY (meal_id) REFERENCES meals(id)
+                                ON DELETE CASCADE
+                                ON UPDATE CASCADE,
+                            FOREIGN KEY (food_id) REFERENCES foods(id)
+                                ON DELETE CASCADE
+                                ON UPDATE CASCADE
+);
