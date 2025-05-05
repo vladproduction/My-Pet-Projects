@@ -1,5 +1,6 @@
-package com.vladproduction.fittrack.repository.base;
+package com.vladproduction.fittrack.repository;
 
+import com.vladproduction.fittrack.datasource.CustomStatementCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

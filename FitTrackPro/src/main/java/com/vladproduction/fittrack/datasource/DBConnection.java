@@ -1,4 +1,4 @@
-package com.vladproduction.fittrack.db;
+package com.vladproduction.fittrack.datasource;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

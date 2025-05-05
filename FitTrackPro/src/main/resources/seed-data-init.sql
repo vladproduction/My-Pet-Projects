@@ -1,90 +1,57 @@
--- Disable FK checks for clean reinitialization
-SET FOREIGN_KEY_CHECKS = 0;
-
--- Clean up existing data (child tables first)
-DELETE FROM coach_assignments;
-DELETE FROM workouts;
-DELETE FROM goals;
-DELETE FROM users;
-DELETE FROM goal_types;
-DELETE FROM roles;
-DELETE FROM meal_items;
-DELETE FROM meals;
-DELETE FROM foods;
-
--- Re-enable FK checks
-SET FOREIGN_KEY_CHECKS = 1;
-
--- Begin transaction
-START TRANSACTION;
-
 -- Insert roles
-INSERT INTO roles (name) VALUES
-                             ('ADMIN'),
-                             ('COACH'),
-                             ('CLIENT');
+INSERT INTO roles (name) VALUES ('ADMIN'), ('COACH'), ('CLIENT');
 
--- Insert goal types
-INSERT INTO goal_types (name) VALUES
-                                  ('Weight Loss'),
-                                  ('Endurance'),
-                                  ('Strength'),
-                                  ('Flexibility');
+-- Insert users
+INSERT INTO users (username, password, email, role_id, active)
+VALUES
+    ('admin', 'admin123', 'admin@fittrack.com', 1, true),
+    ('coach_john', 'coach123', 'john@fittrack.com', 2, true),
+    ('client_anna', 'client123', 'anna@fittrack.com', 3, true),
+    ('client_mark', 'markpass', 'mark@fittrack.com', 3, true);
 
--- Insert users (role_id: 1=ADMIN, 2=COACH, 3=CLIENT)
-INSERT INTO users (username, password_hash, role_id) VALUES
-                                                         ('admin1', 'hashed_pwd_admin', 1),
-                                                         ('coach_john', 'hashed_pwd_john', 2),
-                                                         ('coach_emily', 'hashed_pwd_emily', 2),
-                                                         ('client_mary', 'hashed_pwd_mary', 3),
-                                                         ('client_mike', 'hashed_pwd_mike', 3),
-                                                         ('client_sara', 'hashed_pwd_sara', 3),
-                                                         ('client_dave', 'hashed_pwd_dave', 3);
+-- Insert clients (referencing user IDs for CLIENTs only)
+INSERT INTO clients (user_id, age, weight, height)
+VALUES
+    (3, 28, 65.5, 170.2),
+    (4, 35, 82.3, 180.5);
 
--- Assign coaches to clients (coach_id → user.id, user_id → user.id)
--- Note: IDs are based on insertion order above
-INSERT INTO coach_assignments (coach_id, user_id) VALUES
-                                                      (2, 4),  -- coach_john → client_mary
-                                                      (2, 5),  -- coach_john → client_mike
-                                                      (3, 6),  -- coach_emily → client_sara
-                                                      (3, 7);  -- coach_emily → client_dave
+-- Insert foods
+INSERT INTO foods (name, calories, proteins, fats, carbs)
+VALUES
+    ('Oatmeal', 150, 5.0, 2.5, 27.0),
+    ('Chicken Breast', 200, 30.0, 4.0, 0.0),
+    ('Broccoli', 50, 4.0, 0.5, 10.0),
+    ('Rice', 180, 4.0, 1.0, 40.0);
 
--- Insert example workouts
-INSERT INTO workouts (user_id, exercise, reps, duration_minutes, workout_date) VALUES
-                                                                                   (4, 'Push Ups', 20, NULL, '2025-04-25'),
-                                                                                   (5, 'Running', NULL, 30, '2025-04-26'),
-                                                                                   (6, 'Plank', NULL, 10, '2025-04-26'),
-                                                                                   (7, 'Cycling', NULL, 45, '2025-04-27');
+-- Insert goals
+INSERT INTO goals (client_id, description, target_weight, deadline)
+VALUES
+    (1, 'Lose 5kg in 3 months', 60.0, '2025-08-01'),
+    (2, 'Gain 3kg muscle mass', 85.0, '2025-07-15');
 
--- Insert example goals (goal_type_id: 1=Weight Loss, 2=Endurance, etc.)
-INSERT INTO goals (user_id, goal_type_id, description, target_value, current_value, deadline) VALUES
-                                                                                                  (4, 1, 'Lose 5 kg', 65.0, 68.5, '2025-06-01'),
-                                                                                                  (5, 2, 'Run 10km in under 1 hour', 10.0, 6.0, '2025-07-01'),
-                                                                                                  (6, 3, 'Increase bench press to 80kg', 80.0, 60.0, '2025-07-15'),
-                                                                                                  (7, 4, 'Do 10 min of daily stretching', 10.0, 5.0, '2025-06-15');
+-- Insert dietary plans
+INSERT INTO dietary_plans (client_id)
+VALUES
+    (1),
+    (2);
 
+-- Insert meals
+INSERT INTO meals (dietary_plan_id, food_id, quantity)
+VALUES
+    (1, 1, 2),  -- Oatmeal
+    (1, 2, 1),  -- Chicken Breast
+    (1, 3, 1),  -- Broccoli
+    (2, 2, 2),  -- Chicken Breast
+    (2, 4, 1);  -- Rice
 
--- Foods
-INSERT INTO foods (name, calories_per_100g, protein_per_100g, carbs_per_100g, fat_per_100g) VALUES
-                                                                                                ('Chicken Breast', 165, 31, 0, 3.6),
-                                                                                                ('Brown Rice', 112, 2.6, 23, 0.9),
-                                                                                                ('Broccoli', 34, 2.8, 7, 0.4),
-                                                                                                ('Oatmeal', 68, 2.4, 12, 1.4),
-                                                                                                ('Egg', 155, 13, 1.1, 11);
+-- Insert workouts
+INSERT INTO workouts (client_id, name, duration_minutes, intensity)
+VALUES
+    (1, 'Cardio Session', 45, 'Medium'),
+    (2, 'Strength Training', 60, 'High');
 
--- Meals (Assume user_id = 4 is a real client from previous seeds)
-INSERT INTO meals (user_id, meal_type, meal_date, notes) VALUES
-                                                             (4, 'Lunch', '2025-05-04', 'Post-workout meal'),
-                                                             (4, 'Breakfast', '2025-05-04', 'Light start');
-
--- Meal Items (meal_id = 1 = lunch, 2 = breakfast)
-INSERT INTO meal_items (meal_id, food_id, quantity_g) VALUES
-                                                          (1, 1, 200),  -- Chicken Breast
-                                                          (1, 2, 150),  -- Brown Rice
-                                                          (1, 3, 100),  -- Broccoli
-                                                          (2, 4, 80),   -- Oatmeal
-                                                          (2, 5, 50);   -- Egg
-
-
--- Commit transaction
-COMMIT;
+-- Insert coach assignments
+INSERT INTO coach_assignments (coach_id, client_id)
+VALUES
+    (2, 1),
+    (2, 2);

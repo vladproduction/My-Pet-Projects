@@ -1,4 +1,4 @@
-package com.vladproduction.fittrack.repository.base;
+package com.vladproduction.fittrack.mapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

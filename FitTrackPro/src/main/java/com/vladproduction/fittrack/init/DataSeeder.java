@@ -1,6 +1,6 @@
 package com.vladproduction.fittrack.init;
 
-import com.vladproduction.fittrack.db.DBConnection;
+import com.vladproduction.fittrack.datasource.DBConnection;
 import org.slf4j.Logger;
 
 import java.io.BufferedReader;

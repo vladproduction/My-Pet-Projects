@@ -1,0 +1,26 @@
+vladproduction/
+                └── fittrack/
+                    ├── model/                            <-- Domain entities
+                    │   └── enums/                        <-- Enum types like RoleType
+
+                    ├── repository/                       <-- Repository interfaces + BaseRepository.java (abstract class)
+                    │   └── impl/                         <-- Concrete repository implementations
+
+                    ├── mapper/                           <-- RowMapper<T> interface + implementations (RoleRowMapper, etc.)
+
+                    ├── datasource/                       <-- Database connection classes
+                    │   └── DBConnection.java             <-- Manages DataSource setup
+                    │   └── CustomStatementCache.java     <-- Optional prepared statement cache
+
+                    ├── dto/                              <-- DTO classes for service → UI transfer
+
+                    ├── service/                          <-- Business logic layer (to be added soon)
+                    │   └── impl/                         <-- Service implementations
+
+                    ├── security/                         <-- Login/signin/auth with roles
+
+                    ├── init/                             <-- Initialization of schema and seed data
+                    │   └── SchemaInitializer.java
+                    │   └── DataSeeder.java
+
+                    └── util/                             <-- Utilities or helpers (if needed)

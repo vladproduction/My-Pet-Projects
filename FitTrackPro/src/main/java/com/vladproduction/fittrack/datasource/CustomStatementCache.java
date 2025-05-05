@@ -1,4 +1,4 @@
-package com.vladproduction.fittrack.repository.base;
+package com.vladproduction.fittrack.datasource;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

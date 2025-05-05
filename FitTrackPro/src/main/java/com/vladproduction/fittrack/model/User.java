@@ -6,17 +6,17 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private Long roleId;
+    private Role role;
     private boolean active;
 
     public User() {}
 
-    public User(Long id, String username, String password, String email, Long roleId, boolean active) {
+    public User(Long id, String username, String password, String email, Role role, boolean active) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
-        this.roleId = roleId;
+        this.role = role;
         this.active = active;
     }
 
@@ -52,12 +52,12 @@ public class User {
         this.email = email;
     }
 
-    public Long getRoleId() {
-        return roleId;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public boolean isActive() {
@@ -70,7 +70,7 @@ public class User {
 
     @Override
     public String toString() {
-        return String.format("User[id=%d, username='%s', email='%s', roleId=%d, isActive=%s]",
-                id, username, email, roleId, active);
+        return String.format("User[id=%d, username='%s', email='%s', role=%s, isActive=%s]",
+                id, username, email, role, active);
     }
 }
